@@ -1,0 +1,41 @@
+<odoo>
+	<data>
+		<template id="report_invoice_document" inherit_id="account.report_invoice_document">
+				<xpath expr="//div[@t-if='o.partner_id.vat']" position="after">
+			        <p t-if="o.partner_id.barcode"> 
+				         <i class="fa fa-id-badge"></i> : <t t-esc="o.partner_id.barcode"/>	
+			        </p>
+				</xpath>
+				
+				<!-- Is there a taxe on at least one line? -->
+			    <xpath expr="//t[@t-set='display_discount']" position="after">
+			        <t t-set="display_tax" t-value="any([l.invoice_line_tax_ids for l in o.invoice_line_ids])"/>
+			    </xpath>	
+			    	
+			    <xpath expr="//th[hasclass('text-right')][4]" position="attributes">
+					<attribute name="t-if">display_tax</attribute>
+			    </xpath>
+			   
+			    <xpath expr="//td[hasclass('text-right')][4]" position="attributes">
+					<attribute name="t-if">display_tax</attribute>
+			    </xpath>
+			    
+			    <xpath expr="//span[@t-field='l.name']" position="replace">
+                    <t t-if="not l.product_id">
+	                    	<span t-field="l.name"/>
+                    </t>
+
+                    <t t-if="l.product_id and (l.product_id.x_rental or l.product_id.event_ok)">
+	                    	<span t-field="l.product_id.display_name"/>
+                    </t>
+
+					<t t-if="l.product_id and not l.product_id.x_rental and not l.product_id.event_ok">
+	                    	<span t-field="l.name"/>
+                    </t>
+			    </xpath>
+				
+		</template>
+	</data>
+</odoo>
+
+

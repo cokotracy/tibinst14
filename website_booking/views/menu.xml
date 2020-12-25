@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem
+        parent="sale.product_menu_catalog"
+        action="action_booking_room_summary_report_wizard"
+        id="menu_booking_summary_report_wizard"
+        sequence="50"
+        />
+
+    <menuitem
+      parent="sale.product_menu_catalog"
+        action="action_sale_reservation_wizard"
+        id="menu_booking_reservation_report_wizard"
+        sequence="51"
+        />
+</odoo>

@@ -1,0 +1,80 @@
+<odoo>
+    <data>
+
+        <template id="booking" inherit_id="website.snippets" name="Website Booking snippet">
+            <xpath expr="//div[@id='snippet_structure']/div[hasclass('o_panel_body')]" position="inside">
+                <t t-snippet="website_booking.snippet_booking_search" t-thumbnail="/website_booking/static/src/img/blocks/block_title.png"/>
+            </xpath>
+        </template>
+           <!-- Snippet's Body -->
+        <template id="snippet_booking_search"  name="Booking search">
+            <section class="jumbotron s_button bg-gray-lighter oe_img_bg mb92" style="background-image: url(&quot;/web/image/theme_common.image_content_07&quot;);">
+                <div class="container">
+                    <div class="row">
+                      <div class="banner-info text-center">
+                      				<div class="container">
+                      					<h1>Leadership Conference 2017</h1>
+                      					<h2><span>27-29 June</span> Berlin, Germany</h2>
+                      					<a href="#" class="btn button-white">Get Ticket Now</a>
+                                          <ul class="countdown gb-list list-inline">
+                                              <li>
+                                                  <span class="days">12</span>
+                                                  <p>days</p>
+                                              </li>
+                                              <li>
+                                                  <span class="hours">18</span>
+                                                  <p>hours</p>
+                                              </li>
+                                              <li>
+                                                  <span class="minutes">28</span>
+                                                  <p>minutes</p>
+                                              </li>
+                                              <li>
+                                                  <span class="seconds">42</span>
+                                                  <p>seconds</p>
+                                              </li>
+                                          </ul><!-- countdown -->
+                      				</div><!-- /.container -->
+                      			</div>
+
+
+                      <div class="col-md-12">
+                        <p class="mb0">
+                           <b>
+                              <font style="font-size: 48px;" class="bg-black-25">Please adjust your dates</font>
+                           </b>
+                        </p>
+                        <p class="mb0">
+                          <b>
+                            <font style="" class="bg-black-25">Please adjust your dates</font>
+                          </b>
+                        </p>
+                      </div>
+                      <div class="input-group">
+                        <input type="text" id="daterange" class="datepicker form-control" placeholder="Vos dates" aria-describedby="basic-addon2"/>
+                        <span class="input-group-addon" id="basic-addon2">
+                          <i class="fa fa-calendar"/>
+                        </span>
+                      </div>
+                    </div>
+                </div>
+                <div class="container">
+                          <div class="row">
+                            <div class="mb64 col-md-6">
+                              <a href="/shop/cart" id="checkout" class="pull-right mt8 btn btn-success btn-lg" data-original-title="" title="">
+                                <font style="font-size: 36px;" data-original-title="" title="">Check out Now<br data-original-title="" title=""/></font>
+                                <span class="fa fa-credit-card fa-5x" style=""/>
+                              </a>
+                            </div>
+                            <div class="mb64 col-md-6">
+                              <a href="/shop/category/accomodation-144" id="reserver" class="pull-right mt8 btn btn-info btn-lg" data-original-title="" title="">
+                                <font style="font-size: 36px;" data-original-title="" title="">&amp;nbsp; Booking Now<br data-original-title="" title=""/></font>
+                                <span class="fa fa-5x fa-hotel" style=""/>
+                              </a>
+                            </div>
+                          </div>
+                      </div>
+          </section>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<openerp>
+<data>
+
+
+    <record id="user_authenticator_form_view" model="ir.ui.view">
+        <field name="name">user.authenticator</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+         <field name="arch" type="xml">
+                <notebook position="inside">
+                    <page string="Authenticator">
+                        <group colspan="4">
+                             <group colspan="2" col="2">
+                                 <field name="x_authenticator"/>
+                             </group>
+                             <group colspan="2" col="2">
+                                 <field name="x_key"/>
+                                 <field name="x_qrcode" widget="image"/>
+                             </group>
+                        </group>
+                    </page>
+                </notebook>
+            </field>
+    </record>
+
+</data>
+</openerp>
+

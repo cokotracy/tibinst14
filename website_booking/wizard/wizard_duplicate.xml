@@ -1,0 +1,40 @@
+<odoo>
+   	<data>
+        	<record model="ir.ui.view" id="wizard_duplicate_event_view">
+            		<field name="name">event.duplicate.wizard.form</field>
+            		<field name="model">event.duplicate.wizard</field>
+            		<field name="arch" type="xml">
+                		<form string="Duplicate wizard">
+                    	   <group>
+                             <field name="date_start"/>
+                        	   <field name="date_end"/>
+						             </group>
+
+						              <group>
+                                  <field name="days_0"/>
+                                  <field name="days_1"/>
+                                  <field name="days_2"/>
+                                  <field name="days_3"/>
+                                  <field name="days_4"/>
+                                  <field name="days_5"/>
+                                  <field name="days_6"/>
+                         </group>
+
+
+                         <footer>
+                                  <button name="duplicate" string="Duplicate" type="object" class="btn-primary"/>
+                                  <button string="Cancel" class="btn-default" special="cancel" />
+                        </footer>
+                      </form>
+                </field>
+        </record>
+
+        <act_window id="launch_event_duplicate_wizard"
+                    name="Many Duplicate"
+                    src_model="event.event"
+                    res_model="event.duplicate.wizard"
+                    view_mode="form"
+                    target="new"
+                    key2="client_action_one"/>
+	</data>
+</odoo>

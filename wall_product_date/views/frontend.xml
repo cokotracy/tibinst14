@@ -1,0 +1,73 @@
+<odoo>
+    <data>
+        
+        
+        <template inherit_id="theme_snowy.product_details" id="product_brand">
+            <xpath expr="//h1/span[@t-field='product.name']" position="after">
+                 <h3>
+                        <span t-if="product.product_brand_id" t-field="product.product_brand_id.name"/>
+                 </h3>
+            </xpath>
+        </template>
+        
+        <template inherit_id="website_sale.extra_info" id="extra_info">
+            <xpath expr="//form/div[3]" position="attributes">
+                    <attribute name="class">hidden</attribute>
+            </xpath>
+            <xpath expr="//form/div[2]" position="attributes">
+                    <attribute name="class">hidden</attribute>
+            </xpath>
+            <xpath expr="//form/div[1]" position="attributes">
+                    <attribute name="class">hidden</attribute>
+            </xpath>
+
+            <xpath expr="//form/div[3]" position="after">
+                 <div t-if="order._message_wall()" class="form-group form-field o_website_form_custom">
+                              <div class="col-md-3 col-sm-4 text-right-not-xs">
+                                    <label class="control-label" for="Give us your message for wall...">Entrez votre message pour le mur</label>
+                              </div>
+                              <div class="col-md-7 col-sm-8">
+                                         <textarea class="form-control o_website_form_input" id="message_wall" name="message_wall"><t t-esc="order.message_wall"/></textarea>
+                              </div>
+                </div>
+            </xpath>
+        </template>    
+            
+            
+        <template name="extra_info_kygl" id="website_sale.extra_info_option" inherit_id="website_sale.wizard_checkout">
+            <xpath expr="//li[@id='step40']" position="replace">
+                <li t-att-class="(step==40 and 'text-primary') or 'text-muted'" id="step40">
+                    <t t-if="step&gt;40 and step&lt;50">
+                        <a href="/shop/payment" class="text-success">
+                            Paiement<span class="chevron"/>
+                        </a>
+                    </t>
+                    <t t-if="not (step&gt;40 and step&lt;50)">
+                        Paiement<span class="chevron"/>
+                    </t>
+                </li>
+            </xpath>
+            
+            <xpath expr="//li[@id='step20']" position="after">
+                <t t-if="website.sale_get_order()._message_wall()">
+                    <li t-if="True" t-att-class="(step==30 and 'text-primary') or 'text-muted'" id="step30">
+                        <t t-if="step&gt;30 and step&lt;50">
+                            <a href="/shop/extra_info" class="text-success">
+                                Informations complémentaires<span class="chevron"/>
+                            </a>
+                        </t>
+                        <t t-if="not (step&gt;30 and step&lt;50)">
+                            Informations complémentaires<span class="chevron"/>
+                        </t>
+                    </li>
+                </t>
+            </xpath>
+        </template>
+            
+</data>
+</odoo>
+
+
+
+
+

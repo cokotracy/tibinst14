@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+
+        <record id="res_config_settings_view_form" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.booking</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="website.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                 <div id="webmaster_settings" position="after">
+                            <field name="booking" invisible="1"/>
+
+                            <h2>Booking</h2>
+                                <div class="row mt16 o_settings_container" id="booking_website">
+
+
+                                   <div class="col-xs-12 col-md-6 o_setting_box" title="This allows administrator to manage the booking on website.">
+
+                                         <div class="o_setting_left_pane">
+                                        </div>
+
+                                         <div class="o_setting_right_pane">
+                                            <label string="Direction"/>
+                                            <div class="content-group">
+                                                <div class="row mt16">
+                                                    <label string="Value" class="col-md-3 o_light_label"/>
+                                                    <field name="booking_direction"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                  </div>
+
+                                  <div class="col-xs-12 col-md-6 o_setting_box" title="This allows administrator to manage the booking on website.">
+
+                                        <div class="o_setting_left_pane">
+                                       </div>
+
+                                        <div class="o_setting_right_pane">
+                                           <label string="Date format"/>
+                                           <div class="content-group">
+                                               <div class="row mt16">
+                                                   <label string="Value" class="col-md-3 o_light_label"/>
+                                                   <field name="booking_format"/>
+                                               </div>
+                                           </div>
+                                       </div>
+                                  </div>
+
+
+                                  <div class="col-xs-12 col-md-6 o_setting_box" title="This allows administrator to manage the booking on website.">
+
+                                        <div class="o_setting_left_pane">
+                                       </div>
+
+                                        <div class="o_setting_right_pane">
+                                           <label string="Separator"/>
+                                           <div class="content-group">
+                                               <div class="row mt16">
+                                                   <label string="Value" class="col-md-3 o_light_label"/>
+                                                   <field name="booking_separator"/>
+                                               </div>
+                                           </div>
+                                       </div>
+                                 </div>
+
+                                 <div class="col-xs-12 col-md-6 o_setting_box" title="This allows administrator to manage the booking on website.">
+
+                                       <div class="o_setting_left_pane">
+                                      </div>
+
+                                       <div class="o_setting_right_pane">
+                                          <label string="Label for button Apply"/>
+                                          <div class="content-group">
+                                              <div class="row mt16">
+                                                  <label string="Value" class="col-md-3 o_light_label"/>
+                                                  <field name="booking_applyLabel"/>
+                                              </div>
+                                          </div>
+                                      </div>
+                                </div>
+
+                                <div class="col-xs-12 col-md-6 o_setting_box" title="This allows administrator to manage the booking on website.">
+
+                                      <div class="o_setting_left_pane">
+                                     </div>
+
+                                      <div class="o_setting_right_pane">
+                                         <label string="Label for button Cancel"/>
+                                         <div class="content-group">
+                                             <div class="row mt16">
+                                                 <label string="Value" class="col-md-3 o_light_label"/>
+                                                 <field name="booking_cancelLabel"/>
+                                             </div>
+                                         </div>
+                                     </div>
+                               </div>
+
+                               <div class="col-xs-12 col-md-6 o_setting_box" title="This allows administrator to manage the booking on website.">
+
+                                     <div class="o_setting_left_pane">
+                                    </div>
+
+                                     <div class="o_setting_right_pane">
+                                        <label string="Label for button From"/>
+                                        <div class="content-group">
+                                            <div class="row mt16">
+                                                <label string="Value" class="col-md-3 o_light_label"/>
+                                                <field name="booking_fromLabel"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                               </div>
+
+                               <div class="col-xs-12 col-md-6 o_setting_box" title="This allows administrator to manage the booking on website.">
+
+                                     <div class="o_setting_left_pane">
+                                    </div>
+
+                                     <div class="o_setting_right_pane">
+                                        <label string="Label for button To"/>
+                                        <div class="content-group">
+                                            <div class="row mt16">
+                                                <label string="Value" class="col-md-3 o_light_label"/>
+                                                <field name="booking_toLabel"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                               </div>
+
+
+                               <div class="col-xs-12 col-md-6 o_setting_box" title="This allows administrator to manage the booking on website.">
+
+                                     <div class="o_setting_left_pane">
+                                    </div>
+
+                                     <div class="o_setting_right_pane">
+                                        <label string="Label for button CustomRange"/>
+                                        <div class="content-group">
+                                            <div class="row mt16">
+                                                <label string="Value" class="col-md-3 o_light_label"/>
+                                                <field name="booking_customRangeLabel"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                               </div>
+
+
+                               <div class="col-xs-12 col-md-6 o_setting_box" title="This allows administrator to manage the booking on website.">
+
+                                     <div class="o_setting_left_pane">
+                                    </div>
+
+                                     <div class="o_setting_right_pane">
+                                        <label string="Show WeekNumbers"/>
+                                        <div class="content-group">
+                                            <div class="row mt16">
+                                                <label string="Value" class="col-md-3 o_light_label"/>
+                                                <field name="booking_showWeekNumbers"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                               </div>
+
+
+                               <div class="col-xs-12 col-md-6 o_setting_box" title="This allows administrator to manage the booking on website.">
+
+                                     <div class="o_setting_left_pane">
+                                    </div>
+
+                                     <div class="o_setting_right_pane">
+                                        <label string="Auto update input"/>
+                                        <div class="content-group">
+                                            <div class="row mt16">
+                                                <label string="Value" class="col-md-3 o_light_label"/>
+                                                <field name="booking_autoUpdateInput"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                               </div>
+
+
+                               <div class="col-xs-12 col-md-6 o_setting_box" title="This allows administrator to manage the booking on website.">
+
+                                     <div class="o_setting_left_pane">
+                                    </div>
+
+                                     <div class="o_setting_right_pane">
+                                        <label string="Timezone"/>
+                                        <div class="content-group">
+                                            <div class="row mt16">
+                                                <label string="Value" class="col-md-3 o_light_label"/>
+                                                <field name="booking_tz"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                               </div>
+
+
+
+                               <div class="col-xs-12 col-md-6 o_setting_box" title="This allows administrator to manage the booking on website.">
+
+                                     <div class="o_setting_left_pane">
+                                    </div>
+
+                                     <div class="o_setting_right_pane">
+                                        <label string="Time From"/>
+                                        <div class="content-group">
+                                            <div class="row mt16">
+                                                <label string="Value" class="col-md-3 o_light_label"/>
+                                                <field name="booking_defaultTimeFrom"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                               </div>
+
+                               <div class="col-xs-12 col-md-6 o_setting_box" title="This allows administrator to manage the booking on website.">
+
+                                     <div class="o_setting_left_pane">
+                                    </div>
+
+                                     <div class="o_setting_right_pane">
+                                        <label string="Time To"/>
+                                        <div class="content-group">
+                                            <div class="row mt16">
+                                                <label string="Value" class="col-md-3 o_light_label"/>
+                                                <field name="booking_defaultTimeTo"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                               </div>
+
+
+                               <div class="col-xs-12 col-md-6 o_setting_box" title="This allows administrator to manage the booking on website.">
+
+                                     <div class="o_setting_left_pane">
+                                    </div>
+
+                                     <div class="o_setting_right_pane">
+                                        <label string="Date min"/>
+                                        <div class="content-group">
+                                            <div class="row mt16">
+                                                <label string="Value" class="col-md-3 o_light_label"/>
+                                                <field name="booking_minDate"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                               </div>
+
+
+                               <div class="col-xs-12 col-md-6 o_setting_box" title="This allows administrator to manage the booking on website.">
+
+                                     <div class="o_setting_left_pane">
+                                    </div>
+
+                                     <div class="o_setting_right_pane">
+                                        <label string="Date max"/>
+                                        <div class="content-group">
+                                            <div class="row mt16">
+                                                <label string="Value" class="col-md-3 o_light_label"/>
+                                                <field name="booking_maxDate"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                               </div>
+
+
+                               <div class="col-xs-12 col-md-6 o_setting_box" title="This allows administrator to manage the booking on website.">
+
+                                     <div class="o_setting_left_pane">
+                                    </div>
+
+                                     <div class="o_setting_right_pane">
+                                        <label string="Configuration range"/>
+                                        <div class="content-group">
+                                            <div class="row mt16">
+                                                <label string="Value" class="col-md-3 o_light_label"/>
+                                                <field name="booking_dateRange">
+                                                  <tree string="Range" editable="bottom">
+                                                      <field name="name"/>
+                                                      <field name="dateStart"/>
+                                                      <field name="dateStop"/>
+                                                      <field name="type"/>
+                                                  </tree>
+                                                </field>
+                                            </div>
+                                        </div>
+                                    </div>
+                               </div>
+
+
+                               <div class="col-xs-12 col-md-6 o_setting_box" title="This allows administrator to manage the booking on website.">
+
+                                     <div class="o_setting_left_pane">
+                                    </div>
+
+                                     <div class="o_setting_right_pane">
+                                        <label string="Delay"/>
+                                        <div class="content-group">
+                                            <div class="row mt16">
+                                                <label string="Value" class="col-md-3 o_light_label"/>
+                                                <field name="booking_delay"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                               </div>
+
+
+
+                               <div class="col-xs-12 col-md-6 o_setting_box" title="This allows administrator to manage the booking on website.">
+
+                                     <div class="o_setting_left_pane">
+                                    </div>
+
+                                     <div class="o_setting_right_pane">
+                                        <label string="Alert doubly reserved"/>
+                                        <div class="content-group">
+                                            <div class="row mt16">
+                                                <label string="Value" class="col-md-3 o_light_label"/>
+                                                <field name="booking_user_alert" widget="many2many_tags"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                               </div>
+                            </div>
+                         </div>
+                </field>
+            </record>
+
+            <record id="action_booking_configuration" model="ir.actions.act_window">
+                       <field name="name">Settings</field>
+                       <field name="type">ir.actions.act_window</field>
+                       <field name="res_model">res.config.settings</field>
+                       <field name="view_mode">form</field>
+                       <field name="target">inline</field>
+                       <field name="context">{'module' : 'website'}</field>
+            </record>
+
+<!--
+            <menuitem name="Booking"
+                         id="menu_booking_configuration"
+                         sequence="9"
+                         groups="base.group_user"
+                         web_icon="website_booking,static/description/icon.png"/>
+
+          <menuitem id="menu_booking_global_configuration" parent="menu_booking_configuration"
+          sequence="100" name="Configuration" groups="base.group_system"/>
+        -->
+
+          <menuitem name="Settings"
+                      id="menu_booking_website_settings"
+                      action="action_booking_configuration"
+                      parent="website.menu_website_global_configuration"
+                      groups="base.group_system"/>
+
+
+
+    </data>
+</odoo>

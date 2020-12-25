@@ -1,0 +1,246 @@
+<odoo>
+
+    <!--Template for Hotel Reservation -->
+    <template id="website_booking.report_checkin_qweb">
+        <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                  <t t-foreach="docs" t-as="o">
+                    <div class="page">
+                      <div class="row">
+                          <h2>
+                                <center>Check-In Guest List</center>
+                          </h2>
+                      </div>
+                      <div class="row">
+                          <div class="text-center">
+                              <strong>From:</strong>
+                              <span t-esc="o.date_start"/>
+                              <strong>To:</strong>
+                              <span t-esc="o.date_end"/>
+                          </div>
+                      </div>
+
+                      <table class="table table-condensed">
+                          <tr>
+                              <td>
+                                  <strong>#No</strong>
+                              </td>
+                              <td>
+                                  <strong>State</strong>
+                              </td>
+                              <td>
+                                  <strong>Paid</strong>
+                              </td>
+                              <td>
+                                  <strong>Guest Name</strong>
+                              </td>
+                              <td>
+                                  <strong>Lang</strong>
+                              </td>
+                              <td>
+                                  <strong>Check-In Date</strong>
+                              </td>
+                              <td>
+                                  <strong>Event</strong>
+                              </td>
+                              <td>
+                                  <strong>Nights</strong>
+                              </td>
+                              <td>
+                                  <strong>Accessory</strong>
+                              </td>
+                              <td>
+                                  <strong>Room No</strong>
+                              </td>
+                          </tr>
+                            <tr t-foreach="get_checkin" t-as="c">
+                                <td>
+                                    <span t-esc="c.order_id.name"/>
+                                </td>
+                                <t t-set="state" t-value="get_state(c.order_id)"/>
+                                <td>
+                                    <span t-esc="state[0]"/>
+                                </td>
+                                <td>
+                                    <span t-esc="state[1]"/>
+                                    <span t-if ='state[1]!=""'>-</span>
+                                    <span t-esc="state[2]"/>
+                                </td>
+                                <td>
+                                    <span t-esc="c.order_id.partner_id.name"/>
+                                </td>
+                                <td>
+                                    <span t-esc="get_lang(c.order_id.partner_id.lang)"/>
+                                </td>
+                                <td>
+                                    <span t-esc="get_date(c.x_start)"/>
+                                </td>
+                                <td>
+                                    <span t-esc="get_event(c.order_id)"/>
+                                </td>
+                                <td>
+                                  <span t-esc="c.product_uom_qty"/>
+                                </td>
+                                <td>
+                                  <span t-esc="get_fittedsheet(c.order_id,c.product_id)"/>
+                                </td>
+                                <td>
+                                  <span t-esc="c.product_id.default_code"/>
+                                </td>
+                            </tr>
+                        </table>
+                </div>
+              </t>
+            </t>
+        </t>
+    </template>
+
+
+
+
+    <!--Template for Hotel Reservation -->
+    <template id="website_booking.report_checkout_qweb">
+        <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                  <t t-foreach="docs" t-as="o">
+                    <div class="page">
+                      <div class="row">
+                          <h2>
+                              <span>
+                                  <center>Check-Out Guest List</center>
+                              </span>
+                          </h2>
+                      </div>
+                      <div class="row mt32 mb32">
+                          <div class="text-center">
+                              <strong>From:</strong>
+                              <span t-esc="o.date_start"/>
+                              <strong>To:</strong>
+                              <span t-esc="o.date_end"/>
+                          </div>
+                      </div>
+
+                      <table class="table table-condensed">
+                          <tr>
+                              <td>
+                                  <strong>#No</strong>
+                              </td>
+                              <td>
+                                  <strong>Guest Name</strong>
+                              </td>
+                              <td>
+                                  <strong>Lang</strong>
+                              </td>
+                              <td>
+                                  <strong>Check-Out Date</strong>
+                              </td>
+                              <td>
+                                <strong>Event</strong>
+                              </td>
+                              <td>
+                                  <strong>Accessory</strong>
+                              </td>
+                              <td>
+                                  <strong>Room No</strong>
+                              </td>
+                          </tr>
+                            <tr t-foreach="get_checkout" t-as="c">
+                                <td>
+                                    <span t-esc="c.order_id.name"/>
+                                </td>
+                                <td>
+                                    <span t-esc="c.order_id.partner_id.name"/>
+                                </td>
+                                <td>
+                                    <span t-esc="get_lang(c.order_id.partner_id.lang)"/>
+                                </td>
+                                <td>
+                                    <span t-esc="get_date(c.x_end)"/>
+                                </td>
+                                <td>
+                                    <span t-esc="get_event(c.order_id)"/>
+                                </td>
+                                <td>
+                                  <span t-esc="get_fittedsheet(c.order_id,c.product_id)"/>
+                                </td>
+                                <td>
+                                  <span t-esc="c.product_id.default_code"/>
+                                </td>
+
+                            </tr>
+
+                        </table>
+                </div>
+              </t>
+            </t>
+        </t>
+    </template>
+
+    <!--Template for Hotel Reservation -->
+    <template id="website_booking.report_cooking_qweb">
+        <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                  <t t-foreach="docs" t-as="o">
+                    <div class="page">
+                      <div class="row">
+                          <h2>
+                                  <center>Cooking Guest List</center>
+                          </h2>
+                      </div>
+                      <div>
+                          <div class="text-center">
+                              <strong>From:</strong>
+                              <span t-esc="o.date_start"/>
+                              <strong>To:</strong>
+                              <span t-esc="o.date_end"/>
+                          </div>
+                      </div>
+
+                      <table class="table table-condensed">
+                          <tr>
+                              <td class="text-center">
+                                  <strong>Date</strong>
+                              </td>
+                              <td class="text-center">
+                                  <strong>Breakfast</strong>
+                              </td>
+                              <td class="text-center">
+                                  <strong>Lunch</strong>
+                              </td>
+                              <td class="text-center">
+                                  <strong>Supper</strong>
+                              </td>
+                              <!--
+                              <td>
+                                  <strong>#Vegetarian</strong>
+                              </td>
+                            -->
+                          </tr>
+                            <t t-set="c" t-value="get_cooking"/>
+                            <tr t-foreach="get_key" t-as="k">
+                                <td>
+                                    <span t-esc="k"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="c[k]['Breakfast']"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="c[k]['Lunch']"/>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="c[k]['Supper']"/>
+                                </td>
+                                <!--
+                                <td>
+                                  <span t-esc="c[k]['Vegetarian']"/>
+                                </td>
+                              -->
+                            </tr>
+                        </table>
+                </div>
+              </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

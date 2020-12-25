@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  © 2014-2016 Barroux Abbey (http://www.barroux.org)
+  © 2014-2016 Akretion France (Alexis de Lattre <alexis.delattre@akretion.com>)
+  License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+-->
+
+<odoo>
+
+<!-- This is just a very basic tax receipt report
+You should customize the style and layout in a custom module -->
+
+<template id="donation_base.report_donationtaxreceipt_document">
+
+<t t-foreach="docs" t-as="o">
+<t t-call="web.external_layout">
+
+<div class="page">
+
+          <p>Beste donateur<br/>Beste Donatrice</p>
+          <p></p>
+          <p>Hierbij ontvang u het attest bestemd voor uw belastingvermindering.</p>
+          <p>Dit geeft me de gelegenheid om u, namens de bestuursleden en alle medewerkers, te danken voor uw steun en vertrouvwen.</p>
+          <p></p>
+          <p>Onze centra bieden een mooie infrastructuur aan voor studie, reflectie en beoefening. Uw gift heltp ons met name bij de afbetalingende aan de bank en de aanpassing van de gebouwen aan de huidige normen.</p>
+          <p></p>
+          <p>Graag doen we ook in <span t-field="o.date"/> een beroep op uw financiële ondersteuning.</p>
+          <p></p>
+          <p>Met hoogatching,</p>
+          <p></p>
+          <p>Lea Vanrompay<br/>Afgevaardigde beheerder</p>
+
+
+          <p>--------------------------------------------------------------------------<i class="fa fa-cut"/>------------------------------------------------------------------------------------------------</p>
+
+          <table class="table">
+                      <tbody>
+                          <tr>
+                              <td colspan="2"><b>KARMA SONAN GYAMTSO LING<br/><br/>VZW<br/>KRUISPADSTRAAT 33<br/>2900 SCHOTEN TÉL : <span t-field="o.company_id.phone"/><br/>NN 420127685</b></td>
+                              <td style="background-color: white;" colspan="2"><b>ONTVANGTSBEWIJS<br/><br/>AFGELEVERD IN TOEPASSING VAN ART. 107 VAN HET<br/>WETBOEK VAN INKOMSTENBELASTING 1992 VOOR<br/>GEDANE BETALINGEN DIE DEFINITIEF EN<br/>ONHERROEPLIJK ZIJN.</b></td>
+                          </tr>
+                          <tr>
+                              <td><b>Jaar</b></td>
+                              <td><span t-esc="o.number.split('-')[0]"/></td>
+                              <td><b>Nr</b></td>
+                              <td style="background-color: white;"><span t-esc="o.number.split('-')[1]"/></td>
+                          </tr>
+                          <tr>
+                              <td><b>Gift</b></td>
+                              <td>???????????</td>
+                              <td><b>Totaal</b></td>
+                              <td style="background-color: white;"> <span t-field="o.amount" t-options="{&quot;widget&quot;: &quot;monetary&quot;, &quot;display_currency&quot;: o.currency_id}"/></td>
+                          </tr>
+                          <tr class="table-active">
+                              <td style="background-color: white;" colspan="4"><b>Schender</b></td>
+                          </tr>
+                          <tr>
+                              <td style="background-color: white;" colspan="4">
+                                <div t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td style="background-color: white;" colspan="4"><b>Voor escht verklaard :</b><span t-field="o.date"/> </td>
+                          </tr>
+                          <tr>
+                              <td style="background-color: white;" colspan="4"><b>Lea Vanrompay , penningmeester</b></td>
+                          </tr>
+                      </tbody>
+                  </table>
+
+</div>
+
+</t>
+</t>
+
+</template>
+
+<template id="report_donationtaxreceipt">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="donation_base.report_donationtaxreceipt_document" t-lang="doc.partner_id.lang"/>
+        </t>
+    </t>
+</template>
+
+</odoo>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <template id="website_booking.report_summary_report_qweb">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="website_booking.internal_layout" t-lang="user.lang">
+                    <t t-call="website_booking.report_summary_report_base"/>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="website_booking.report_summary_report_base">
+        <div class="page data_table">
+            <t t-set="title">Summary report</t>
+            <div class="row">
+                <h4 class="mt0" t-esc="title or 'Odoo Report'"/>
+            </div>
+
+
+            <!-- Display filters -->
+            <div class="page_break"/>
+
+            <div class="act_as_table data_table" style="width: 100%;">
+
+
+            </div>
+        </div>
+
+        <t t-name="summaryDetails">
+            <div style="overflow:auto;">
+                <table border="1">
+                    <t t-foreach="o.summary_header" t-as="header_detail">
+                        <tr>
+                          <th class="table_header"  style="text-align:center;">Room</th>
+                            <t t-foreach="header_detail['header']" t-as="date">
+                                <th class="table_header" colspan="2" style="text-align:center;"><t t-esc="date.strftime('%d/%m')"/></th>
+                            </t>
+                        </tr>
+                    </t>
+
+                    <t t-foreach="o.summary_header" t-as="header_detail">
+                        <tr>
+                          <td class="table_header" style="text-align:center;"></td>
+                          <t t-foreach="header_detail['header']" t-as="date">
+                              <td class="table_header" style="text-align:center;">AM</td>
+                              <td class="table_header" style="text-align:center;">PM</td>
+                          </t>
+                        </tr>
+                    </t>
+                    <t t-set="i" t-value="0"/>
+                    <t t-foreach="o.room_summary" t-as="detail">
+                        <t t-set="i" t-value="i+1"/>
+                        <tr>
+                            <td style="text-align:center;"><t t-esc="detail['name']"/></td>
+                            <t t-foreach="detail['value']" t-as="status">
+                                <t t-if=" status['blocked'] == 'No' and status['state'] == 'Free'" >
+                                    <td class="table_free" style="text-align:center;">
+                                        <button t-att-data-model="status['data_model']" t-att-data-room_id = "status['room_id']" t-att-data-date = "status['date']" class="table_free o_account_financial_reports_createsale btn btn-sm oe_button"><span class="fa fa-pencil-square"/> </button>
+                                    </td>
+                                </t>
+
+                                <t t-if="status['state'] == 'multiReserverd' and status['is_draft'] == 'No'">
+                                    <td class="table_multireserved" style="text-align:center;" >
+                                        <button t-att-data-model="status['data_model']" t-att-data-id="status['data_id']" class="table_multireserved o_account_financial_reports_viewsale btn btn-sm oe_button"><span class="fa fa-bed"/></button>
+                                    </td>
+                                </t>
+
+                                <t t-if="status['state'] == 'Reserverd' and status['is_draft'] == 'No'">
+                                    <td class="table_reserved" style="text-align:center;" >
+                                        <button t-att-data-model="status['data_model']" t-att-data-id="status['data_id']" class="table_reserved o_account_financial_reports_opensale btn btn-sm oe_button"><span class="fa fa-bed"/></button>
+                                    </td>
+                                </t>
+                                <t t-if="status['is_draft'] == 'Yes'">
+                                  <td class="table_reserved1" style="text-align:center;" >
+                                      <button t-att-data-model="status['data_model']" t-att-data-id="status['data_id']" class="table_reserved1 o_account_financial_reports_opensale btn btn-sm oe_button"><span class="fa fa-cart-arrow-down"/></button>
+                                  </td>
+                                </t>
+
+                                <t t-if="status['blocked'] == 'Yes' and status['state'] == 'Free'" >
+                                  <td class="table_blocked" style="text-align:center;" >
+                                      <button t-att-data-model="status['data_model']" t-att-data-id="status['data_id']" class="table_blocked o_account_financial_reports_opensale btn btn-sm oe_button"><span class="fa fa-pencil-square"/></button>
+                                  </td>
+                                </t>
+                            </t>
+                        </tr>
+                        
+                        <t t-if='(i%20)==1'>
+                            <t t-foreach="o.summary_header" t-as="header_detail">
+                                <tr>
+                                  <th class="table_header"  style="text-align:center;">Room</th>
+                                    <t t-foreach="header_detail['header']" t-as="date">
+                                        <th class="table_header" colspan="2" style="text-align:center;"><t t-esc="date.strftime('%d/%m')"/></th>
+                                    </t>
+                                </tr>
+                            </t>
+    
+                            <t t-foreach="o.summary_header" t-as="header_detail">
+                                <tr>
+                                  <td class="table_header" style="text-align:center;"></td>
+                                  <t t-foreach="header_detail['header']" t-as="date">
+                                      <td class="table_header" style="text-align:center;">AM</td>
+                                      <td class="table_header" style="text-align:center;">PM</td>
+                                  </t>
+                                </tr>
+                            </t>
+                        </t>
+                        </t>
+
+                </table>
+            </div>
+        </t>
+    </template>
+
+
+</odoo>

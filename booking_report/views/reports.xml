@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+  <!--Report for check-in details -->
+  <report id="booking_checkevent_details"
+      string="CheckEvent Detail"
+      model="sale.order.reservation.wizard2"
+      report_type="qweb-pdf"
+      file="booking_report.report_checkevent_qweb"
+      name="booking_report.report_checkevent_qweb"
+      menu="False" />
+
+
+    <!-- PDF REPORTS : paperformat -->
+    <record id="report_qweb_paperformat" model="report.paperformat">
+        <field name="name">Booking report qweb paperformat</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">297</field>
+        <field name="page_width">210</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">23</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">20</field>
+        <field name="dpi">110</field>
+    </record>
+
+    <record id="booking_checkevent_details" model="ir.actions.report">
+        <field name="paperformat_id" ref="report_qweb_paperformat"/>
+    </record>
+
+</odoo>

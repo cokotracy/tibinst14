@@ -1,0 +1,42 @@
+<odoo>
+    <data>
+
+        <record id="view_partner_form" model="ir.ui.view">
+            <field name="name">res.partner.hotel.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='ref']" position="after">
+                  <field name="x_is_hotel"/>
+                </xpath>
+
+
+                <xpath expr="//field[@name='state_id']" position="attributes">
+                  <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+
+		<record id="view_partner_kanban" model="ir.ui.view">
+            <field name="name">res.partner.barcode.kanban</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.res_partner_kanban_view"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='email']" position="after">
+                  <field name="barcode"/>
+                </xpath>
+
+
+                <xpath expr="//div/ul" position="inside">
+                      <li t-if="record.barcode.raw_value">
+	                      <field name="barcode"/>
+	                 </li>            
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

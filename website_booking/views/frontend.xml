@@ -1,0 +1,774 @@
+<odoo>
+    <data>
+
+        <template id="error">
+            <t t-call="website.layout">
+                <div id="wrap">
+                    <div class="container">
+
+                         <div class="row justify-content-center">
+                            <div class="col-md-12 text-center">
+                                <h1 class="display-1 d-block">ERROR</h1>
+                                <div class="mb-4 lead"><span t-esc="error"/></div>
+                                <a t-attf-href="/event/#{slug(event)}/register" class="btn btn-link">Back to registration</a>
+                                <br/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+
+    <template id="Get_housing_free_event" inherit_id="website_event.event_description_full" active="True">
+          <xpath expr="//i[hasclass('fa-clock-o')]" position="before">
+              <t t-if="event.sudo().address_id.x_is_hotel"> <i class="fa fa-bed"/> <span t-esc="website._get_housing_free(event)"></span> Free<br/></t>
+          </xpath>
+    </template>
+
+
+
+
+    <template id="products_add_to_cart" inherit_id="theme_snowy.product_items" active="True" name="Message booking">
+     <xpath expr="//div[hasclass('pro-action')]" position="before">
+          <div t-if="product.x_rental and website._reservation(product)==False">
+              <p id="msg_booking" class="css_not_booking_msg bg-danger" style="padding: 15px;">Can not be booked from <span t-raw="website._getdate_reservation()"/></p>
+          </div>
+          <div t-if="product.x_rental and website._reservation(product)==True">
+              <p id="msg_booking" class="css_not_booking_msg bg-success" style="padding: 15px;">Can be booked from <span t-raw="website._getdate_reservation()"/></p>
+          </div>
+          <div t-if="product.x_rental and website._reservation(product)==None">
+              <p id="msg_booking" class="css_not_booking_msg bg-info" style="padding: 15px;">Select a event, please.</p>
+          </div>
+        </xpath>
+      </template>
+
+		<template id="datepicker_product_quantity_list" inherit_id="theme_snowy.products_add_to_cart"  active="True" priority="1">
+                <xpath expr="//span[@itemprop='priceCurrency']" position="after">
+                    <span>/</span><span t-field="product.sudo().uom_id.name"/>
+                </xpath>
+        </template>
+
+
+        <template id="datepicker_product_add_to_cart" inherit_id="theme_snowy.products_add_to_cart"  active="True">
+                <xpath expr="//a[hasclass('btn')]" position="attributes">
+                  <attribute name="t-if">not product.x_rental or product.x_rental and website._reservation(product)==True</attribute>
+                </xpath>
+      </template>
+
+		<template id="datepicker_product_quantity" inherit_id="website_sale.product"  active="True">
+
+            <xpath expr="//a[@id='add_to_cart']" position="before">
+                <div t-if="product.x_rental and website._reservation(product)==False">
+                    <p id="msg_booking" class="css_not_booking_msg bg-danger" style="padding: 15px;">Can not be booked from  <br/><span t-raw="website._getdate_reservation()"/></p>
+                </div>
+                <div t-if="product.x_rental and website._reservation(product)==True">
+                    <p id="msg_booking" class="css_not_booking_msg bg-success" style="padding: 15px;">Can be booked from <br/><span t-raw="website._getdate_reservation()"/></p>
+                </div>
+                <div t-if="product.x_rental and website._reservation(product)==None">
+                    <p id="msg_booking" class="css_not_booking_msg bg-info" style="padding: 15px;">Select a event before, please.</p>
+                </div>
+            </xpath>
+
+            <xpath expr="//a[@id='add_to_cart']" position="attributes">
+                    <attribute name="t-if">not product.x_rental or product.x_rental and website._reservation(product)==True</attribute>
+            </xpath>
+
+        </template>
+
+
+
+        <template id="product_remove_quantity_base" inherit_id="website_sale.product_quantity"  active="True">
+            <xpath expr="//div[hasclass('css_quantity')]" position="attributes">
+                <attribute name="t-if">not product.x_rental </attribute> <!-- and not product.x_removing_qty -->
+            </xpath>
+        </template>
+
+        <template id="product_remove_quantity_snowy" inherit_id="theme_snowy.product_quantity"  active="True">
+            <xpath expr="//div[hasclass('css_quantity')]" position="attributes">
+                <attribute name="t-if">not product.x_rental and not product.x_removing_qty</attribute>
+            </xpath>
+        </template>
+
+
+        <template id="product_remove_quantity_option" inherit_id="website_sale_options.modal"  active="True">
+            <xpath expr="//div[hasclass('css_quantity')]" position="attributes">
+                <attribute name="t-if">not product.x_rental and not product.x_removing_qty</attribute>
+            </xpath>
+
+
+<!--
+            <xpath expr="//span[hasclass('oe_price')][1]" position="after">
+                <span>/</span><span t-field="product.sudo().uom_id.name"/>
+            </xpath>
+-->
+
+            <xpath expr="//table/thead/tr/th[3]" position="attributes">
+               <attribute name="width">200</attribute>
+            </xpath>
+
+            <xpath expr="//tr[hasclass('js_product')]/td/span[hasclass('oe_price')]" position="after">
+                <span>/</span><span t-field="product.sudo().uom_id.name"/>
+            </xpath>
+
+            <xpath expr="//div[hasclass('modal-footer')]" position="attributes">
+              <attribute name="t-if">not website._if_user_public() and website._product_company(product) and website._product_event(product)</attribute>
+            </xpath>
+            <xpath expr="//div[hasclass('modal-footer')]" position="after">
+                <div t-if="not website._product_company(product)" class="modal-footer">
+                    <p class="text-left alert alert-warning" role="alert">
+                      Désolé, vous ne pouvez pas mixer des produits de différente ASBL dans la même commande.
+                      S'il vous plait, Veuillez vider votre <a href="/shop/cart">panier</a> ou changer d'ASBL.
+                    </p>
+                </div> 
+                <div t-if="not website._product_event(product)" class="modal-footer">
+                    <p class="text-left alert alert-warning" role="alert">
+                      Désolé, vous ne pouvez pas réserver une chambre sans la participation à un événement.
+                      Veuillez d'abord vous inscrire à un <a href="/event">événement</a>.
+                    </p>
+                </div>
+
+
+                <div t-if="website._if_user_public()" class="modal-footer">
+                  <p class="text-left alert alert-warning" role="alert">
+                    Vous devez <a href="/web/login">vous connecter</a> ou <a href="/web/signup">créer un compte</a> pour commander.
+                  </p>
+            </div>
+            </xpath>
+
+        </template>
+
+
+        <template id="cart_option_remove_quantity_rental" inherit_id="website_sale_options.optional_products"  active="True">
+            <xpath expr="//t[@t-if='line.linked_line_id']/span" position="attributes">
+                <attribute name="class">hidden js_quantity text-muted</attribute>
+            </xpath>
+
+            <xpath expr="//table[@id='cart_products']/tbody//tr" position="attributes">
+              <attribute name="t-att-class">'optional_product info' if line.linked_line_id and not line.product_id.x_is_room and not line.product_id.x_removing_qty else None</attribute>
+            </xpath>
+
+        </template>
+
+
+
+        <template id="cart_line_remove_quantity_rental" inherit_id="website_sale.cart_lines"  active="True">
+
+            <xpath expr="//thead/tr/th[2]" position="attributes">
+                <attribute name="width">100</attribute>
+            </xpath>
+
+            <xpath expr="//thead/tr/th[3]" position="attributes">
+                <attribute name="width">150</attribute>
+            </xpath>
+
+            <xpath expr="//div[@class='text-muted hidden-xs small']" position="replace">
+                  <div class="text-muted hidden-xs small">
+	                  
+                        <t t-if='line.event_id'>
+                          <span t-esc='line.event_id.display_name'/><br/>
+                        </t>
+
+                        <t t-if='line.x_rental'>
+                          (<span t-esc='line.x_start'/> - <span t-esc='line.x_end'/>)<br/>
+                        </t>
+                       
+                        <t t-if="not line.x_rental and not line.event_id">
+	                        <t t-foreach="line.name.splitlines()[1:]" t-as="name_line">
+                               <span><t t-esc="name_line"/></span><br/>
+							</t>
+                        </t>
+ 
+
+                   </div>
+            </xpath>
+
+
+
+			<!--
+            <xpath expr="//span[@t-field='line.price_reduce_taxinc']" position="after">
+                <span>/</span><span t-field="line.product_uom"/>
+            </xpath>
+-->
+
+
+
+            <xpath expr="//td[hasclass('td-qty')]/div" position="replace">
+                <t t-if="not line.product_id.x_removing_qty and not line.product_id.x_rental">
+                  <div class="input-group oe_website_spinner" style="width: 114px;">
+                             <a t-attf-href="#" class="mb8 input-group-addon js_add_cart_json hidden-xs">
+                                 <i class="fa fa-minus"></i>
+                             </a>
+                             <input type="text" class="js_quantity form-control quantity" t-att-data-line-id="line.id" t-att-data-product-id="line.product_id.id" t-att-value="int(line.product_uom_qty)" />
+                             <a t-attf-href="#" class="mb8 input-group-addon float_left js_add_cart_json hidden-xs">
+                                 <i class="fa fa-plus"></i>
+                             </a>
+                            <span t-field="line.product_id.sudo().uom_id.name"/>
+
+                         </div>
+               </t>
+                <div t-if="line.product_id.x_rental or line.product_id.x_removing_qty">
+                    <input type="hidden" class="js_quantity" t-att-data-line-id="line.id" t-att-data-product-id="line.product_id.id" t-att-value="int(line.product_uom_qty)"/>
+                    <span><t t-esc="int(line.product_uom_qty)"/></span>
+                    <span t-field="line.product_id.sudo().uom_id.name"/>
+
+                </div>
+            </xpath>
+
+            <xpath expr="//a[hasclass('js_delete_product')]" position="replace">
+                <a t-if="not line.linked_line_id" href="#" class="js_delete_product hidden-xs no-decoration"> <small><i class="fa fa-trash-o"/> Supprimer</small></a>
+            </xpath>
+
+
+        </template>
+
+
+
+        <template id="alert_if_product_reserverd" inherit_id="website_sale.total">
+               <xpath expr="//div[@id='cart_total']" position="before">
+                 <t t-if="website_sale_order">
+                 <t t-set="values" t-value="website_sale_order._reservation()"/>
+                  <div id="alert_reservation" class="alert alert-warning" role="alert" t-if='website_sale_order and values[0]'>
+                      Sorry, the product ( <span t-esc="values[1]"/> ) in your cart is no longer available.
+                   </div>
+
+                  <div id="alert_reservation_sans_chambre" class="alert alert-warning" role="alert" t-if='website_sale_order.room_without_event()'>
+                      Sorry, booking a room is only possible with an event !
+                   </div>
+                   
+                   <div id="alert_company_not_ok" class="alert alert-danger" role="alert" t-if="not website_sale_order._verify_company()">   
+                      Désolé !<br/>
+                      Veuillez vider votre panier s'il vous plait, vous ne pouvez pas mixer des produits de différente ASBL dans la même commande.
+                  </div>                    
+                   
+				  </t> 
+               </xpath>
+        </template>
+
+        <template id="cart_new_rule" inherit_id="website_sale.cart">
+           <xpath expr="//a[@t-if='not optional_products and website_sale_order and website_sale_order.website_order_line']" position="attributes">
+                 <attribute name="t-if">not optional_products and website_sale_order and website_sale_order.website_order_line and not website_sale_order._reservation()[0] and website_sale_order._verify_company() and not website_sale_order.room_without_event()</attribute>
+            </xpath>
+        </template>
+
+
+
+<!--
+         <template id="extra_info_rental" inherit_id="website_sale.extra_info"  active="True">
+            <xpath expr="//form/div[1]" position="attributes">
+                <attribute name="class">hidden</attribute>
+            </xpath>
+
+             <xpath expr="//form/div[last()]" position="before">
+                        <div class="form-group form-field o_website_form_custom">
+                            <div class="col-md-3 col-sm-4 text-right">
+                                <label class="control-label" for="b_document">b document to provide ? </label>
+                            </div>
+                            <div class="col-md-7 col-sm-8">
+                                <input type="file" class="form-control o_website_form_input" name="b_document" />
+                            </div>
+                        </div>
+            </xpath>
+
+        </template>
+
+-->
+
+
+        <template id="product_price_rental" inherit_id="website_sale.product_price"  active="True">
+               <xpath expr="//span[@itemprop='priceCurrency']" position="after">
+                    <span>/</span><span t-field="product.sudo().uom_id.name"/>
+                </xpath>
+       </template>
+
+
+
+       <template id="cart_payment_add_unite" inherit_id="website_sale.payment"  active="True">
+	       <xpath expr="//td[hasclass('td-qty')]" position="replace">
+		       	<td class="td-qty">
+		             <span t-esc="int(line.product_uom_qty) == line.product_uom_qty and int(line.product_uom_qty) or line.product_uom_qty"/>
+                                        
+                  <span t-field="line.product_id.sudo().uom_id.name"/>
+		       </td>	
+           </xpath>	       
+       </template>
+
+
+       <template id="cart_payment_remove_quantity_rental" inherit_id="theme_snowy.payment"  active="True">
+
+            <xpath expr="//thead/tr/th[3]" position="attributes">
+                <attribute name="width">150</attribute>
+            </xpath>
+
+            <xpath expr="//div[@class='text-muted hidden-xs small']" position="replace">
+
+                  <div class="text-muted hidden-xs small">
+                        <t t-if='line.event_id'>
+                          <span t-esc='line.event_id.display_name'/><br/>
+                        </t>
+                        
+                        <t t-if='line.x_rental'>
+                          (<span t-esc='line.x_start'/> - <span t-esc='line.x_end'/>)<br/>
+                        </t>
+                        
+                        <t t-if="not line.x_rental and not line.event_id">
+	                        <t t-foreach="line.name.splitlines()[1:]" t-as="name_line">
+                               <span><t t-esc="name_line"/></span><br/>
+							</t>
+                        </t>
+                 </div>
+            </xpath>
+
+
+            <!--
+            <xpath expr="//tbody/tr/td[4]/div" position="attributes">
+                <attribute name="t-if">not line.product_id.x_rental</attribute>
+            </xpath>
+            -->
+
+          <!--
+           <xpath expr="//span[@t-field='line.price_unit']" position="after">
+                    <span>/</span><span t-field="line.product_uom"/>
+           </xpath>
+         -->
+
+           <!--
+            <xpath expr="//tbody/tr/td[4]" position="inside">
+                    <div t-if="line.product_id.x_rental">
+                    <p><span t-field="line.x_start" t-options="{&quot;widget&quot;: &quot;datetime&quot;}"/><br/>au<br/><span t-field="line.x_end" t-options="{&quot;widget&quot;: &quot;datetime&quot;}"/></p>
+                </div>
+       </xpath>
+     -->
+       </template>
+
+
+       <template id="account_add_chatter" inherit_id="account.portal_invoice_report"  active="True">
+         <xpath expr="//p[last()]" position="after">
+                  <div class="oe_structure"/>
+                    <div class="col-md-8">
+                       <h1 class="page-header">Historic</h1>
+                       <t t-call="portal.message_thread">
+                           <t t-set="object" t-value="invoice"/>
+                           <t t-set="chatter_mode" t-value="'json'"/>
+                       </t>
+                   </div>
+          </xpath>
+      </template>
+
+
+      <template id="sale_add_chatter" inherit_id="sale.portal_order_page"  active="True">
+        <xpath expr="//div[last()]" position="after">
+                 <div class="oe_structure"/>
+                   <div class="col-md-8">
+                      <h1 class="page-header">Historic</h1>
+                      <t t-call="portal.message_thread">
+                          <t t-set="object" t-value="order"/>
+                          <t t-set="chatter_mode" t-value="'json'"/>
+                      </t>
+                  </div>
+         </xpath>
+     </template>
+     
+     
+     <template  id="portal_order_page" inherit_id="sale.portal_order_page"  active="True" name="add barcode on portail page">
+	     
+        <xpath expr="//div[@t-field='order.user_id.partner_id']" position="after">
+	           <i class="fa fa-id-badge"></i> <span t-field="user_id.partner_id.barcode"/>                
+			   <br/>
+        </xpath>
+     </template>
+
+     <template  id="select_company" inherit_id="portal.portal_layout"  active="True" name="Portail KYGL">
+	     
+        <xpath expr="//div[@t-field='user_id.partner_id']" position="after">
+	           <i class="fa fa-id-badge"></i> <span t-field="user_id.partner_id.barcode"/>                
+        </xpath>
+        
+        <xpath expr="//div[hasclass('o_my_contact')]" position="before">
+          <div t-if='len(request.env.user.company_ids)>1' class="o_my_contact">
+            <form class="form-inline" action="/my/account/company">
+              <div class="input-group mb-3">
+              <select style="height:32px" class="custom-select" name="company" id="company">
+              <t t-foreach="request.env.user.company_ids" t-as="company">
+                <option t-att-selected="request.env.user.company_id.id==company.id" t-att-value="company.id"><span t-esc="company.name"/></option>
+              </t>
+              </select>
+                   <button type="submit" style="height:32px" class="btn-info btn"><i class="fa fa-building"></i> Select</button>
+              </div>
+          </form>
+
+         </div>
+        </xpath>
+     </template>
+
+     <template id="button_forget_me" inherit_id="portal.portal_layout"  active="True">
+        <xpath expr="//div[@class='o_my_archives']" position="after">
+          <div class="o_my_archives">
+            <a class="btn-info btn" href="/my/account/forget_me"> <i class="fa fa-trash"></i> Request forget me !</a>
+          </div>
+        </xpath>
+     </template>
+
+    <template id="registration_event_price" inherit_id="website_event.registration_template"  active="True">
+      <xpath expr="//div[hasclass('row')]/div[3]" position="replace">
+        <div class='col-md-3'/>
+      </xpath>
+
+      <xpath expr="//div[hasclass('panel-footer')]" position="attributes">
+        <attribute name='t-if'>website._if_user_public()==False</attribute>
+      </xpath>
+
+      <xpath expr="//div[hasclass('panel-footer')]" position="after">
+          <div t-if="website._if_user_public()" class="panel-footer">
+              <div class="row">
+                  <div class="col-md-4 col-md-offset-8 col-lg-3 col-lg-offset-9">
+                      <a href="/web/login?redirect=/event" class="btn btn-primary btn-lg btn-block">
+                        Login now
+                      </a>
+                  </div>
+              </div>
+          </div>
+    </xpath>
+
+    </template>
+
+    <template id="direction">
+        <t t-call="website.layout">
+           <div id="wrap">
+              <div class="container">
+                  
+                        <section class="jumbotron s_button mb92">
+                        <div class="container">
+                            <div class="row">
+                                <div class="text-center">
+                                    <div class="container">
+                                        <h1>
+                                            <span t-field="event.name"/>
+                                        </h1>
+                                        <h2>
+                                            <span t-field="event.date_begin"/> - 
+                                            <span t-field="event.date_end"/> (
+                                            <span t-field="event.address_id.city"/>, 
+                                            <span t-field="event.address_id.country_id.name"/>)
+                                        </h2>
+                                    </div>
+                                    <!-- /.container -->
+                                </div>
+                                <p/>
+                                <div class="col-md-12 text-center">
+                                    <p class="mb0">
+                                        <b>
+                                            <font style="font-size: 32px; color: rgb(255, 214, 99);" class="bg-gamma">Si vous désirez changer vos dates de séjour,<br/> veuillez les modifier dans le calendrier ci-dessous</font>
+                                        </b>
+                                    </p><p/>
+                                </div>
+                                <p/>
+                                <div class="input-group">
+                                    <input type="text" id="daterange" class="datepicker form-control" placeholder="Vos dates" aria-describedby="basic-addon2"/>
+                                    <span class="input-group-addon" id="basic-addon2">
+                                        <i class="fa fa-calendar"/>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <p/>
+                        <p/>
+                        <div class="text-center">
+                            <p class="mb0">
+                                <b>
+                                     <font style="" class="">Ensuite, si besoin, vous pouvez choisir un logement ou procéder directement au paiement</font>
+                                </b>
+                            </p>
+                        </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="mb64 col-md-6">
+                                    <a href="/shop/category/accomodation-144" id="reserver" class="pull-right mt8 btn btn-info btn-lg" data-original-title="" title="">
+                                        <font style="font-size: 36px;" data-original-title="" title="">Choisir un logement
+                                            <br data-original-title="" title=""/>
+                                        </font>
+                                        <span class="fa fa-5x fa-hotel" style=""/>
+                                    </a>
+                                </div>
+                                <div class="mb64 col-md-6">
+                                    <a href="/shop/cart" id="checkout" class="pull-left mt8 btn btn-success btn-lg" data-original-title="" title="">
+                                        <font style="font-size: 36px;" data-original-title="" title="">Procéder au paiement
+                                            <br data-original-title="" title=""/>
+                                        </font>
+                                        <span class="fa fa-credit-card fa-5x" style=""/>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                  
+              </div>
+           </div>
+        </t>
+    </template>
+
+
+     <template id="registration_template" inherit_id="website_event_sale.registration_template"  active="True">
+
+       <xpath expr="//t[@t-if='ticket.price or editable']" position="replace">
+       </xpath>
+
+       <xpath expr="//t[@t-set='price']" position="replace">
+         <t t-set="price">
+            <span itemprop="price" content="0">
+            </span>
+         </t>
+       </xpath>
+       <xpath expr="//t[@t-set='quantity']" position="replace">
+           <t t-set="quantity">
+                    <select t-attf-name="nb_register-#{ticket.id}" class="form-control">
+                        <t t-set="seats_max_ticket" t-value="(ticket.seats_availability == 'unlimited' or ticket.seats_available &gt; 9) and 10 or ticket.seats_available + 1"/>
+                        <t t-set="seats_max_event" t-value="(event.seats_availability == 'unlimited' or event.seats_available &gt; 9) and 10 or event.seats_available + 1"/>
+                        <t t-set="seats_max" t-value="min(len(user_id.partner_id.child_ids)+2,seats_max_ticket, seats_max_event)"/>
+                        <t t-foreach="range(0, seats_max)" t-as="nb">
+                            <option t-esc="nb" t-att-selected="len(saleable_tickets) == 1 and nb == 1 and 'selected'"/>
+                        </t>
+                    </select>
+                </t>
+       </xpath>
+     </template>
+
+     <template id="registration_template_modal" inherit_id="website_event.registration_attendee_details"  active="True">
+        <xpath expr="//h4[hasclass('page-header')]" position="replace">
+              <h4 class="page-header mt16">
+                    <strong>
+                        Ticket Type #<t t-raw="counter_type"/>: <t t-esc="ticket['name']"/>
+                    </strong>
+              </h4>
+       </xpath>
+       
+       <xpath expr="//div[hasclass('row')]" position="replace">
+	   		<div class="row">
+                     <div class="col-md-6">
+	                     <strong>Name</strong>
+	                 </div>
+                <!--
+                     <div class="col-md-3">
+	                     <strong>Memberships</strong>
+                      	 <span class="text-muted">(Optional)</span>
+	                 </div>
+					 <div class="col-md-3">
+						 <strong>Email</strong>
+					 </div>
+                     <div class="col-md-3">
+	                     <strong>Phone</strong> 
+                      	 <span class="text-muted">(Optional)</span>
+                     </div>
+                 -->
+            </div>          
+        </xpath>
+
+       <xpath expr="//t/div[hasclass('mb4')]" position="replace">
+	       <div class="row mb4">
+                <t t-set="attendee_placeholder">Attendee #%s</t>
+                <t t-set="barcode_placeholder">Memberships number #%s</t>
+               <div class="col-md-6">
+                    <select required="This field is required" t-attf-name="#{counter}-name">
+                        <option t-att-value="user_id.partner_id.barcode"><t t-esc="user_id.partner_id.name"/> - <t t-esc="user_id.partner_id.barcode"/> - <t t-esc="user_id.partner_id.property_product_pricelist.name"/></option>
+                       <t t-foreach="user_id.partner_id.child_ids" t-as="child">
+                            <option t-att-value="child.barcode"><t t-esc="child.name"/> - <t t-esc="child.barcode"/> - <t t-esc="child.property_product_pricelist.name"/></option>
+                       </t>
+                    </select>
+
+                   <!--
+                   <input class='form-control' type='text' t-attf-name="#{counter}-name" required="This field is required" t-att-placeholder="attendee_placeholder %counter"/>
+-->
+               </div>
+               <!--
+	     	   <div class="col-md-3"><input class='form-control' type='text' t-attf-name="#{counter}-barcode" t-att-placeholder="barcode_placeholder %counter"/>
+	   	  	   </div>    
+               <div class="col-md-3"><input class='form-control' type='email' t-attf-name="#{counter}-email" required="This field is required"/></div>
+               <div class="col-md-3"><input class='form-control' type='tel' t-attf-name="#{counter}-phone"/></div>
+                -->
+
+               <input class='hidden' type='text' t-attf-name="#{counter}-ticket_id" t-attf-value="#{ticket['id']}"/>
+          </div>
+                                    
+	          
+	   </xpath>               
+     </template>
+
+
+     		<template id="remove_search" inherit_id="website_sale.search"  active="True">
+
+     			<xpath expr="//form" position="attributes">
+     				<attribute name="t-if">category</attribute>
+     			</xpath>
+     		</template>
+
+
+     		<template id="remove_pager" inherit_id="website.pager"  active="True">
+     			<xpath expr="." position="attributes">
+     				<attribute name="t-if">category</attribute>
+     			</xpath>
+     		</template>
+
+     		<template id="remove_default_all_product" inherit_id="website_sale.products_categories"  active="True">
+
+     			<xpath expr="//ul/li" position="attributes">
+     				  <attribute name="t-att-class">'hidden'</attribute>
+     			</xpath>
+
+     			<xpath expr="//div[@id='products_grid']" position="attributes">
+     				<attribute name="t-if">category</attribute>
+     			</xpath>
+
+     			<xpath expr="//div[@id='products_grid']" position="before">
+     				   <t t-if='not category'>
+       					    <div class="section">
+       							    <div class="container">
+       								       <div class="row">
+       									         <div class="col-md-12">
+       									          	<h1 class="text-center">Please select a category</h1>
+                										<p class="text-center lead"></p>
+       		      							  </div>
+       								       </div>
+       							    </div>
+       					    </div>
+     				   </t>
+     			</xpath>
+     		</template>
+
+        <template id="Category_list_no_room" inherit_id="website_sale.option_collapse_categories_recursive" active="True">
+              <xpath expr="//li" position="attributes">
+                 <attribute name="t-if">website._sale_event(categ)</attribute>
+              </xpath>
+        </template>
+
+        <template id="check_page">
+          <t t-call="website.layout">
+          <div id="wrap">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <h1 class="text-xs-center">Check In/Out</h1>
+                <div class="table-responsive">
+                  <table class="table table-condensed">
+                      <tr>
+                          <td>
+                              <strong>#No</strong>
+                          </td>
+                          <td>
+                              <strong>State</strong>
+                          </td>
+                          <td>
+                              <strong>Paid</strong>
+                          </td>
+                          <td>
+                              <strong>Guest Name</strong>
+                          </td>
+                          <td>
+                              <strong>Lang</strong>
+                          </td>
+                          <td>
+                              <strong>Check-In</strong>
+                          </td>
+                          <td>
+                              <strong>Check-out</strong>
+                          </td>
+                          <td>
+                              <strong>Event</strong>
+                          </td>
+                          <td>
+                              <strong>Nights</strong>
+                          </td>
+                          <td>
+                              <strong>Accessory</strong>
+                          </td>
+                          <td>
+                              <strong>Room No</strong>
+                          </td>
+                      </tr>
+                        <tr t-foreach="get_checkin" t-as="c">
+                            <td>
+                                <a class="btn btn-primary pull-right" t-att-href="'/check_page/print/%s' % c.id" target="_blank"><i class="fa fa-print"></i> <span t-esc="c.name"/></a>
+                            </td>
+                            <t t-set="state" t-value="get_state(c)"/>
+                            <td>
+                                <span t-esc="state[0]"/>
+                            </td>
+                            <td>
+                                <span t-esc="state[1]"/>
+                                <span t-if ='state[1]!=""'>-</span>
+                                <span t-esc="state[2]"/>
+                            </td>
+                            <td>
+                                <span t-esc="c.partner_id.name"/>
+                            </td>
+                            <td>
+                                <span t-esc="get_lang(c.partner_id.lang)"/>
+                            </td>
+                            <td>
+                                <span t-esc="get_date(c,'in')"/>
+                            </td>
+                            <td>
+                                <span t-esc="get_date(c,'out')"/>
+                            </td>
+                            <td>
+                                <span t-esc="get_event(c)"/>
+                            </td>
+                            <td>
+                              <span t-esc="get_night(c)"/>
+                            </td>
+                            <td>
+                              <span t-esc="get_fittedsheet(c)"/>
+                            </td>
+                            <td>
+                              <span t-esc="get_room(c)"/>
+                            </td>
+
+                            <tr t-foreach="get_registration(c.id)" t-as="r">
+                                <td>
+                                    <div t-att-id="r.id" style="padding-top: 200px;margin-top: -200px;"></div>
+                                </td>
+                                <td>
+                                  <span></span>
+                                </td>
+                                <td>
+                                  <span></span>
+                                </td>
+                                <td>
+                                  <t t-if="r.state in ['draft','open'] and get_state(c)[0] in ['sale','done']">
+                                      <a class="btn btn-info" t-att-href="'/check_page/partner/%s/%s/%s/%s' % (begin,end,event_id,r.id)"><i class="fa fa-sign-in"></i> </a>
+                                  </t>
+                                  <t t-if="r.state in ['cancel'] or get_state(c)[0] in ['cancel','draft']">
+                                      <i class="btn fa fa-ban"></i>
+                                  </t>
+                                  <t t-if="r.state=='done' and get_state(c)[0] in ['sale','done']">
+                                      <i class="btn fa fa-check"></i>
+                                  </t>
+                                  <span t-esc="get_name(r)"/>
+                                </td>
+                                <td>
+                                  <span t-esc="get_lang(r.partner_id.lang)"/>
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                                <td>
+                                </td>
+                            </tr>
+                        </tr>
+                    </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </t>
+        </template>
+
+    </data>
+</odoo>

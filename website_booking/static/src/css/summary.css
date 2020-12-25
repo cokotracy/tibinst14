@@ -1,0 +1,64 @@
+
+.table_header
+{
+	text-align: center;
+	min-width:20px;
+	vertical-align: middle;
+}
+
+.table_header1
+{
+	text-align: left;
+	min-width:120px;
+	vertical-align: middle;
+}
+
+
+.table_reserved
+{
+	background-color: red;
+	color: white;
+	text-align: center;
+	min-width:20px;
+	vertical-align: middle;
+	cursor:pointer;
+}
+
+.table_multireserved
+{
+	background-color: orange;
+	color: white;
+	text-align: center;
+	min-width:20px;
+	vertical-align: middle;
+	cursor:pointer;
+}
+
+
+.table_blocked
+{
+	background-color: black;
+	color: white;
+	text-align: center;
+	min-width:20px;
+	vertical-align: middle;
+	cursor:pointer;
+}
+.table_reserved1
+{
+	background-color: blue;
+	color: white;
+	text-align: center;
+	min-width:20px;
+	vertical-align: middle;
+	cursor:pointer;
+}
+.table_free
+{
+	background-color: green;
+	color: white;
+	text-align: center;
+	min-width:20px;
+	vertical-align: middle;
+	cursor:pointer;
+}

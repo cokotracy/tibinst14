@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_summary_report">
+        <div class="o_account_financial_reports_page">
+            <t t-call="website_booking.report_buttons"/>
+            <t t-call="website_booking.report_summary_report_base"/>
+        </div>
+    </template>
+</odoo>

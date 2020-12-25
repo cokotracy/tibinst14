@@ -1,0 +1,58 @@
+<odoo>
+   <data noupdate="1">
+        <template id="forget_me" name="Forget ME">
+          <t t-call="portal.frontend_layout">
+                     <div class="container mt16 o_portal">
+                         <div class="oe_structure">
+                             <div t-if="not no_breadcrumbs" class="row">
+                                 <div class="col-sm-12">
+                                     <ol class="breadcrumb o_portal_submenu">
+                                         <li><a href="/my/home"><i class="fa fa-home"/></a></li>
+                                         <li t-if="page_name == 'my_details'">Your Details</li>
+                                     </ol>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                    <div class="col-md-12 oe_structure">
+                     <div class="container">
+                     <div class="row">
+                       <div class="text-center col-md-12">
+                          <h3 class="pi-draggable pi-item" draggable="true">Forget ME</h3>
+                          <a type="submit" href="/my/account/forget_me_send" class="btn btn-primary">Submit</a>
+                       </div>
+                     </div>
+                     </div>
+                   </div>
+            </t>
+        </template>
+
+
+        <template id="forget_me_send" name="Request send">
+          <t t-call="portal.frontend_layout">
+                     <div class="container mt16 o_portal">
+                         <div class="oe_structure">
+                             <div t-if="not no_breadcrumbs" class="row">
+                                 <div class="col-sm-12">
+                                     <ol class="breadcrumb o_portal_submenu">
+                                         <li><a href="/my/home"><i class="fa fa-home"/></a></li>
+                                         <li t-if="page_name == 'my_details'">Your Details</li>
+                                     </ol>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                    <div class="col-md-12 oe_structure">
+                     <div class="container">
+                     <div class="row">
+                       <div class="text-center col-md-12">
+                          <p>Your request has been processed.Our administrator will soon contact you</p>
+                       </div>
+                     </div>
+                     </div>
+                   </div>
+            </t>
+        </template>
+
+    </data>
+</odoo>

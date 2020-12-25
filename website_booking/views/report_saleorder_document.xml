@@ -1,0 +1,43 @@
+<odoo>
+	<data>
+		<template id="report_saleorder_document" inherit_id="sale.report_saleorder_document">
+				<xpath expr="//p[@t-if='doc.partner_id.vat']" position="after">
+			        <p t-if="doc.partner_id.barcode"> 
+				        <i class="fa fa-id-badge"></i> : <t t-esc="doc.partner_id.barcode"/>	
+			        </p>
+				</xpath>
+				
+				<!-- Is there a taxe on at least one line? -->
+			    <xpath expr="//t[@t-set='display_discount']" position="after">
+			        <t t-set="display_tax" t-value="any([l.tax_id for l in doc.order_line])"/>
+			    </xpath>	
+			    	
+			    <xpath expr="//th[hasclass('text-right')][4]" position="attributes">
+					<attribute name="t-if">display_tax</attribute>
+			    </xpath>
+			   
+			    <xpath expr="//td[hasclass('text-right')][4]" position="attributes">
+					<attribute name="t-if">display_tax</attribute>
+			    </xpath>
+			    
+			    <xpath expr="//span[@t-field='l.name']" position="replace">
+				
+					<t t-if='l.event_id or l.x_rental'>
+                       <span t-esc='l.product_id.name'/>
+                    </t>
+                    
+                    <t t-if='l.x_rental'>
+                       (<span t-esc='l.x_start'/> - <span t-esc='l.x_end'/>)
+                    </t>
+                       
+                    <t t-if="not l.x_rental and not l.event_id">
+	                    	<span t-field="l.name"/>
+                    </t>
+ 
+			    </xpath>
+			                            
+		</template>
+	</data>
+</odoo>
+
+

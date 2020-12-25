@@ -1,0 +1,36 @@
+<odoo>
+    <data>
+
+
+        <record id="sale_order_booking_form_view" model="ir.ui.view">
+            <field name="name">booking.order</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="event_sale.view_sale_order_form_inherit_event" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='event_ok']" position="after">
+                    <field name="x_rental"/>
+                    <field name="x_start"  attrs= "{'invisible':[('x_rental','=', False)],'required':[('x_rental','=', True)]}"/>
+                    <field name="x_end" attrs= "{'invisible':[('x_rental','=', False)],'required':[('x_rental','=', True)]}"/>
+                    <field name="x_calendar_id" attrs= "{'invisible':[('x_rental','=', False)]}" readonly="1"/>
+                </xpath>
+                
+                <xpath expr="//field[@name='event_ok']" position="before">
+                    <field name="x_pricelist_id" attrs= "{'invisible':[('event_ok','=', False)]}"/>
+                </xpath>
+                
+            </field>
+        </record>
+        
+        <record id="sale_order_barcode_form_view" model="ir.ui.view">
+            <field name="name">barcode.order</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="context">{'search_default_customer':1, 'show_address': 1,'show_barcode': 1}</attribute>
+                </xpath>
+           </field>
+        </record>
+
+    </data>
+</odoo>

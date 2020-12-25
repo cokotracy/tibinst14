@@ -1,0 +1,43 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="view_event_add_field_form">
+            <field name="name">event.new.field.form</field>
+            <field name="model">event.event</field>
+            <field name="inherit_id" ref="event.view_event_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='organizer_id']" position="before">
+                        <field name="x_speaker" widget="many2many_tags"/>
+                        <field name="x_translator" widget="many2many_tags"/>
+                        <field name="x_product"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <record model="ir.ui.view" id="view_event_registration_form">
+            <field name="name">event.new.field.form</field>
+            <field name="model">event.registration</field>
+            <field name="inherit_id" ref="event.view_event_registration_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                        <field name="barcode" readonly="True"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="view_event_form">
+            <field name="name">event.new.field.form</field>
+            <field name="model">event.event</field>
+            <field name="inherit_id" ref="event.view_event_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button" position="after">
+                    <button string="Add questions YL" name="AddQuestion" states="draft,confirm,done" type="object" groups="base.group_user"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
+
+
+	

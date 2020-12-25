@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+  <!--Report for check-in details -->
+  <report id="booking_checkin_details"
+      string="CheckIn Detail"
+      model="sale.order.reservation"
+      report_type="qweb-pdf"
+      file="website_booking.report_checkin_qweb"
+      name="website_booking.report_checkin_qweb"
+      menu="False" />
+
+  <!--Report for check-out details -->
+  <report id="booking_checkout_details"
+    string="CheckOut Detail"
+      model="sale.order.reservation"
+      report_type="qweb-pdf"
+      file="website_booking.report_checkout_qweb"
+      name="website_booking.report_checkout_qweb"
+      menu="False" />
+
+      <!--Report for Cooking details -->
+      <report id="booking_cooking_details"
+        string="Cooking Detail"
+          model="sale.order.reservation"
+          report_type="qweb-pdf"
+          file="website_booking.report_cooking_qweb"
+          name="website_booking.report_cooking_qweb"
+          menu="False" />
+
+    <!-- Summary report -->
+    <report
+      id="action_report_summary_report_qweb"
+      model="report_summary_report"
+      string="Summary report"
+      report_type="qweb-pdf"
+      name="website_booking.report_summary_report_qweb"
+      file="website_booking.report_summary_report_qweb"
+    />
+
+   <report
+      id="action_report_summary_report_html"
+      model="report_summary_report"
+      string="Summary report"
+      report_type="qweb-html"
+      name="website_booking.report_summary_report_qweb"
+      file="website_booking.report_summary_report_html"
+    />
+
+
+    <!-- PDF REPORTS : paperformat -->
+    <record id="report_qweb_paperformat" model="report.paperformat">
+        <field name="name">Booking report qweb paperformat</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">297</field>
+        <field name="page_width">210</field>
+        <field name="orientation">Landscape</field>
+        <field name="margin_top">23</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">5</field>
+        <field name="margin_right">5</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">20</field>
+        <field name="dpi">110</field>
+    </record>
+
+    <record id="booking_checkin_details" model="ir.actions.report">
+        <field name="paperformat_id" ref="report_qweb_paperformat"/>
+    </record>
+
+    <record id="booking_checkout_details" model="ir.actions.report">
+        <field name="paperformat_id" ref="report_qweb_paperformat"/>
+    </record>
+
+</odoo>
