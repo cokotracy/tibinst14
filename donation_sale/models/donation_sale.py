@@ -11,9 +11,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class AccountInvoice(models.Model):
-    _inherit = 'account.invoice'
-
+class AccountMove(models.Model):
+    _inherit = 'account.move'
 
     @api.depends(
         'invoice_line_ids.product_id', 'invoice_line_ids.price_unit',
@@ -59,7 +58,7 @@ class AccountInvoice(models.Model):
         if self.payment_ids:
             date = self.payment_ids[0].payment_date
         else:
-            date = self.date_invoice
+            date = self.invoice_date
         vals = {
             'company_id': self.company_id.id,
             'currency_id': self.company_currency_id.id,
@@ -73,7 +72,7 @@ class AccountInvoice(models.Model):
 
 
     def action_cancel(self):
-        res = super(AccountInvoice, self).action_cancel()
+        res = super(AccountMove, self).action_cancel()
         for inv in self:
             if inv.tax_receipt_id:
                 raise UserError(_(
@@ -91,7 +90,7 @@ class AccountInvoice(models.Model):
                 raise UserError(_(
                     "You cannot delete this invoice because it is linked to "
                     "the tax receipt %s") % inv.tax_receipt_id.number)
-        return super(AccountInvoice, self).unlink()
+        return super(AccountMove, self).unlink()
 
     @api.onchange('tax_receipt_option')
     def tax_receipt_option_change(self):
@@ -113,7 +112,7 @@ class AccountInvoice(models.Model):
 
 
     def action_invoice_paid(self):
-        res = super(AccountInvoice, self).action_invoice_paid()
+        res = super(AccountMove, self).action_invoice_paid()
         dtro = self.env['donation.tax.receipt']
         to_gen_tax_receipt_invoices = self.filtered(
             lambda inv: inv.state == 'paid' and not inv.tax_receipt_id and
@@ -126,7 +125,7 @@ class AccountInvoice(models.Model):
                 continue
             vals = invoice._prepare_each_tax_receipt()
             tax_receipt = dtro.with_context(
-                ir_sequence_date=invoice.date_invoice).create(vals)
+                ir_sequence_date=invoice.invoice_date).create(vals)
             invoice.tax_receipt_id = tax_receipt.id
             logger.debug(
                 'Tax receipt ID %d generated for invoice ID %d partner %s',
@@ -148,7 +147,7 @@ class AccountInvoice(models.Model):
             partner = invoice.commercial_partner_id
             vals = invoice._prepare_each_tax_receipt()
             tax_receipt = dtro.with_context(
-                ir_sequence_date=invoice.date_invoice).create(vals)
+                ir_sequence_date=invoice.invoice_date).create(vals)
             invoice.tax_receipt_id = tax_receipt.id
             logger.debug(
                 'Tax receipt ID %d generated for invoice ID %d partner %s',
@@ -159,7 +158,7 @@ class AccountInvoice(models.Model):
         logger.info(
             "START to generate donation tax receipts from invoices "
             "(type='each')")
-        invoices = self.env['account.invoice'].search([
+        invoices = self.env['account.move'].search([
             ('tax_receipt_option', '=', 'each'),
             ('tax_receipt_id', '=', False),
             ('tax_receipt_total', '!=', 0),
@@ -173,17 +172,17 @@ class AccountInvoice(models.Model):
         return True
 
 
-class AccountInvoiceLine(models.Model):
-    _inherit = 'account.invoice.line'
+class AccountMoveLine(models.Model):
+    _inherit = 'account.move.line'
 
     tax_receipt_ok = fields.Boolean(
         related='product_id.tax_receipt_ok', readonly=True, store=True)
 
 
-    @api.constrains('product_id', 'invoice_line_tax_ids')
+    @api.constrains('product_id', 'tax_ids')
     def donation_invoice_line_check(self):
         for line in self:
-            if line.product_id.tax_receipt_ok and line.invoice_line_tax_ids:
+            if line.product_id.tax_receipt_ok and line.tax_ids:
                 raise ValidationError(_(
                     "The invoice line '%s' has a donation product, "
                     "so it should not have taxes") % line.name)
@@ -203,7 +202,6 @@ class SaleOrder(models.Model):
         compute='_compute_tax_receipt_total',
         string='Eligible Tax Receipt Sub-total',
         store=True, currency_field='company_currency_id')
-
 
     @api.depends(
         'order_line.product_id', 'order_line.price_unit',
@@ -278,7 +276,7 @@ class DonationTaxReceipt(models.Model):
     _inherit = 'donation.tax.receipt'
 
     invoice_ids = fields.One2many(
-        'account.invoice', 'tax_receipt_id', string='Related Invoices')
+        'account.move', 'tax_receipt_id', string='Related Invoices')
 
     @api.model
     def update_tax_receipt_annual_dict(
@@ -286,14 +284,14 @@ class DonationTaxReceipt(models.Model):
             precision_rounding):
         super(DonationTaxReceipt, self).update_tax_receipt_annual_dict(
             tax_receipt_annual_dict, start_date, end_date, precision_rounding)
-        invoices = self.env['account.invoice'].search([
-            ('date_invoice', '>=', start_date),
-            ('date_invoice', '<=', end_date),
+        invoices = self.env['account.move'].search([
+            ('invoice_date', '>=', start_date),
+            ('invoice_date', '<=', end_date),
             ('tax_receipt_option', '=', 'annual'),
             ('tax_receipt_id', '=', False),
             ('tax_receipt_total', '!=', 0),
             ('company_id', '=', self.env.user.company_id.id),
-            ('state', 'in', ('open', 'paid')),
+            ('state', '=', 'posted'),
             ])
         for invoice in invoices:
             tax_receipt_amount = invoice.tax_receipt_total
@@ -305,10 +303,10 @@ class DonationTaxReceipt(models.Model):
                 tax_receipt_annual_dict[partner] = {
                     'amount': tax_receipt_amount,
                     'extra_vals': {
-                        'donation_ids': [(6, 0, [invoice.id])]},
+                        'invoice_ids': [(6, 0, [invoice.id])]},
                     }
             else:
                 tax_receipt_annual_dict[partner]['amount'] +=\
                     tax_receipt_amount
                 tax_receipt_annual_dict[partner]['extra_vals'][
-                    'donation_ids'][0][2].append(invoice.id)
+                    'invoice_ids'][0][2].append(invoice.id)

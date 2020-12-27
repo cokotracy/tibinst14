@@ -51,7 +51,6 @@ class Partner(models.Model):
         target_property.set_multi(property_name, model, values)
 
 
-    @api.multi
     def write(self, values):
         result = super(Partner,self).write(values)
         company_user_id = self.env.user.company_id.id
@@ -64,7 +63,6 @@ class Partner(models.Model):
     #    """Returns the list of address fields that are synced from the parent."""
     #    return list(ADDRESS_FIELDS)
     
-    @api.multi
     def name_get(self):
         res = []
         for partner in self:

@@ -19,7 +19,6 @@ class EventWizard(models.TransientModel):
     days_5=fields.Boolean(string='Saturday')
     days_6=fields.Boolean(string='Sunday')
 
-    @api.multi
     def duplicate(self):
         DATETIME_FORMAT = "%Y-%m-%d"
         id=self.env.context.get("active_ids",[])

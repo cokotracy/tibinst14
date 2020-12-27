@@ -1,7 +1,7 @@
 <odoo>
     <data>
         
-        
+        <!-- TODO 14
         <template inherit_id="theme_snowy.product_details" id="product_brand">
             <xpath expr="//h1/span[@t-field='product.name']" position="after">
                  <h3>
@@ -9,7 +9,7 @@
                  </h3>
             </xpath>
         </template>
-        
+
         <template inherit_id="website_sale.extra_info" id="extra_info">
             <xpath expr="//form/div[3]" position="attributes">
                     <attribute name="class">hidden</attribute>
@@ -63,6 +63,9 @@
                 </t>
             </xpath>
         </template>
+
+         -->
+
             
 </data>
 </odoo>

@@ -68,7 +68,6 @@ class TaxReceiptAnnualCreate(models.TransientModel):
         existing_annual_receipts_dict = {}
         for receipt in existing_annual_receipts:
             existing_annual_receipts_dict[receipt.partner_id] = receipt
-
         for partner, partner_dict in tax_receipt_annual_dict.items():
             # Block if the partner already has an annual tax receipt
             if partner in existing_annual_receipts_dict:

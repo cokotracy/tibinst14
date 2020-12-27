@@ -43,7 +43,6 @@ class Website(models.Model):
     _inherit="website"
 
 
-    @api.multi
     def _prepare_sale_order_values(self, partner, pricelist):
         self.ensure_one()
         affiliate_id = request.session.get('affiliate_id')

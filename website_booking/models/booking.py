@@ -29,8 +29,13 @@
 #ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER          #
 #DEALINGS IN THE SOFTWARE.                                                            #
 #######################################################################################
-from odoo.addons.base.res.res_partner import _tz_get
 from odoo import api, fields, models
+import pytz
+# put POSIX 'Etc/*' entries at the end to avoid confusing users - see bug 1086728
+_tzs = [(tz, tz) for tz in sorted(pytz.all_timezones, key=lambda tz: tz if not tz.startswith('Etc/') else '_')]
+def _tz_get(self):
+    return _tzs
+
 
 class BookingDate(models.Model):
     _name="booking.date"

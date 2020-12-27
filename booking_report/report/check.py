@@ -96,7 +96,6 @@ class ReportTestCheckevent(models.AbstractModel):
                             accessory.append(" %s -> %s" % (line.product_id.default_code, line2.product_id.name))
         return (', ').join(accessory)
 
-    @api.multi
     def get_report_values(self, docids, data=None):
 
         date_start = datetime.strftime(datetime.strptime(data['form'].get('date_start'), '%Y-%m-%d') - timedelta(days=1), '%Y-%m-%d')

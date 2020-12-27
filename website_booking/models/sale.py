@@ -112,7 +112,7 @@ class Sale(models.Model):
     
     
     #vérifie si le panier contient une chambre sans event. => refuser
-    @api.multi
+
     def room_without_event(self):
         self.ensure_one()
         chambre=False
@@ -128,7 +128,6 @@ class Sale(models.Model):
         
     
     #vérifie si le panier contient que des produits de la même société
-    @api.multi
     def _verify_company(self):
         self.ensure_one()
         ok=True
@@ -140,7 +139,6 @@ class Sale(models.Model):
                 ok=False
         return ok       
                 
-    @api.multi
     def _reservation(self):
         self.ensure_one()
         DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
@@ -182,7 +180,6 @@ class Sale(models.Model):
                     
         return [False,""]
 
-    @api.multi
     def _cart_find_product_line(self, product_id=None, line_id=None, **kwargs):
         self.ensure_one()
         lines = super(Sale, self)._cart_find_product_line(product_id, line_id)
@@ -205,7 +202,6 @@ class Sale(models.Model):
             lines=self.env["sale.order.line"]
         return lines
 
-    @api.multi
     def action_confirm(self):
         res=super(Sale,self).action_confirm()
         for record in self:
@@ -227,7 +223,6 @@ class Sale(models.Model):
                           line.x_calendar_id=event.id
         return res
 
-    @api.multi
     def action_cancel(self):
         res=super(Sale,self).action_cancel()
         for record in self:
@@ -240,7 +235,6 @@ class Sale(models.Model):
                    event.with_context(no_mail_to_attendees=True).write(data)
         return res
 
-    @api.multi
     def _get_line_description(self, order_id, product_id, attributes=None):
         if not attributes:
             attributes = {}
@@ -271,7 +265,6 @@ class Sale(models.Model):
         return name
 
 
-    @api.multi
     def _booking_delivery(self):
         booking = self.env['booking.config'].sudo().search([], limit=1)
         for order in self:

@@ -66,7 +66,6 @@ class ReportTestCheckin(models.AbstractModel):
                     accessory.append(line.product_id.name)
         return (',').join(accessory)
 
-    @api.multi
     def get_report_values(self, docids, data=None):
 
         date_start = data['form'].get('date_start')
@@ -153,7 +152,6 @@ class ReportTestCheckout(models.AbstractModel):
                     accessory.append(line.product_id.name)
         return (',').join(accessory)
 
-    @api.multi
     def get_report_values(self, docids, data=None):
 
         date_start = data['form'].get('date_start')
@@ -304,7 +302,6 @@ class ReportTestCoocking(models.AbstractModel):
                     accessory.append(line.product_id.name)
         return (',').join(accessory)
 
-    @api.multi
     def get_report_values(self, docids, data=None):
 
         date_start = data['form'].get('date_start')

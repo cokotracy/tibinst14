@@ -42,10 +42,8 @@
     'website':"www.olabs.be",
     'author': "O'labs",
     'depends': [
-                'theme_snowy',
                 'product',
                 'website_sale',
-                'website_sale_options',
                 'calendar',
                 'website_event_questions',
                 'website_event_sale',

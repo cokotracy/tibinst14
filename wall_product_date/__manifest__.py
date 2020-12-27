@@ -35,7 +35,7 @@
 {
     'name': 'Projet Wall',
     'version': '11.0.1.',
-    'depends': ['sale','website_sale','theme_snowy'],
+    'depends': ['sale','website_sale'],
     'author': "O'Labs",
     'price':700,
     'currency':'EUR',

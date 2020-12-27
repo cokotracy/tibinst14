@@ -17,7 +17,6 @@ class SaleReservationWizard(models.TransientModel):
             self.date_start =self.filter_event.date_begin
             self.date_end =self.filter_event.date_end
 
-    @api.multi
     def open_url(self):
         self.ensure_one()
         return {
@@ -27,7 +26,6 @@ class SaleReservationWizard(models.TransientModel):
                     'res_id': self.id,
                 }
 
-    @api.multi
     def report_checkin_detail(self):
         data = {
             'ids': self.ids,
@@ -37,7 +35,6 @@ class SaleReservationWizard(models.TransientModel):
         return self.env.ref('website_booking.booking_checkin_details').report_action(self, data=data, config=False)
 
 
-    @api.multi
     def report_checkout_detail(self):
         data = {
             'ids': self.ids,
@@ -46,7 +43,6 @@ class SaleReservationWizard(models.TransientModel):
         }
         return self.env.ref('website_booking.booking_checkout_details').report_action(self, data=data, config=False)
 
-    @api.multi
     def report_checkevent_detail(self):
         data = {
             'ids': self.ids,
@@ -56,7 +52,7 @@ class SaleReservationWizard(models.TransientModel):
         return self.env.ref('booking_report.booking_checkevent_details').report_action(self, data=data, config=False)
 
 
-    @api.multi
+
     def report_coocking_detail(self):
         data = {
             'ids': self.ids,

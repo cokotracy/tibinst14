@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from odoo import http
 from odoo.http import request
-from odoo.addons.website_booking.controllers.main import WebsiteSale_Rental
+from odoo.addons.website_sale.controllers.main import WebsiteSale
 
-class WebsiteSale_option(WebsiteSale_Rental):
+class WebsiteSale_option(WebsiteSale):
 
     @http.route(['/shop/confirm_order'], type='http', auth="public", website=True)
     def confirm_order(self, **post):

@@ -13,7 +13,6 @@ class SaleRoomEportWizard(models.TransientModel):
     date_from = fields.Date('Start Date', default=datetime.today(), required=True)
     date_to = fields.Date('End Date', default=datetime.today()+timedelta(days=15),required=True)
 
-    @api.multi
     def button_export_html(self):
         self.ensure_one()
         action = self.env.ref('website_booking.action_report_summary_report')
@@ -29,7 +28,6 @@ class SaleRoomEportWizard(models.TransientModel):
         vals['context'] = context1
         return vals
 
-    @api.multi
     def button_export_pdf(self):
         self.ensure_one()
         report_type = 'qweb-pdf'

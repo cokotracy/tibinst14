@@ -1,104 +1,55 @@
 # -*- coding: utf-8 -*-
 
-import json
-import logging
-import requests
 import werkzeug
-import pprint
+import logging
 
-
-from odoo import http, SUPERUSER_ID
-from odoo.http import request
-from odoo.addons.payment.models.payment_acquirer import ValidationError
+from odoo import http
+from odoo.http import request, Response
 
 _logger = logging.getLogger(__name__)
 
 
 class MollieController(http.Controller):
-    _notify_url = '/payment/mollie/notify/'
-    _redirect_url = '/payment/mollie/redirect/'
-    _cancel_url = '/payment/mollie/cancel/'
+    _notify_url = "/payment/mollie/notify"
+    _redirect_url = "/payment/mollie/redirect"
 
-    @http.route([
-        '/payment/mollie/notify'],
-        type='http', auth='none', methods=['GET'])
-    def mollie_notify(self, **post):
-        cr, uid, context = request.cr, SUPERUSER_ID, request.context
-        request.env['payment.transaction'].sudo().form_feedback(post, 'mollie')
-        return werkzeug.utils.redirect("/shop/payment/validate")
-
-    @http.route([
-        '/payment/mollie/redirect'], type='http', auth="none", methods=['GET'])
+    @http.route("/payment/mollie/action", type='http', auth="public", methods=['POST'], csrf=False, sitemap=False)
     def mollie_redirect(self, **post):
-        cr, uid, context = request.cr, SUPERUSER_ID, request.context
-        request.env['payment.transaction'].sudo().form_feedback(post, 'mollie')
-        return werkzeug.utils.redirect("/shop/payment/validate")
+        if post.get('checkout_url'):
+            return werkzeug.utils.redirect(post.get('checkout_url'))
+        return werkzeug.utils.redirect("/payment/process")
 
-    @http.route([
-        '/payment/mollie/cancel'], type='http', auth="none", methods=['GET'])
-    def mollie_cancel(self, **post):
-        cr, uid, context = request.cr, SUPERUSER_ID, request.context
-        request.env['payment.transaction'].sudo().form_feedback(post, 'mollie')
-        return werkzeug.utils.redirect("/shop/payment/validate")
+    @http.route("/payment/mollie/redirect", type='http', auth="public", csrf=False, sitemap=False)
+    def mollie_return(self, **post):
+        if post.get('tx'):
+            transaction = request.env["payment.transaction"].sudo().browse(int(post.get('tx')))
 
-    @http.route([
-        '/payment/mollie/intermediate'], type='http', auth="none", methods=['POST'], csrf=False)
-    def mollie_intermediate(self, **post):
-        acquirer = request.env['payment.acquirer'].browse(int(post['Key']))
+            # Checked transaction state because webhook might have already confirmed the transection
+            if transaction.exists() and transaction.acquirer_reference and transaction.state not in ['done', 'cancel']:
+                data = transaction.acquirer_id._mollie_get_payment_data(transaction.acquirer_reference)
+                request.env["payment.transaction"].sudo().form_feedback(data, "mollie")
 
-        url = post['URL'] + "payments"
-        headers = {'content-type': 'application/json', 'Authorization': 'Bearer ' + acquirer._get_mollie_api_keys(acquirer.environment)['mollie_api_key'] }
-        base_url = post['BaseUrl']
-        orderid = post['OrderId']
-        description = post['Description']
-        currency = post['Currency']
-        amount = post['Amount']
-        language = post['Language']
-        name = post['Name']
-        email = post['Email']
-        zip = post['Zip']
-        address = post['Address']
-        town = post['Town']
-        country = post['Country']
-        phone = post['Phone']
+        return werkzeug.utils.redirect("/payment/process")
 
-        payload = {
-            "description": description,
-            "amount": amount,
-            "redirectUrl": "%s%s?reference=%s" % (base_url, self._redirect_url, orderid.replace(' ', '%20')),
-            "metadata": {
-                "order_id": orderid,
-                "customer": {
-                    "locale": language,
-                    "currency": currency,
-                    "last_name": name,
-                    "address1": address,
-                    "zip_code": zip,
-                    "city": town,
-                    "country": country,
-                    "phone": phone,
-                    "email": email
-                }
-            }
-        }
+    @http.route("/payment/mollie/notify", type='http', auth="public", methods=['POST'], csrf=False, sitemap=False)
+    def mollie_notify(self, **post):
+        if post.get('tx'):
+            transaction = request.env["payment.transaction"].sudo().browse(int(post.get('tx')))
+            if transaction.exists() and transaction.acquirer_reference == post.get('id'):
+                data = transaction.acquirer_id._mollie_get_payment_data(transaction.acquirer_reference)
+                request.env["payment.transaction"].sudo().form_feedback(data, "mollie")
 
-        mollie_response = requests.post(
-            url, data=json.dumps(payload), headers=headers).json()
+                if transaction.state in ['done', 'cancel']:
 
-        if mollie_response["status"] == "open":
+                    # We will process the payment from webhook confirmation. payment confirmation might
+                    # be delayed and user might left the screen (may be user paid via QR and left the screen).
+                    # A cron is already there for such confirmation but we will process the order immediately
+                    # because we already got the confirmation and there is no need to wait for cron.
+                    # /!\/!\/!\ Whenever you make changes here check `mollie_manual_payment_validation` method too.
+                    if not transaction.is_processed and transaction.state == 'done':
+                        transaction._post_process_after_done()
 
-            payment_tx = request.env['payment.transaction'].sudo().search([('reference', '=', orderid)])
-            if not payment_tx or len(payment_tx) > 1:
-                error_msg = ('received data for reference %s') % (pprint.pformat(orderid))
-                if not payment_tx:
-                    error_msg += ('; no order found')
-                else:
-                    error_msg += ('; multiple order found')
-                _logger.info(error_msg)
-                raise ValidationError(error_msg)
-            payment_tx.write({"acquirer_reference": mollie_response["id"]})
+                    # We do not need next webhooks if payment is already done or canceled
+                    return Response("OK", status=200)
 
-            payment_url = mollie_response["links"]["paymentUrl"]
-            return werkzeug.utils.redirect(payment_url)
-
-        return werkzeug.utils.redirect("/")
+        return Response("Not Confirmed", status=418)

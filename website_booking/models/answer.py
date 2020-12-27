@@ -31,12 +31,9 @@
 #######################################################################################
 from odoo import api, fields, models, _
 
-class Answer(models.Model):
-    _inherit="event.answer"
+class EventQuestionAnswer(models.Model):
+    _inherit='event.question.answer	'
     x_type_logement=fields.Many2one("product.public.category",string="Category")
     x_days=fields.Integer(string="Night(s)")
     x_product_ids=fields.Many2many("product.product", string="Add Product")
-    #x_url=fields.Char(string="url")
-    #x_product_id=fields.Many2one("product.product",string="Product")
-    #x_type_qty=fields.Selection([('oneshot','Oneshot'),('multi','By days')],string="Type")
 
