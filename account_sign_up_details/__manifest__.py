@@ -27,6 +27,7 @@
   "live_test_url"        :  "http://odoodemo.webkul.com/?module=account_sign_up_details&version=11.0",
   "depends"              :  [
                              'auth_signup',
+                             'portal',
                             ],
   "data"                 :  [
                              'views/res_partner_view.xml',

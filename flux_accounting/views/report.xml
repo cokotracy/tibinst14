@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <data>
+
+          <record id="paperformat_bjorn" model="report.paperformat">
+              <field name="name">Document Global</field>
+              <field name="default" eval="True"/>
+              <field name="format">A4</field>
+              <field name="orientation">Landscape</field>
+              <field name="margin_top">10</field>
+              <field name="margin_bottom">10</field>
+              <field name="margin_left">0</field>
+              <field name="margin_right">0</field>
+              <field name="header_line" eval="False" />
+              <field name="header_spacing">10</field>
+              <field name="dpi">90</field>
+          </record>
+
+          <report id="action_report_rapport_bjorn_doc"
+                  model="account.invoice"
+                  string="Generation data"
+                  report_type="qweb-pdf"
+                  name="flux_accounting.report_rapport_bjorn_doc"
+                  file="flux_accounting.report_rapport_bjorn_doc"
+                  paperformat="flux_accounting.paperformat_bjorn"
+                  menu="False"
+          />
+
+            <template id="report_rapport_bjorn_doc">
+                <t t-call="web.html_container">
+                    <div class="page">
+                        <div class="header" style="border-bottom: 2px solid black">
+                            <h3  t-if="not docs[0]['ifdetail']" class="text-center">Document Global:</h3>
+                            <h3  t-if="docs[0]['ifdetail']" class="text-center">Document Detail:</h3>
+                        </div>
+                        <div class="article">
+                            <br/>
+                            <br/>
+                            <table class="table table-bordered mt32" style="width: 100%">
+                                <thead t-if="not docs[0]['ifdetail']">
+                                    <th>Code</th>
+                                    <th>Name</th>
+                                    <th>Credit</th>
+                                    <th>Debit</th>
+                                </thead>
+
+                                <thead t-if="docs[0]['ifdetail']">
+                                    <th>date</th>
+                                    <th>code</th>
+                                    <th>Name</th>
+                                    <th>Ref</th>
+                                    <th>Credit</th>
+                                    <th>Debit</th>
+                                </thead>
+
+                                <tbody t-if="not docs[0]['ifdetail']">
+                                    <t t-foreach="docs[0]['account']" t-as="account">
+                                           <tr>
+                                                <td class="col-xs-2">
+                                                 <span style="font-size:12px;">
+                                                    <strong><t t-esc="account"/></strong>
+                                                  </span>
+                                                </td>
+                                                <td class="col-xs-6">
+                                                    <strong><t t-esc="docs[0]['account_name'][account]"/></strong>
+                                                </td>
+                                                <td class="col-xs-2 text-right">
+                                                   <span  style="font-size:12px;">
+                                                     <strong><t t-esc="'{0:,.2f}'.format(float(docs[0]['total_credit'][account]))" /></strong>
+                                                   </span>
+                                                </td>
+                                                <td class="col-xs-2 text-right">
+                                                   <span style="font-size:12px;;">
+                                                     <strong><t t-esc="'{0:,.2f}'.format(float(docs[0]['total_debit'][account]))"/></strong>
+                                                   </span>
+                                                </td>
+                                           </tr>
+                                    </t>
+                                </tbody>
+
+                                <tbody t-if="docs[0]['ifdetail']">
+                                       <t t-foreach="docs[0]['detail']" t-as="account">
+                                           <t t-foreach="docs[0]['detail'][account]" t-as="line">
+                                               <tr>
+                                                    <td class="col-xs-2">
+                                                     <span style="font-size:12px;">
+                                                       <strong><t t-esc="line['date']"/></strong>
+                                                      </span>
+                                                    </td>
+                                                    <td class="col-xs-2">
+                                                     <span  style="font-size:12px;">
+                                                       <strong><t t-esc="line['code']"/></strong>
+                                                      </span>
+                                                    </td>
+                                                    <td>
+                                                       <span  style="font-size:12px;">
+                                                       <strong><t t-esc="line['name']"/></strong>
+                                                      </span>
+                                                    </td>
+                                                   <td>
+                                                       <span  style="font-size:12px;">
+                                                       <strong><t t-esc="line['ref']"/></strong>
+                                                      </span>
+                                                    </td>
+                                                    <td class="text-right">
+                                                       <span  style="font-size:12px;">
+                                                       <strong><t t-esc="'{0:,.2f}'.format(float(line['credit']))"/></strong>
+                                                       </span>
+                                                    </td>
+                                                    <td class="text-right">
+                                                       <span style="font-size:12px;;">
+                                                       <strong><t t-esc="'{0:,.2f}'.format(float(line['debit']))" /></strong>
+                                                       </span>
+                                                    </td>
+                                               </tr>
+                                           </t>
+                                       </t>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="footer">
+                            <div class="row text-center" style="border-top: 1px solid black;">
+                                <div class="col col-8 offset-9"></div>
+                                        Page : <span class="page"/>/<span class="topage"/>
+                                        <span class="list-inline-item">Company : <t t-esc="docs[0]['company_name']"/> Generate : <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/></span>
+
+                            </div>
+                        </div>
+                    </div>
+                       </t>
+            </template>
+         </data>
+</odoo>

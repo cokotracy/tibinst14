@@ -1,0 +1,70 @@
+<odoo>
+    <data>
+        <record id="product_breakfast" model="product.product">
+            <field name="name">Breakfast</field>
+            <field name="x_is_meal">True</field>
+            <field name="x_removing_qty">True</field>
+            <field name="type">service</field>
+        </record>
+
+       <record id="product_lunch_include" model="product.product">
+            <field name="name">Lunch include Event</field>
+            <field name="x_is_meal">True</field>
+            <field name="x_removing_qty">True</field>
+            <field name="type">service</field>
+            <field name="lst_price">0</field>
+       </record>
+
+        <record id="product_lunch" model="product.product">
+            <field name="name">Lunch</field>
+            <field name="x_is_meal">True</field>
+            <field name="x_removing_qty">True</field>
+            <field name="type">service</field>
+       </record>
+
+        <record id="product_evening" model="product.product">
+            <field name="name">Evening meal</field>
+            <field name="x_is_meal">True</field>
+            <field name="x_removing_qty">True</field>
+            <field name="type">service</field>
+       </record>
+
+        <record id="product_room_shared_1_bed" model="product.product">
+            <field name="name">Room 1 bed (shared)</field>
+            <field name="x_is_room">True</field>
+            <field name="x_removing_qty">True</field>
+            <field name="type">service</field>
+            <field name="x_capacity">1</field>
+            <field name="x_planning_role_ids" eval="[(6,0,[ref('website_booking.planning_role_room_01'),ref('website_booking.planning_role_room_02')])]"/>
+       </record>
+
+        <record id="product_room_not_shared_1_bed" model="product.product">
+            <field name="name">Room 1 bed (not shared)</field>
+            <field name="x_is_room">True</field>
+            <field name="x_removing_qty">True</field>
+            <field name="type">service</field>
+            <field name="x_capacity">2</field>
+            <field name="x_planning_role_ids" eval="[(6,0,[ref('website_booking.planning_role_room_01'),ref('website_booking.planning_role_room_02')])]"/>
+       </record>
+
+        <record id="product_room_studio_1_bed" model="product.product">
+            <field name="name">Studio 1 bed (shared)</field>
+            <field name="x_is_room">True</field>
+            <field name="x_removing_qty">True</field>
+            <field name="type">service</field>
+            <field name="x_capacity">1</field>
+            <field name="x_planning_role_ids" eval="[(6,0,[ref('website_booking.planning_role_room_01'),ref('website_booking.planning_role_room_02')])]"/>
+       </record>
+
+        <record id="product_room_studio_2_bed" model="product.product">
+            <field name="name">Studio 2 bed</field>
+            <field name="x_is_room">True</field>
+            <field name="x_removing_qty">True</field>
+            <field name="type">service</field>
+            <field name="x_capacity">2</field>
+            <field name="x_planning_role_ids" eval="[(6,0,[ref('website_booking.planning_role_room_01'),ref('website_booking.planning_role_room_02')])]"/>
+       </record>
+
+
+    </data>
+</odoo>

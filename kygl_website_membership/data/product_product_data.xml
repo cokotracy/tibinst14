@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+
+      <record id="kygl_product_m1_u" model="product.product">
+        <field name="name">Membership 1</field>
+        <field name="kygl_code">M1-U</field>
+        <field name="company_id"></field>
+        <field name="membership">True</field>
+        <field name="tax_receipt_ok">False</field>
+        <field name="type">service</field>
+        <field name="taxes_id" eval="[(6,0,[])]"/>
+      </record>
+
+      <record id="kygl_product_m2_u" model="product.product">
+        <field name="name">Membership 2</field>
+        <field name="kygl_code">M2-U</field>
+        <field name="company_id"></field>
+        <field name="membership">True</field>
+        <field name="tax_receipt_ok">False</field>
+        <field name="type">service</field>
+        <field name="taxes_id" eval="[(6,0,[])]"/>
+      </record>
+
+      <record id="kygl_product_m3_u" model="product.product">
+        <field name="name">Membership 3</field>
+        <field name="kygl_code">M3-U</field>
+        <field name="company_id"></field>
+        <field name="membership">True</field>
+        <field name="tax_receipt_ok">False</field>
+        <field name="type">service</field>
+        <field name="taxes_id" eval="[(6,0,[])]"/>
+      </record>
+
+      <record id="kygl_product_m1_m" model="product.product">
+        <field name="name">Membership 1</field>
+        <field name="kygl_code">M1-M</field>
+        <field name="company_id"></field>
+        <field name="membership">True</field>
+        <field name="tax_receipt_ok">False</field>
+        <field name="type">service</field>
+        <field name="taxes_id" eval="[(6,0,[])]"/>
+      </record>
+
+      <record id="kygl_product_m2_m" model="product.product">
+        <field name="name">Membership 2</field>
+        <field name="kygl_code">M2-M</field>
+        <field name="company_id"></field>
+        <field name="membership">membership</field>
+        <field name="tax_receipt_ok">False</field>
+        <field name="type">service</field>
+        <field name="taxes_id" eval="[(6,0,[])]"/>
+      </record>
+
+      <record id="kygl_product_m3_m" model="product.product">
+        <field name="name">Membership 3</field>
+        <field name="kygl_code">M3-M</field>
+        <field name="company_id"></field>
+        <field name="membership">True</field>
+        <field name="tax_receipt_ok">False</field>
+        <field name="type">service</field>
+        <field name="taxes_id" eval="[(6,0,[])]"/>
+      </record>
+
+      <record id="kygl_product_m1_y" model="product.product">
+        <field name="name">Membership 1</field>
+        <field name="kygl_code">M1-Y</field>
+        <field name="company_id"></field>
+        <field name="membership">True</field>
+        <field name="tax_receipt_ok">False</field>
+        <field name="type">service</field>
+        <field name="taxes_id" eval="[(6,0,[])]"/>
+      </record>
+
+      <record id="kygl_product_m2_y" model="product.product">
+        <field name="name">Membership 2</field>
+        <field name="kygl_code">M2-Y</field>
+        <field name="company_id"></field>
+        <field name="membership">True</field>
+        <field name="tax_receipt_ok">False</field>
+        <field name="type">service</field>
+        <field name="taxes_id" eval="[(6,0,[])]"/>
+      </record>
+
+      <record id="kygl_product_m3_y" model="product.product">
+        <field name="name">Membership 3</field>
+        <field name="kygl_code">M3-Y</field>
+        <field name="company_id"></field>
+        <field name="membership">True</field>
+        <field name="tax_receipt_ok">False</field>
+        <field name="type">service</field>
+        <field name="taxes_id" eval="[(6,0,[])]"/>
+      </record>
+
+    </data>
+</odoo>

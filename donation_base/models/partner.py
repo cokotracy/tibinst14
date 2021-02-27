@@ -14,7 +14,7 @@ class ResPartner(models.Model):
         ('each', 'For Each Donation'),
         ('annual', 'Annual Tax Receipt'),
         ], string='Tax Receipt Option', default='none',
-        track_visibility='onchange')
+        tracking=True)
     tax_receipt_ids = fields.One2many(
         'donation.tax.receipt', 'partner_id', string='Tax Receipts')
     tax_receipt_count = fields.Integer(

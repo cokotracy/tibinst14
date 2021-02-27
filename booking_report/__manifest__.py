@@ -48,6 +48,7 @@
         'views/reports.xml',
         'views/check.xml',
         'wizard/check.xml',
+        'security/ir.model.access.csv',
          ],
     'images': ['static/description/banner.jpg'],
     'installable': True,

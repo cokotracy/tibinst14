@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record id="kygl_product_fond_product_form_view" model="ir.ui.view">
+            <field name="name">kygl.product.fond.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='categ_id']" position="after">
+                    <field name="kygl_code"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="kygl_product_template_only_form_view" model="ir.ui.view">
+            <field name="name">product.template</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="website_booking.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//page[@name='tibinst']" position="inside">
+                    <group>
+                        <field name="kygl_info"/>
+                    </group>
+                </xpath>
+
+            </field>
+        </record>
+</odoo>

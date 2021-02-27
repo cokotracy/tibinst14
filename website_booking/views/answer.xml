@@ -1,23 +1,16 @@
 <odoo>
     <data>
-
-        <record model="ir.ui.view" id="view_event_question_product_form">
+        <record model="ir.ui.view" id="event_event_view_form">
             <field name="name">event.question.product.form</field>
-            <field name="model">event.question</field>
-            <field name="inherit_id" ref="website_event_questions.view_event_question_form"/>
+            <field name="model">event.event</field>
+            <field name="inherit_id" ref="website_event_questions.event_event_view_form"/>
             <field name="arch" type="xml">
-                <xpath expr="//tree/field[@name='name']" position="after">
-                        <field name="x_type_logement"/>
+                <xpath expr="//field[@name='answer_ids']/tree/field[@name='name']" position="after">
                         <field name="x_days"/>
-                        <field name="x_product_ids" widget="many2many_tags"/>
-                        <!--
-                        <field name="x_url"/>
-                        <field name="x_type_qty"/>
-                        <field name="x_qty"/>
-                        -->
+                        <field name="x_meal_ids" widget="many2many_tags"/>
+                        <field name="x_room_id"/>
                 </xpath>
             </field>
         </record>
-
     </data>
 </odoo>

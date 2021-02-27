@@ -1,80 +1,52 @@
 <odoo>
     <data>
-
-        <template id="booking" inherit_id="website.snippets" name="Website Booking snippet">
-            <xpath expr="//div[@id='snippet_structure']/div[hasclass('o_panel_body')]" position="inside">
-                <t t-snippet="website_booking.snippet_booking_search" t-thumbnail="/website_booking/static/src/img/blocks/block_title.png"/>
+        <template id="country_events_list" inherit_id="website_event.country_events_list" name="Country Events List">
+            <xpath expr="//div[1]" position="replace">
+                <div class="country_events_list">
+                    <t t-if="events">
+                        <h6 class="o_wevent_sidebar_title">
+                            <t t-if="country">
+                                <i class="fa fa-flag mr-2"/>Events: <span t-esc="country.name"/>
+                                <img class="img-fluid" t-att-src="website.image_url(country, 'image')" alt=""/>
+                            </t>
+                            <t t-else="">
+                                <i class="fa fa-globe mr-2"/>Upcoming Events
+                            </t>
+                        </h6>
+                            <ul class="tibinst-event-list">
+                                 <t t-foreach="events[:10]" t-as="event_dict">
+                                    <a t-attf-href="{{event_dict['url']}}">
+                                     <li class="list-group-item d-flex justify-content-between">
+                                     <time t-attf-class="col-md-2 company_{{event_dict['event'].company_id.id}}">
+                                        <span class="tibinst-day"><t t-esc="event_dict['day']"/></span>
+                                        <span class="tibinst-month"><t t-esc="event_dict['month']"/></span>
+                                        <img t-alt-alt="event_dict['event'].company_id.name" t-attf-src="/web/binary/company_logo?company={{ res_company.id }}" />
+                                    </time>
+                                    <img class="col-md-2 hidden-xs" t-att-alt="event_dict['event'].name" t-att-src="image_data_uri(event_dict['event'].x_snippet_image ) if event_dict['event'].x_snippet_image else '/website_booking/static/img/default.png'" />
+                                    <div class="col-xs-2 col-md-8 tibinst-info">
+                                        <p class="tibinst-title"><t t-esc="event_dict['event'].name"/></p>
+                                        <p class="tibinst-company"><t t-esc="event_dict['event'].company_id.name"/></p>
+                                        <p class="tibinst-desc"><t t-esc="'%s ... ' % event_dict['event'].x_snippet_text[0:200] if event_dict['event'].x_snippet_text else '' "/></p>
+                                    </div>
+                                </li>
+                                    </a>
+                                 </t>
+                            </ul>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <a type="button" class="btn" style="" t-att-href="url_comp_1">See the events of <t t-esc="name_comp_1"/></a>
+                                </div>
+                                <div class="col-md-4">
+                                    <a type="button" class="btn" style="" t-att-href="url_comp_2">See the events of <t t-esc="name_comp_2"/></a>
+                                </div>
+                                <div class="col-md-4">
+                                    <a type="button" class="btn" style="" t-att-href="url_comp_3">See the events of <t t-esc="name_comp_3"/></a>
+                                </div>
+                            </div>
+                    </t>
+                </div>
             </xpath>
         </template>
-           <!-- Snippet's Body -->
-        <template id="snippet_booking_search"  name="Booking search">
-            <section class="jumbotron s_button bg-gray-lighter oe_img_bg mb92" style="background-image: url(&quot;/web/image/theme_common.image_content_07&quot;);">
-                <div class="container">
-                    <div class="row">
-                      <div class="banner-info text-center">
-                      				<div class="container">
-                      					<h1>Leadership Conference 2017</h1>
-                      					<h2><span>27-29 June</span> Berlin, Germany</h2>
-                      					<a href="#" class="btn button-white">Get Ticket Now</a>
-                                          <ul class="countdown gb-list list-inline">
-                                              <li>
-                                                  <span class="days">12</span>
-                                                  <p>days</p>
-                                              </li>
-                                              <li>
-                                                  <span class="hours">18</span>
-                                                  <p>hours</p>
-                                              </li>
-                                              <li>
-                                                  <span class="minutes">28</span>
-                                                  <p>minutes</p>
-                                              </li>
-                                              <li>
-                                                  <span class="seconds">42</span>
-                                                  <p>seconds</p>
-                                              </li>
-                                          </ul><!-- countdown -->
-                      				</div><!-- /.container -->
-                      			</div>
 
-
-                      <div class="col-md-12">
-                        <p class="mb0">
-                           <b>
-                              <font style="font-size: 48px;" class="bg-black-25">Please adjust your dates</font>
-                           </b>
-                        </p>
-                        <p class="mb0">
-                          <b>
-                            <font style="" class="bg-black-25">Please adjust your dates</font>
-                          </b>
-                        </p>
-                      </div>
-                      <div class="input-group">
-                        <input type="text" id="daterange" class="datepicker form-control" placeholder="Vos dates" aria-describedby="basic-addon2"/>
-                        <span class="input-group-addon" id="basic-addon2">
-                          <i class="fa fa-calendar"/>
-                        </span>
-                      </div>
-                    </div>
-                </div>
-                <div class="container">
-                          <div class="row">
-                            <div class="mb64 col-md-6">
-                              <a href="/shop/cart" id="checkout" class="pull-right mt8 btn btn-success btn-lg" data-original-title="" title="">
-                                <font style="font-size: 36px;" data-original-title="" title="">Check out Now<br data-original-title="" title=""/></font>
-                                <span class="fa fa-credit-card fa-5x" style=""/>
-                              </a>
-                            </div>
-                            <div class="mb64 col-md-6">
-                              <a href="/shop/category/accomodation-144" id="reserver" class="pull-right mt8 btn btn-info btn-lg" data-original-title="" title="">
-                                <font style="font-size: 36px;" data-original-title="" title="">&amp;nbsp; Booking Now<br data-original-title="" title=""/></font>
-                                <span class="fa fa-5x fa-hotel" style=""/>
-                              </a>
-                            </div>
-                          </div>
-                      </div>
-          </section>
-        </template>
     </data>
 </odoo>

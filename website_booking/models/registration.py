@@ -32,17 +32,17 @@
 from odoo import api, fields, models, _
 
 class Registration(models.Model):
-    _inherit="event.registration"
-    
-    
-    barcode = fields.Char(string='Identifiant')
-  
+    _inherit = "event.registration"
+
+    x_barcode = fields.Char(string='Identifiant')
+
+    """
     @api.model
     def create(self,data):
         email=data.get('email',False)
         name=data.get('name',False)
         phone=data.get('phone',False)
-        barcode=data.get('barcode',False)
+        x_barcode=data.get('barcode',False)
         partner_id=data.get('partner_id',False)
 
         if email:
@@ -67,5 +67,4 @@ class Registration(models.Model):
                  'groups_id': [(6, 0, [group_portal.id])],
         })
         return super(Registration,self).create(data)
-        
-        
+    """

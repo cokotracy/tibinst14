@@ -24,8 +24,38 @@
 	                required="required" t-att-readonly="'readonly' if only_passwords else None"
 	                t-att-autofocus="'autofocus' if login and not only_passwords else None" />
             	</div>
-	     </xpath>
+             @<div class="form-group field-name">
+                <label for="Language" class="control-label">Your Language</label>
+                <select  name="lang" t-att-value="lang" id="lang" class="form-control"
+                required="required" t-att-readonly="'readonly' if only_passwords else None"
+                t-att-autofocus="'autofocus' if login and not only_passwords else None" >
+                  <option value='fr_BE'>French</option>
+                  <option value='nl_BE'>Dutch</option>
+                  <option value='en_US'>English</option>
+              </select>
+            </div>
+
+      </xpath>
 
 	   	</template>
+
+        <template id="tibinst_account_portal_details" inherit_id="portal.portal_my_details">
+           <xpath expr="//label[@for='state_id']/.." position="after">
+               <div t-attf-class="form-group #{error.get('lang') and 'o_has_error' or ''} col-xl-6">
+                   <label class="col-form-label" for="lang">Language</label>
+                   <select name="lang" t-attf-class="form-control #{error.get('lang') and 'is-invalid' or ''}">
+                       <option value="fr_BE" t-att-selected="partner.lang == 'fr_BE'">
+                           French
+                       </option>
+                       <option value="nl_BE" t-att-selected="partner.lang == 'nl_BE'">
+                           Dutch
+                       </option>
+                       <option value="en_US" t-att-selected="partner.lang == 'en_US'">
+                           English
+                       </option>
+                   </select>
+               </div>
+           </xpath>
+    </template>
   	</data>
  </openerp>

@@ -1,153 +1,144 @@
 # -*- coding: utf-8 -*-
 # #Copyright (C) Monoyer Fabian (info@olabs.be)                                         #
 #                                                                                     #
-#Odoo Proprietary License v1.0                                                        #
+# Odoo Proprietary License v1.0                                                        #
 #                                                                                     #
-#This software and associated files (the "Software") may only be used (executed,      #
-#modified, executed after modifications) if you have purchased a valid license        #
-#from the authors, typically via Odoo Apps, or if you have received a written         #
-#agreement from the authors of the Software (see the COPYRIGHT file).                 #
+# This software and associated files (the "Software") may only be used (executed,      #
+# modified, executed after modifications) if you have purchased a valid license        #
+# from the authors, typically via Odoo Apps, or if you have received a written         #
+# agreement from the authors of the Software (see the COPYRIGHT file).                 #
 #                                                                                     #
-#You may develop Odoo modules that use the Software as a library (typically           #
-#by depending on it, importing it and using its resources), but without copying       #
-#any source code or material from the Software. You may distribute those              #
-#modules under the license of your choice, provided that this license is              #
-#compatible with the terms of the Odoo Proprietary License (For example:              #
-#LGPL, MIT, or proprietary licenses similar to this one).                             #
+# You may develop Odoo modules that use the Software as a library (typically           #
+# by depending on it, importing it and using its resources), but without copying       #
+# any source code or material from the Software. You may distribute those              #
+# modules under the license of your choice, provided that this license is              #
+# compatible with the terms of the Odoo Proprietary License (For example:              #
+# LGPL, MIT, or proprietary licenses similar to this one).                             #
 #                                                                                     #
-#It is forbidden to publish, distribute, sublicense, or sell copies of the Software   #
-#or modified copies of the Software.                                                  #
+# It is forbidden to publish, distribute, sublicense, or sell copies of the Software   #
+# or modified copies of the Software.                                                  #
 #                                                                                     #
-#The above copyright notice and this permission notice must be included in all        #
-#copies or substantial portions of the Software.                                      #
+# The above copyright notice and this permission notice must be included in all        #
+# copies or substantial portions of the Software.                                      #
 #                                                                                     #
-#THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR           #
-#IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,             #
-#FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.                                #
-#IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,          #
-#DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,     #
-#ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER          #
-#DEALINGS IN THE SOFTWARE.                                                            #
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR           #
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,             #
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.                                #
+# IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,          #
+# DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,     #
+# ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER          #
+# DEALINGS IN THE SOFTWARE.                                                            #
 #######################################################################################
 from odoo import api, fields, models, _
 
+
 class Answer(models.Model):
-    _inherit="event.event"
+    _inherit = "event.event"
 
-    x_speaker=fields.Many2many("res.partner",'speaker',string="Speaker")
-    x_translator=fields.Many2many("res.partner",'translator',string="Translator")
-    x_product=fields.Many2many("product.product",'products',string="Product mandatory")
-
+    x_speaker = fields.Many2many("res.partner", "speaker", string="Speaker")
+    x_translator = fields.Many2many("res.partner", "transaltor", string="Translator")
+    x_product = fields.Many2many("product.product",string="Meal include")
+    x_display_umbrella = fields.Boolean("Display on website Umbrella")
+    x_snippet_text = fields.Text("Text for snippet", translate=True)
+    x_snippet_image = fields.Binary("Image for snippet")
 
     def AddQuestion(self, force=False):
 
         for event in self:
             if not event.question_ids or force:
-                event.write({'question_ids': [(5, 0,0)]})
-                question_ids = event.write({'question_ids':[(0, 0,
-                                                           {'title': 'Type de logement', 'sequence': 1, 'is_individual': 1},
-                                                           )]})
-                event.question_ids[0].with_context(lang='nl_BE').write({'title': 'Accommodatie'})
+                event.write({'question_ids': [(5, 0, 0)]})
+                question_ids = event.write({'question_ids': [(0, 0,
+                                                              {'title': 'Need accommodation', 'sequence': 1,
+                                                               'once_per_order': 0},
+                                                              )]})
+                question_ids = event.write({'question_ids': [(0, 0,
+                                                              {'title': "Day of arrival", 'sequence': 2,
+                                                               'once_per_order': 1},
+                                                              )]})
 
-                question_ids = event.write({'question_ids':[(0, 0,
-                                                           {'title': "Jour d'arrivée", 'sequence': 2, 'is_individual': 0},
-                                                               )]})
-                event.question_ids[1].with_context(lang='nl_BE').write({'title': 'Aankomstdatum'})
+                question_ids = event.write({'question_ids': [(0, 0,
+                                                              {'title': "Depature_day", 'sequence': 3,
+                                                               'once_per_order': 1},
+                                                              )]})
 
-                question_ids = event.write({'question_ids':[(0, 0,
-                                                           {'title': "Jour du départ", 'sequence': 3, 'is_individual': 0},
-                                                           )]})
-                event.question_ids[2].with_context(lang='nl_BE').write({'title': 'Vertrekdatum'})
-
-                question_ids=[]
-                question_ids = self.env["event.answer"].create(
-                               {'question_id': event.question_ids[0].id, 'x_days': 0 ,'name': "Pas besoin de logement", 'sequence': 1},
-                               )
-                question_ids.with_context(lang='nl_BE').write({'name': 'Zonder overnachting'})
-
-                question_ids = self.env["event.answer"].create(
-                               {'question_id': event.question_ids[0].id, 'x_days': 0 ,'name': "Chambre commune homme", 'sequence': 2,'x_type_logement':197},
-                               )
-                question_ids.with_context(lang='nl_BE').write({'name': 'Gemeenschappelijke kamer man'})
-
-                question_ids = self.env["event.answer"].create(
-                               {'question_id': event.question_ids[0].id, 'x_days': 0 ,'name': "Chambre commune femme", 'sequence': 3,'x_type_logement':139},
-                               )
-                question_ids.with_context(lang='nl_BE').write({'name': 'Gemeenschappelijke kamer vrouw'})
-
-                question_ids = self.env["event.answer"].create(
-                               {'question_id': event.question_ids[0].id, 'x_days': 0 ,'name': "Chambre 1 lit", 'sequence': 1,'x_type_logement':195},
-                               )
-                question_ids.with_context(lang='nl_BE').write({'name': 'Eenpersoonskamer'})
-
-                question_ids = self.env["event.answer"].create(
-                               {'question_id': event.question_ids[0].id, 'x_days': 0 ,'name': "Chambre 2 lits", 'sequence': 5,'x_type_logement':196},
-                               )
-                question_ids.with_context(lang='nl_BE').write({'name': 'Tweepersoonskamer'})
-
-                question_ids = self.env["event.answer"].create(
-                               {'question_id': event.question_ids[0].id, 'x_days': 0 ,'name': "Studio 1 lit", 'sequence': 6,'x_type_logement': 148},
-                               )
-                question_ids.with_context(lang='nl_BE').write({'name': 'Eenpersoonsstudio'})
-
-                question_ids = self.env["event.answer"].create(
-                               {'question_id': event.question_ids[0].id, 'x_days': 0 ,'name': "Studio 2 lits", 'sequence': 7,'x_type_logement':149},
-                               )
-                question_ids.with_context(lang='nl_BE').write({'name': 'Tweepersoonsstudio'})
-
-
-                question_ids = self.env["event.answer"].create(
-                               {'question_id': event.question_ids[1].id, 'x_days': 0 ,'name': "Le jour de l'évènement", 'sequence': 1,},
-                               )
-                question_ids.with_context(lang='nl_BE').write({'name': 'De dag van het evenement'})
-
-                #question_ids = self.env["event.answer"].create(
-                #               {'question_id': event.question_ids[1].id, 'x_days': 0 ,'name': "Le jour de l'évènement (avant le petit déjeuner)", 'sequence': 2,'x_product_ids':[(6, 0,[3407])]},
-                #               )
-                #question_ids.with_context(lang='nl_BE').write({'name': 'De dag van het evenement (voor het ontbijt)'})
-
-                question_ids = self.env["event.answer"].create(
-                               {'question_id': event.question_ids[1].id, 'x_days': -1 ,'name': "1 jour avant (avant le souper)", 'sequence': 3,'x_product_ids':[(6, 0,[])]}, #3407
-                               )
-                question_ids.with_context(lang='nl_BE').write({'name': '1 dag eerder (voor het avondmaal)'})
-
-                question_ids = self.env["event.answer"].create(
-                               {'question_id': event.question_ids[1].id, 'x_days': -1 ,'name': "1 jour avant (avant le dîner)", 'sequence': 4,'x_product_ids':[(6, 0,[3445])]},
-                               )
-                question_ids.with_context(lang='nl_BE').write({'name': '1 dag eerder (voor de lunch)'})
-
-                question_ids = self.env["event.answer"].create(
-                               {'question_id': event.question_ids[2].id, 'x_days': 0 ,'name': "Le jour de l'évènement", 'sequence': 1},
-                               )
-                question_ids.with_context(lang='nl_BE').write({'name': 'De dag van het evenement'})
-
-                #question_ids = self.env["event.answer"].create(
-                #               {'question_id': event.question_ids[2].id, 'x_days': 0 ,'name': "Le jour de l'évènement (aprés le souper)", 'sequence': 2,'x_product_ids':[(6, 0,[3589])]},
-                #               )
-                #question_ids.with_context(lang='nl_BE').write({'name': 'De dag van het evenement (na het avondmaal)'})
-
-                question_ids = self.env["event.answer"].create(
-                    {'question_id': event.question_ids[2].id, 'x_days': 1, 'name': "Le lendemain (après le dîner)",
-                     'sequence': 3, 'x_product_ids': [(6, 0, [3445])]},
+                question_ids = []
+                question_ids = self.env["event.question.answer"].create(
+                    {'question_id': event.question_ids[0].id, 'x_days': 0, 'name': "NO",
+                     'sequence': 1},
                 )
-                question_ids.with_context(lang='nl_BE').write({'name': 'De volgende dag (na de lunch)'})
 
-                question_ids = self.env["event.answer"].create(
-                               {'question_id': event.question_ids[2].id , 'x_days': 1 ,'name': "Le lendemain (après le souper)", 'sequence': 4,'x_product_ids':[(6, 0,[3445,3589])]},
-                               )
-                question_ids.with_context(lang='nl_BE').write({'name': 'De volgende dag (na het avondmaal)'})
+                question_ids = self.env["event.question.answer"].create(
+                    {'question_id': event.question_ids[0].id, 'x_days': 0, 'name': "Yes, for ONE person (male, shared room)",
+                     'sequence': 2, 'x_room_id': self.env.ref('website_booking.product_room_shared_1_bed').id},
+                )
+
+                question_ids = self.env["event.question.answer"].create(
+                    {'question_id': event.question_ids[0].id, 'x_days': 0, 'name': "Yes, for ONE person (femelle, shared room)",
+                     'sequence': 3, 'x_room_id': self.env.ref('website_booking.product_room_shared_1_bed').id},
+                )
+
+                question_ids = self.env["event.question.answer"].create(
+                    {'question_id': event.question_ids[0].id, 'x_days': 0, 'name': "YES, Studio (one person)", 'sequence': 4,
+                     'x_room_id': self.env.ref('website_booking.product_room_studio_1_bed').id},
+                )
+
+                question_ids = self.env["event.question.answer"].create(
+                    {'question_id': event.question_ids[0].id, 'x_days': 0, 'name': "Yes, Studio (two person)", 'sequence': 5,
+                     'x_room_id': self.env.ref('website_booking.product_room_studio_2_bed').id},
+                )
+
+                question_ids = self.env["event.question.answer"].create(
+                    {'question_id': event.question_ids[1].id, 'x_days': -1, 'name': "I arrive the day before, I'll have Breakfast at the center.",
+                     'sequence': 1, 'x_meal_ids': [(6, 0, [self.env.ref("website_booking.product_breakfast").id,self.env.ref("website_booking.product_lunch").id])]},
+                )
+
+                question_ids = self.env["event.question.answer"].create(
+                    {'question_id': event.question_ids[1].id, 'x_days': -1, 'name': "I arrive the day before, I'll have dinner at the center.",
+                     'sequence': 1, 'x_meal_ids': [(6, 0, [self.env.ref("website_booking.product_lunch").id])]},
+                )
+
+                question_ids = self.env["event.question.answer"].create(
+                    {'question_id': event.question_ids[1].id, 'x_days': -1, 'name': "I arrive the day before, I won't have dinner at the center.",
+                     'sequence': 3, 'x_meal_ids': [(6, 0, [])]},
+                )
+
+                question_ids = self.env["event.question.answer"].create(
+                    {'question_id': event.question_ids[1].id, 'x_days': 0, 'name': "I arrive on the day of the event, but I need breakfast.",
+                     'sequence': 4, 'x_meal_ids': [(6, 0, [self.env.ref("website_booking.product_breakfast").id])]},
+                )
+
+                question_ids = self.env["event.question.answer"].create(
+                    {'question_id': event.question_ids[1].id, 'x_days': 0, 'name': "I arrive on the day of the event, but I don't need breakfast.",
+                     'sequence': 5, 'x_meal_ids': [(6, 0, [])]},
+                )
 
 
+
+                question_ids = self.env["event.question.answer"].create(
+                    {'question_id': event.question_ids[2].id, 'x_days': 0, 'name': "I leave at the end of the event, before supper.",
+                     'sequence': 1},
+                )
+
+                question_ids = self.env["event.question.answer"].create(
+                    {'question_id': event.question_ids[2].id, 'x_days': 0, 'name': "I leave at the end of the event, when I have supper.",
+                     'sequence': 3, 'x_meal_ids': [(6, 0, [self.env.ref("website_booking.product_evening").id])]},
+                )
+
+                question_ids = self.env["event.question.answer"].create(
+                    {'question_id': event.question_ids[2].id, 'x_days': 1, 'name': "I leave the next day after breakfast.",
+                     'sequence': 5, 'x_meal_ids': [(6, 0, [])]},
+                )
+
+                question_ids = self.env["event.question.answer"].create(
+                    {'question_id': event.question_ids[2].id, 'x_days': 1, 'name': "I leave the next day after Lunch.",
+                     'sequence': 5, 'x_meal_ids': [(6, 0, [self.env.ref("website_booking.product_lunch").id])]},
+                )
+
+                question_ids = self.env["event.question.answer"].create(
+                    {'question_id': event.question_ids[2].id, 'x_days': 1, 'name': "I leave the next day after supper.",
+                     'sequence': 5, 'x_meal_ids': [(6, 0, [self.env.ref("website_booking.product_lunch").id,self.env.ref("website_booking.product_evening").id])]},
+                )
 
     def RestoreQuestion(self):
-
-        #Yoga Studio Paramita : 161
-        #Shared Room Women : 139
-        #Studio 1P : 148
-        #Studio 2P : 149
-        #ABC 1pers.Bedroom : 195
-        #ABC 2pers.Bedroom : 196
-        #Shared Room Men : 197
-
         for event in self.env["event.event"].search([('company_id', '=', 1)]):
             event.AddQuestion(True)

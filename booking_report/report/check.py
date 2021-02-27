@@ -25,7 +25,7 @@ class ReportTestCheckevent(models.AbstractModel):
     def get_amount(self,order):
         paid=order.amount_total
         if order.invoice_count>0:
-            invoices=self.env["account.invoice"].search([('state',"not in",['draft','cancel']),('origin','=',order.name)])
+            invoices=self.env["account.move"].search([('state',"not in",['draft','cancel']),('origin','=',order.name)])
             for invoice in invoices:
                 paid-=invoice.amount_total
         if paid <0:
@@ -47,18 +47,17 @@ class ReportTestCheckevent(models.AbstractModel):
         date = ""
         for record in order:
             for line in record.order_line:
-                if line.x_start:
-                    date = line.x_start
-        return date[0:10]
+                if line.product_id.x_is_room and line.x_start:
+                    return line.x_start
+        return ""
 
     def get_date_stop(self, order):
         date = ""
         for record in order:
             for line in record.order_line:
-                if line.x_end:
-                    date = line.x_end
-        return date[0:10]
-
+                if line.product_id.x_is_room and  line.x_end:
+                    return line.x_end
+        return ""
 
     def get_list_participant(self, event, order_id):
         participant=[]
@@ -73,8 +72,8 @@ class ReportTestCheckevent(models.AbstractModel):
         room=[]
         for record in order:
             for line in record.order_line:
-                if line.x_rental :
-                    room.append(line.product_id.default_code)
+                if line.product_id.x_is_room:
+                    room.append(line.x_planning_id.role_id.name if line.x_planning_id.role_id.name else '/!\ No room assigned ! %s' % line.product_id.name)
         return (', ').join(room)
 
     def get_event(self,order):
@@ -96,7 +95,7 @@ class ReportTestCheckevent(models.AbstractModel):
                             accessory.append(" %s -> %s" % (line.product_id.default_code, line2.product_id.name))
         return (', ').join(accessory)
 
-    def get_report_values(self, docids, data=None):
+    def _get_report_values(self, docids, data=None):
 
         date_start = datetime.strftime(datetime.strptime(data['form'].get('date_start'), '%Y-%m-%d') - timedelta(days=1), '%Y-%m-%d')
         date_end = datetime.strftime(datetime.strptime(data['form'].get('date_end'), '%Y-%m-%d') + timedelta(days=1), '%Y-%m-%d')

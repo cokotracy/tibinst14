@@ -29,26 +29,6 @@
           name="website_booking.report_cooking_qweb"
           menu="False" />
 
-    <!-- Summary report -->
-    <report
-      id="action_report_summary_report_qweb"
-      model="report_summary_report"
-      string="Summary report"
-      report_type="qweb-pdf"
-      name="website_booking.report_summary_report_qweb"
-      file="website_booking.report_summary_report_qweb"
-    />
-
-   <report
-      id="action_report_summary_report_html"
-      model="report_summary_report"
-      string="Summary report"
-      report_type="qweb-html"
-      name="website_booking.report_summary_report_qweb"
-      file="website_booking.report_summary_report_html"
-    />
-
-
     <!-- PDF REPORTS : paperformat -->
     <record id="report_qweb_paperformat" model="report.paperformat">
         <field name="name">Booking report qweb paperformat</field>

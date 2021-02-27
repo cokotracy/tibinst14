@@ -1,14 +1,7 @@
 <odoo>
-    <data>
-
-		<template id="assets_frontend" inherit_id="website.assets_frontend" name="Website Booking">
-  		   <xpath expr="//script[last()]" position="after">
-				 <link href="/website_booking/static/src/css/daterangepicker.css" rel="stylesheet" type="text/css" />
-      	 <script type="text/javascript" src="/website_booking/static/src/js/moment.js"/>
-				 <script type="text/javascript" src="/website_booking/static/src/js/daterangepicker.js"/>
-				 <script type="text/javascript" src="/website_booking/static/src/js/frontend.js"/>
-			 </xpath>
-		</template>
-
-    </data>
+    <template id="tibinst_event_assets_frontend" inherit_id="web.assets_frontend" name="Tibinst Event Assets">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" type="text/css" href="/website_booking/static/src/css/event.css"/>
+        </xpath>
+    </template>
 </odoo>

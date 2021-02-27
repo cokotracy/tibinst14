@@ -34,23 +34,7 @@
 from odoo import models,fields,api
 from odoo.tools import pycompat
 from odoo.tools import float_compare
-
-
-class NewPriceList(models.Model):
-    _inherit="product.pricelist"
-
-    x_rental=fields.Boolean(string='Is Booking')
-    x_start = fields.Date(string="Booking start")
-    x_end = fields.Date(string="Booking End")
-    x_type = fields.Selection([('high','High season'),('average','Average season'),('low','Low season')],string="Season")
-
-    @api.onchange("x_rental")
-    def onchange_booking(self):
-        if self.x_rental:
-            self.code="Booking"
-            self.selectable=False
-
-
+"""
 class Mandatory(models.Model):
     _name="product.mandatory"
 
@@ -58,25 +42,24 @@ class Mandatory(models.Model):
     x_product_id=fields.Many2one("product.product",string="Product")
     x_type_qty=fields.Selection([('oneshot','Oneshot'),('multi','* units'),('multi-1','*(units -1)')],string="Type")
     x_qty=fields.Float(string="Quantity")
-
+"""
 class Template(models.Model):
     _inherit="product.template"
 
-    x_rental=fields.Boolean(string="Rental")
-    x_is_room=fields.Boolean(string="Is Room")
-    x_is_meal=fields.Boolean(string="Is Meal")
-    x_removing_qty=fields.Boolean(string="Removing qantity on cart")
-    x_mandatory_product_ids = fields.Many2many('product.mandatory',string="Mandatory")
-    x_capacity=fields.Integer(string="Capacity")
-    x_partner_ids=fields.Many2many("res.partner",string="Owner")
-    x_available_until=fields.Date(string="Available until")
-    type = fields.Selection(default='service')
-    x_pricelist_id=fields.Many2one("product.pricelist","Pricelist for Membership")
+    x_rental = fields.Boolean(string="Rental")
+    x_is_room = fields.Boolean(string="Is Room")
+    x_is_meal = fields.Boolean(string="Is Meal")
+    x_removing_qty = fields.Boolean(string="Removing qantity on cart")
+    #x_mandatory_product_ids = fields.Many2many('product.mandatory',string="Mandatory")
+    x_capacity = fields.Integer(string="Capacity")
+    x_planning_role_ids = fields.Many2many("planning.role",string="Room")
 
+"""
 class Category(models.Model):
     _inherit="product.public.category"
 
-    x_rental=fields.Boolean(string="Visible if user add an event to cart")
+    x_rental = fields.Boolean(string="Visible if user add an event to cart")
+"""
 
 class ProductProduct(models.Model):
     _inherit ="product.product"

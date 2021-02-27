@@ -1,6 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_booking_config,access_booking_config,model_booking_config,,1,0,0,0
-access_booking_config,access_booking_config,model_booking_config,base.group_user,1,1,1,0
-access_booking_date,access_booking_date,model_booking_date,,1,0,0,0
-access_product_mandatory,access_product_mandatory,model_product_mandatory,,1,0,0,0
-access_product_mandatory_employee,access_product_mandatory,model_product_mandatory,base.group_user,1,1,1,1
+access_event_duplicate_wizard,access_event_duplicate_wizard,model_event_duplicate_wizard,base.group_user,1,1,1,0

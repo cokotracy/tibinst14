@@ -29,12 +29,15 @@
                 </field>
         </record>
 
-        <act_window id="launch_event_duplicate_wizard"
-                    name="Many Duplicate"
-                    src_model="event.event"
-                    res_model="event.duplicate.wizard"
-                    view_mode="form"
-                    target="new"
-                    key2="client_action_one"/>
-	</data>
+
+         <record id="launch_event_duplicate_wizard" model="ir.actions.act_window">
+             <field name="name">Many Duplicate</field>
+             <field name="type">ir.actions.act_window</field>
+             <field name="res_model">event.duplicate.wizard</field>
+             <field name="view_mode">form</field>
+             <field name="target">new</field>
+             <field name="binding_model_id" ref="event.model_event_event"/>
+             <field name="binding_view_types">list</field>
+        </record>
+    </data>
 </odoo>

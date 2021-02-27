@@ -1,0 +1,22 @@
+<odoo>
+    <data>
+
+        <!--
+        <record id="res_company_0" model="res.company">
+            <field name="name">UMBRELLA</field>
+        </record>
+
+        <record id="res_company_2" model="res.company">
+            <field name="name">INSTITUT YEUNTEN LING ASBL</field>
+        </record>
+
+        <record id="res_company_3" model="res.company">
+            <field name="name">TIBETAANS INSTITUUT VZW</field>
+        </record>
+
+        <record id="res_company_4" model="res.company">
+            <field name="name">INSTITUT NALANDA ASBL</field>
+        </record>
+        -->
+    </data>
+</odoo>

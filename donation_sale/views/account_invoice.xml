@@ -56,5 +56,4 @@
     parent="account_donation_menu"
     groups="account.group_account_invoice"/>
 
-
 </odoo>

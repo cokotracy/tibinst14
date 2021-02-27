@@ -36,4 +36,4 @@ from odoo import models,fields,api
 class Calendar(models.Model):
     _inherit="calendar.event"
 
-    x_order_line_id=fields.Many2one("sale.order.line",string='Order')
+    #x_order_line_id = fields.Many2one("sale.order.line", string='Order')

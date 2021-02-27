@@ -32,8 +32,9 @@
 from odoo import api, fields, models, _
 
 class EventQuestionAnswer(models.Model):
-    _inherit='event.question.answer	'
-    x_type_logement=fields.Many2one("product.public.category",string="Category")
-    x_days=fields.Integer(string="Night(s)")
-    x_product_ids=fields.Many2many("product.product", string="Add Product")
+    _inherit = 'event.question.answer'
+
+    x_days = fields.Integer(string="Night(s)")
+    x_meal_ids = fields.Many2many("product.product", string="Add Meals")
+    x_room_id = fields.Many2one("product.product", string="Add room")
 

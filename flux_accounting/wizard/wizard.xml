@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="view_account_export_data" model="ir.ui.view">
+            <field name="name">account.export.data.form</field>
+            <field name="model">account.export.data</field>
+            <field name="arch" type="xml">
+                <form string="Export Data">
+                    <group col="4">
+                        <field name="x_year"/>
+                        <field name="x_month"/>
+                        <field name="x_company_id"/>
+                        <field name="x_detail"/>
+                    </group>
+                    <footer>
+                        <button name="account_export_data" string="Generate" type="object"/>
+                        <button string="Cancel" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_account_export_data_wiz" model="ir.actions.act_window">
+            <field name="name">Generate Document</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.export.data</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_account_export_data"/>
+            <field name="target">new</field>
+        </record>
+
+
+        <menuitem name="Export Data for Bjorn"
+                  id="menu_account_export_data"
+                  parent="account.menu_finance_entries"
+                  action="action_account_export_data_wiz"
+                  groups="account.group_account_manager,account.group_account_user"
+                  sequence="3"/>
+
+
+    </data>
+</odoo>

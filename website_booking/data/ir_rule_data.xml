@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+      <record id="event.event_event_company_rule" model="ir.rule">
+          <field name="domain_force">[]</field>
+      </record>
+    </data>
+
+</odoo>

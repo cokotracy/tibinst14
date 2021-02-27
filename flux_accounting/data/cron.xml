@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  © 2016 La Cimade (http://www.lacimade.org/)
+  @author: Alexis de Lattre <alexis.delattre@akretion.com>
+  License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+-->
+
+<odoo noupdate="1"> <!-- noupdate = 1 for the 'active' field -->
+
+<record id="send_rapport_account_invoice_cron" model="ir.cron">
+    <field name="name">Generation document for bjorn</field>
+    <field name="active" eval="False"/>
+    <field name="user_id" ref="base.user_root"/>
+    <field name="interval_number">1</field>
+    <field name="interval_type">months</field>
+    <field name="numbercall">-1</field> <!-- don't limit the number of calls -->
+    <field name="doall" eval="False"/>
+    <field name="model_id" ref="model_account_export_data"/>
+    <field name="state">code</field>
+    <field name="code">model._generate_document_bjorn()</field>
+</record>
+
+
+</odoo>

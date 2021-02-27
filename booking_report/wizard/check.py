@@ -5,7 +5,7 @@ from datetime import datetime
 
 class SaleReservationWizard(models.TransientModel):
 
-    _name = 'sale.order.reservation.wizard2'
+    _name = 'sale.order.reservation.wizard'
 
     date_start = fields.Date('Start Date', default=datetime.today().date(), required=True)
     date_end = fields.Date('End Date', default=datetime.today().date(), required=True)
@@ -29,7 +29,7 @@ class SaleReservationWizard(models.TransientModel):
     def report_checkin_detail(self):
         data = {
             'ids': self.ids,
-            'model': "sale.order.reservation.wizard2",
+            'model': "sale.order.reservation.wizard",
             'form': self.read(['date_start', 'date_end'])[0],
         }
         return self.env.ref('website_booking.booking_checkin_details').report_action(self, data=data, config=False)
@@ -38,7 +38,7 @@ class SaleReservationWizard(models.TransientModel):
     def report_checkout_detail(self):
         data = {
             'ids': self.ids,
-            'model': "sale.order.reservation.wizard2",
+            'model': "sale.order.reservation.wizard",
             'form': self.read(['date_start', 'date_end'])[0],
         }
         return self.env.ref('website_booking.booking_checkout_details').report_action(self, data=data, config=False)
@@ -46,17 +46,15 @@ class SaleReservationWizard(models.TransientModel):
     def report_checkevent_detail(self):
         data = {
             'ids': self.ids,
-            'model': "sale.order.reservation.wizard2",
+            'model': "sale.order.reservation.wizard",
             'form': self.read(['filter_event', 'date_start', 'date_end'])[0],
         }
         return self.env.ref('booking_report.booking_checkevent_details').report_action(self, data=data, config=False)
 
-
-
     def report_coocking_detail(self):
         data = {
             'ids': self.ids,
-            'model': "sale.order.reservation.wizard2",
+            'model': "sale.order.reservation.wizard",
             'form': self.read(['date_start', 'date_end','filter_event'])[0],
         }
         return self.env.ref('website_booking.booking_cooking_details').report_action(self, data=data, config=False)

@@ -34,40 +34,17 @@ from odoo import api, fields, models, _
 #ADDRESS_FIELDS = ('street', 'street2', 'zip', 'city', 'state_id', 'country_id','barcode')
 
 
-class Partner(models.Model):
-    _inherit="res.partner"
+class TibinstPartner(models.Model):
+    _inherit = "res.partner"
 
-    x_is_hotel=fields.Boolean(string="Is a Hotel")
     country_id = fields.Many2one('res.country', string='Country', ondelete='restrict',default=20)
-    barcode = fields.Char(string="Id unique", store=True,Readonly=True,copy=False)
+    x_barcode = fields.Char(string="Id unique", store=True, readonly=True, copy=False)
+    x_employee_id = fields.Many2one('hr.employee', string="Employee")
 
-
-    @api.model
-    def copy_multi_property(self, property_name, model, ids, source_company_id, target_company_id):
-        property = self.env['ir.property']
-        source_property = property.with_context(force_company=source_company_id)
-        target_property = property.with_context(force_company=target_company_id)
-        values = source_property.get_multi(property_name, model, ids)
-        target_property.set_multi(property_name, model, values)
-
-
-    def write(self, values):
-        result = super(Partner,self).write(values)
-        company_user_id = self.env.user.company_id.id
-        if values.get('property_product_pricelist',False):
-            for company in self.env["res.company"].search([]):
-                self.copy_multi_property('property_product_pricelist',"res.partner",[self.id],company_user_id,company.id)
-        return result
-
-    #def _address_fields(self):
-    #    """Returns the list of address fields that are synced from the parent."""
-    #    return list(ADDRESS_FIELDS)
-    
     def name_get(self):
         res = []
         for partner in self:
             name = partner.name or ''
-
             if partner.company_name or partner.parent_id:
                 if not name and partner.type in ['invoice', 'delivery', 'other']:
                     name = dict(self.fields_get(['type'])['type']['selection'])[partner.type]
@@ -81,73 +58,25 @@ class Partner(models.Model):
             name = name.replace('\n\n', '\n')
             if self._context.get('show_email') and partner.email:
                 name = "%s <%s>" % (name, partner.email)
-            if self._context.get('show_barcode') and partner.barcode:
-                name = name +"\n"+ partner.barcode
+            if self._context.get('show_barcode') and partner.x_barcode:
+                name = name +"\n"+ partner.x_barcode
             if self._context.get('html_format'):
                 name = name.replace('\n', '<br/>')
             res.append((partner.id, name))
         return res
 
-        
     @api.model
     def create(self, values):
-        values['barcode'] = self.env['ir.sequence'].next_by_code('res.partner')
-        record = super(Partner, self).create(values)
-        company_user_id = self.env.user.company_id.id
-        if values.get('property_product_pricelist',False):
-            for company in self.env["res.company"].search([]):
-                self.copy_multi_property('property_product_pricelist',"res.partner",[record.id],company_user_id,company.id)
+        values['x_barcode'] = self.env['ir.sequence'].next_by_code('res.partner')
+        record = super(TibinstPartner, self).create(values)
+        if not record.x_employee_id:
+            record.x_employee_id = self.env['hr.employee'].create(
+                {'name': record.name, 'active': True, 'barcode': record.x_barcode})
         return record
 
-        
     @api.model
     def _cron_membership_barcode(self):
-        partners=self.search([("barcode","=",None)])
+        partners=self.search([("x_barcode","=",None)])
         for partner in partners:
-            partner.write({'barcode':self.env['ir.sequence'].next_by_code('res.partner')})
-       
-
-    @api.model
-    def _cron_generate_userportal(self):
-        for partner in self.env["res.partner"].search([]):
-            if partner.email:
-                if partner.email.find("@")>0 and partner.email.find(".")>0:
-                     user = self.env['res.users'].sudo().with_context(active_test=False).search_count([('login', '=', partner.email.replace(" ","").lower())])
-                     if user==0:
-                         company_id = self.env['res.company']._company_default_get('res.users').id
-                         data={
-                             'email': partner.email.lower().replace(" ",""),
-                             'login': partner.email.lower().replace(" ",""),
-                             'partner_id': partner.id,
-                             'company_id': company_id,
-                             'company_ids': [(6, 0, [1,3,4])],
-                             'groups_id': [(6, 0, [10,5])],
-                             'lang':partner.lang,
-                         }
-                         
-                         self.env['res.users'].with_context(no_reset_password=True).create(data) 
-                         self._cr.commit()         
-                         
-    @api.model
-    def _cron_search_double_email(self):
-        for partner in self.env["res.partner"].search([]):
-            if partner.email:
-                if partner.email.find("@")>0 and partner.email.find(".")>0:
-                    email_count = self.env['res.partner'].search_count([("type","=","contact"),('email', '=', partner.email)])
-
-                    if email_count>1:
-                        for user in self.env['booking.config'].sudo().search([],limit=1).user_alert:
-                            activity = self.env['mail.activity'].sudo().create({
-                                        'activity_type_id': self.env.ref('website_booking.mail_activity_urgent').id,
-                                        'note': _('The email for the partner is several times'),
-                                        'res_id':  partner.id,
-                                        'user_id': user.id,
-                                        'res_model_id': self.env.ref('base.model_res_partner').id,
-                                        })
-                            activity._onchange_activity_type_id()
-    
-    def _commercial_fields(self):
-             list=super(Partner, self)._commercial_fields() 
-             list.remove('property_product_pricelist')
-             return list
+            partner.write({'x_barcode':self.env['ir.sequence'].next_by_code('res.partner')})
 

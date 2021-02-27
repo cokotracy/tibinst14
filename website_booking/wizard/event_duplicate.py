@@ -22,7 +22,7 @@ class EventWizard(models.TransientModel):
     def duplicate(self):
         DATETIME_FORMAT = "%Y-%m-%d"
         id=self.env.context.get("active_ids",[])
-        if len(id)>1:
+        if len(id) > 1:
             raise ValidationError(_("You can not selection many events for duplication !"))
 
         event=self.env["event.event"].browse(id)

@@ -1,0 +1,149 @@
+    body {
+		padding: 60px 0px;
+		background-color: rgb(220, 220, 220);
+	}
+
+    .tibinst-event-list {
+		list-style: none;
+		margin: 0px;
+		padding: 0px;
+	}
+	.tibinst-event-list > a > li {
+		background-color: rgb(255, 255, 255);
+		box-shadow: 0px 0px 5px rgb(51, 51, 51);
+		box-shadow: 0px 0px 5px rgba(51, 51, 51, 0.7);
+		padding: 0px;
+		margin: 0px 0px 20px;
+	}
+
+		.tibinst-event-list > a > li > time  {
+		display: inline-block;
+		width: 100%;
+		color: rgb(255, 255, 255);
+		padding: 5px;
+		text-align: center;
+		text-transform: uppercase;
+	}
+
+	.tibinst-event-list > a > li > .company_2 {
+		background-color: #d3711b;
+	}
+
+	.tibinst-event-list > a > li > .company_3 {
+		background-color: #5ea343;
+	}
+
+	.tibinst-event-list > a > li > .company_4 {
+		background-color: #0175bb;
+	}
+
+	.tibinst-event-list > a > li > time > span {
+		display: none;
+	}
+	.tibinst-event-list > a > li > time > .tibinst-day {
+		display: block;
+		font-size: 30pt;
+		font-weight: 100;
+		line-height: 1;
+	}
+	.tibinst-event-list > a > li time > .tibinst-month {
+		display: block;
+		font-size: 20pt;
+		font-weight: 900;
+		line-height: 1;
+	}
+	.tibinst-event-list > a > li > img {
+		width: 100%;
+	}
+	.tibinst-event-list > a > li > .tibinst-info {
+		padding-top: 5px;
+		text-align: center;
+		padding-left: 10px;
+	}
+	.tibinst-event-list > a > li > .tibinst-info > .tibinst-title {
+		font-size: 15pt;
+		font-weight: 700;
+		padding-left: 10px;
+		margin: 0px;
+	}
+
+	.tibinst-event-list > a > li > .tibinst-info > .tibinst-company {
+		font-size: 13pt;
+		font-weight: 400;
+		padding-left: 10px;
+		margin: 0px;
+	}
+
+	.tibinst-event-list > a > li > .tibinst-info > .tibinst-desc {
+		font-size: 9pt;
+		font-weight: 300;
+		margin: 0px;
+	}
+	.tibinst-event-list > a > li > .tibinst-info > ul > li,
+
+    .tibinst-event-list > a > li > .tibinst-info > ul > li > a {
+		display: block;
+		width: 100%;
+		color: rgb(30, 30, 30);
+		text-decoration: none;
+	}
+
+	@media (min-width: 768px) {
+		.tibinst-event-list > a > li {
+			position: relative;
+			display: block;
+			width: 100%;
+			height: 120px;
+			padding: 0px;
+		}
+		.tibinst-event-list > a > li > time,
+		.tibinst-event-list > a > li > img  {
+			display: inline-block;
+		}
+		.tibinst-event-list > a > li > time,
+		.tibinst-event-list > a > li > img {
+			width: 120px;
+			float: left;
+		}
+		.tibinst-event-list > a > li > time > img {
+			width: 40px;
+			float: center;
+		}
+		.tibinst-event-list > a > li > .tibinst-info {
+			background-color: rgb(245, 245, 245);
+			overflow: hidden;
+		}
+		.tibinst-event-list > a > li > time,
+		.tibinst-event-list > a > li > img {
+			width: 120px;
+			height: 120px;
+			padding: 0px;
+			margin: 0px;
+		}
+		.tibinst-event-list > a > li > .tibinst-info {
+			position: relative;
+			height: 120px;
+			text-align: left;
+			padding-right: 0px;
+		}
+		.tibinst-event-list > a > li > .tibinst-info > .tibinst-title,
+		.tibinst-event-list > a > li > .tibinst-info > .tibinst-desc {
+			padding: 0px 10px;
+		}
+		.tibinst-event-list > a > li > .tibinst-info > ul {
+			position: absolute;
+			left: 0px;
+			bottom: 0px;
+		}
+	}
+
+	@media (max-width: 768px) {
+		.tibinst-event-list > a > li > time > img {
+			width: 40px;
+			float: center;
+
+		}
+		.tibinst-event-list > a > li > img {
+		display: none;
+		}
+	}

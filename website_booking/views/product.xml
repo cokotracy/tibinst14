@@ -1,52 +1,20 @@
 <odoo>
     <data>
 
-
-
-        <record id="view_partner_property_form" model="ir.ui.view">
-                  <field name="name">res.partner.product.property.form.inherit</field>
-                  <field name="model">res.partner</field>
-                  <field name="inherit_id" ref="product.view_partner_property_form"/>
-                  <field name="groups_id" eval="[(4, ref('product.group_sale_pricelist'))]"/>
-                  <field name="arch" type="xml">
-                      <xpath expr="//field[@name='property_product_pricelist']" position="attributes">
-                         <attribute name="attrs">{}</attribute>
-                      </xpath>
-
-                      <xpath expr="//div[@name='parent_pricelists']" position="replace"/>
-                </field>
-        </record>
-
-
-        <record model="ir.ui.view" id="product_template_view_form_recurring">
-            <field name="name">product.template.subscription_membre.form</field>
-            <field name="model">product.template</field>
-            <field name="inherit_id" ref="sale_subscription.product_template_view_form_recurring"/>
-            <field name="arch" type="xml">
-               <xpath expr="//field[@name='subscription_template_id']" position="after">
-                      <field name='x_pricelist_id'/>
-              </xpath>
-           </field>
-        </record>
-
         <record model="ir.ui.view" id="product_rental_form">
             <field name="name">product.template.rental.form</field>
             <field name="model">product.template</field>
             <field name="inherit_id" ref="product.product_template_form_view"/>
             <field name="arch" type="xml">
-
                <xpath expr="//field[@name='list_price']" position="attributes">
                       <attribute name='groups'>product.group_sale_pricelist</attribute>
                </xpath>
-
                <xpath expr="//label[@for='standard_price']" position="attributes">
                       <attribute name='groups'>product.group_sale_pricelist</attribute>
                </xpath>
-
                <xpath expr="//div[@name='standard_price_uom']" position="attributes">
                       <attribute name='groups'>product.group_sale_pricelist</attribute>
                </xpath>
-
                 <xpath expr="//div[@name='options']" position="inside">
                     <div>
                         <field name="x_rental"/>
@@ -65,51 +33,37 @@
                         <label string="Removing quantity box on cart" for="x_removing_qty"/>
                     </div>
                 </xpath>
-
             </field>
         </record>
 
-        <record id="product_template_form_view" model="ir.ui.view">
+        <record id="product_template_only_form_view" model="ir.ui.view">
             <field name="name">product.template.product.website.form</field>
             <field name="model">product.template</field>
-            <field name="inherit_id" ref="website_sale.product_template_form_view"/>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
             <field name="arch" type="xml">
-                <xpath expr="//group[@name='website']" position="after">
-                  <group string="Room" attrs="{'invisible':[('x_is_room', '=', False)]}">
-                    <field name="x_mandatory_product_ids" widget="many2many_tags"/>
-                    <field name="x_capacity"/>
-                    <field name="x_partner_ids" widget="many2many_tags"/>
-                    <field name="x_available_until"/>
-                </group>
+                <xpath expr="//page[last()]" position="after">
+                  <page name="tibinst" string="Tibinst">
+                      <group string="Room" attrs="{'invisible':[('x_is_room', '=', False)]}">
+                        <!--<field name="x_mandatory_product_ids" widget="many2many_tags"/>-->
+                        <field name="x_capacity"/>
+                        <field name="x_planning_role_ids"/>
+                    </group>
+                  </page>
                 </xpath>
             </field>
         </record>
-
-
-        <record id="product_category_inherit_view" model="ir.ui.view">
-            <field name="name">product.public.category.form</field>
-            <field name="model">product.public.category</field>
-            <field name="inherit_id" ref="theme_snowy.product_category_inherit_view"/>
-            <field name="arch" type="xml">
-              <xpath expr="//field[@name='website_meta_title']" position="before">
-                  <field name="x_rental" string="Invisible if not an event to cart"/>
-              </xpath>
-            </field>
-        </record>
-
-
-
+<!--
          <record id="view_product_mandatory_form" model="ir.ui.view">
                   <field name="name">product.mandatory.form</field>
                   <field name="model">product.mandatory</field>
                   <field name="arch" type="xml">
                       <form string="Product Mandatoty">
                               <sheet>
-                                      <!--<field name="logo" widget="image" class="oe_avatar oe_left"/>-->
                                       <div class="oe_title">
                                           <div class="oe_edit_only">
                                               <label for="name" string="Name"/>
                                           </div>
+
                                           <h1>
                                               <field name="name"/>
                                           </h1>
@@ -139,7 +93,6 @@
                    <field name="type">ir.actions.act_window</field>
                    <field name="res_model">product.mandatory</field>
                    <field name="view_mode">tree,form</field>
-                   <field name="view_type">form</field>
                    <field name="help" type="html">
                        <p class="oe_view_nocontent_create">
                            Click to define a new rule of mandatory product.
@@ -149,7 +102,7 @@
 
             <menuitem id="menu_product_mandatory_config" name="Mandatory" action="product_mandatory_action_product"
                    parent="sale.prod_config_main" sequence="3"/>
-
+-->
 
 
 

@@ -24,11 +24,13 @@ class ResUsers(models.Model):
 			:param token: signup token (optional)
 			:return: (dbname, login, password) for the signed up user
 		"""
-		birtday=values.get('birthday',False)
+		birtday = values.get('birthday', False)
+		lang = values.get('lang', False)
+
 		if birtday:
-			if birtday.find("/")>0:
+			if birtday.find("/") > 0:
 				#convert jj/mm/aaaa --> to aaaa-mm-jj
-				datetimeobject = datetime.strptime(birtday,'%d/%m/%Y')
+				datetimeobject = datetime.strptime(birtday, '%d/%m/%Y')
 				birtday = datetimeobject.strftime('%Y-%m-%d')
 
 		if token:
@@ -37,7 +39,9 @@ class ResUsers(models.Model):
 			if partner_user:
 				values['birtday'] = birtday
 				values['gender'] = values.get('gender')
+				values['lang'] = values.get('lang')
 		else:
 			values['birtday'] = birtday
 			values['gender'] = values.get('gender')
+			values['lang'] = values.get('lang')
 		return super(ResUsers, self).signup(values, token)

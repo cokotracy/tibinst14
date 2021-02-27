@@ -7,14 +7,14 @@
             <field name="inherit_id" ref="base.view_partner_form"/>
             <field name="arch" type="xml">
 
-                <xpath expr="//field[@name='ref']" position="after">
-                  <field name="x_is_hotel"/>
-                </xpath>
-
-
                 <xpath expr="//field[@name='state_id']" position="attributes">
                   <attribute name="invisible">1</attribute>
                 </xpath>
+                <xpath expr="//field[@name='email']/.." position="after">
+                    <field name="x_barcode"/>
+                    <field name="x_employee_id"/>
+                </xpath>
+
             </field>
         </record>
 
@@ -31,8 +31,8 @@
 
 
                 <xpath expr="//div/ul" position="inside">
-                      <li t-if="record.barcode.raw_value">
-	                      <field name="barcode"/>
+                      <li t-if="record.x_barcode.raw_value">
+	                      <field name="x_barcode"/>
 	                 </li>            
                 </xpath>
             </field>

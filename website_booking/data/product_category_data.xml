@@ -1,0 +1,28 @@
+<odoo>
+    <data>
+                <record id="category_1" model="product.public.category">
+            <field name="name">category_1</field>
+        </record>
+
+        <record id="category_2" model="product.public.category">
+            <field name="name">category_2</field>
+        </record>
+
+        <record id="category_3" model="product.public.category">
+            <field name="name">category_3</field>
+        </record>
+
+        <record id="category_4" model="product.public.category">
+            <field name="name">category_4</field>
+        </record>
+
+        <record id="category_5" model="product.public.category">
+            <field name="name">category_5</field>
+        </record>
+
+        <record id="category_6" model="product.public.category">
+            <field name="name">category_6</field>
+        </record>
+
+    </data>
+</odoo>

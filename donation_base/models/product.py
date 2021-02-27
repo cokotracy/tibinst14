@@ -11,11 +11,11 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     donation = fields.Boolean(
-        string='Is a Donation', track_visibility='onchange')
+        string='Is a Donation', tracking=True)
     in_kind_donation = fields.Boolean(
-        string="In-Kind Donation", track_visibility='onchange')
+        string="In-Kind Donation", tracking=True)
     tax_receipt_ok = fields.Boolean(
-        string='Is Eligible for a Tax Receipt', track_visibility='onchange',
+        string='Is Eligible for a Tax Receipt', tracking=True,
         help="Specify if the product is eligible for a tax receipt")
 
     @api.onchange('donation')

@@ -5,7 +5,7 @@
   <!--Report for check-in details -->
   <report id="booking_checkevent_details"
       string="CheckEvent Detail"
-      model="sale.order.reservation.wizard2"
+      model="sale.order.reservation.wizard"
       report_type="qweb-pdf"
       file="booking_report.report_checkevent_qweb"
       name="booking_report.report_checkevent_qweb"

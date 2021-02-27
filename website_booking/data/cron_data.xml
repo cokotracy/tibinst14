@@ -1,0 +1,102 @@
+<odoo>
+    <data>
+
+        <!--
+        <record id="get_doubly_room_cron" model="ir.cron">
+            <field name="name">Search doubly reserved room</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model_id" ref="model_sale_order_line"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_get_doubly_sale()</field>
+        </record>
+        -->
+<!--
+        <record id="get_new_membership_cron" model="ir.cron">
+            <field name="name">Membership : New</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">5</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model_id" ref="model_sale_subscription"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_membership_today()</field>
+        </record>
+-->
+<!--
+        <record id="get_close_membership_cron" model="ir.cron">
+            <field name="name">Membership : Close</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model_id" ref="model_sale_subscription"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_membership_clean()</field>
+        </record>
+-->
+        <record id="generate_barcode_partner_cron" model="ir.cron">
+            <field name="name">Membership : Generate barcode</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_membership_barcode()</field>
+        </record>
+
+<!--
+		<record id="generate_user_partner_cron" model="ir.cron">
+            <field name="name">Go-Live : Generate User of partner</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">30</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_generate_userportal()</field>
+        </record>
+   -->
+        <!--
+        <record id="double_partner_email_cron" model="ir.cron">
+            <field name="name">Double email for partner</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">5</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model_id" ref="model_res_partner"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_search_double_email()</field>
+        </record>
+        -->
+<!--
+        <record id="sale_order_cancel_cron" model="ir.cron">
+            <field name="name">Cancel old Sale Order</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">2</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model_id" ref="model_sale_order"/>
+            <field name="state">code</field>
+            <field name="code">model._cron_cancel_sale_order()</field>
+        </record>
+-->
+    </data>
+</odoo>

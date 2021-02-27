@@ -33,206 +33,75 @@
 #######################################################################################
 from odoo import models,fields,api,_
 from odoo.http import request
-import datetime
-import pytz
-from dateutil import tz
+from datetime import datetime,date,timedelta
+from odoo.exceptions import ValidationError
+
 import logging
-from datetime import date,timedelta
 
 _logger = logging.getLogger(__name__)
 
 class SaleLine(models.Model):
-    _inherit="sale.order.line"
+    _inherit = "sale.order.line"
 
     x_rental = fields.Boolean(string="Booking")
-    x_start = fields.Datetime(string="Check In")
-    x_end = fields.Datetime(string="Check Out")
-    x_calendar_id=fields.Many2one('calendar.event',string="Event calendar") #compute="onchange_date")
-    x_pricelist_id=fields.Many2one('product.pricelist',string="Pricelist")
+    x_is_room_meal = fields.Boolean("Is room/meal", compute="_compute_is_room_meal")
+    x_start = fields.Date(string="Check In")
+    x_end = fields.Date(string="Check Out")
+    x_planning_id = fields.Many2one("planning.slot", string="PLanning Slot", copy=False)
 
-    @api.model
-    def _cron_get_doubly_sale(self):
-        result = {}
-        rcontext = {}
-        rooms=self.env["product.product"].search([('x_is_room','=',True)])
-        current_date = datetime.datetime.now().date()
-        new_date = current_date + datetime.timedelta(days=+365)
-        listdate=[]
-        sale_summary={}
-        for i in range(0,365):
-            listdate.append(current_date + datetime.timedelta(days=i))
-        for room in rooms:
-                values=[]
-                for date in listdate:
-                         AM = datetime.datetime.strptime(str(date)+" 00:00:01","%Y-%m-%d %H:%M:%S")
-
-                         queryAM=[("product_id.id","=",room.id),
-                         ("product_id.x_rental", "=", True),
-                         ("x_end", ">",str(AM)),("x_start", "<", str(AM)),
-                         ('order_id.state', 'not in', ["cancel","sent","draft"])]
-
-                         salelines=self.env["sale.order.line"].search(queryAM)
-                         if len(salelines)>1:
-                             for saleline in salelines:
-                                 orderlist=sale_summary.get(room,[])
-                                 if saleline.order_id not in orderlist:
-                                      orderlist.append(saleline.order_id)
-                                      sale_summary.update({room:orderlist})
-
-        for  room, orders in sale_summary.items():
-            for order in orders:
-                if order.partner_id not in room.x_partner_ids :
-                    for user in self.env['booking.config'].sudo().search([],limit=1).user_alert:
-                        activity = self.env['mail.activity'].sudo().create({
-                                'activity_type_id': self.env.ref('website_booking.mail_activity_urgent').id,
-                                'note': _('The room is seems to be overcrowded.The order should be adjusted with a room still available.'),
-                                'res_id':  order.id,
-                                'user_id': user.id,
-                                'res_model_id': self.env.ref('sale.model_sale_order').id,
-                                })
-                        activity._onchange_activity_type_id()
+    @api.depends("product_id")
+    def _compute_is_room_meal(self):
+        for record in self:
+            record.x_is_room_meal = False
+            if record.product_id and record.product_id.x_is_room or record.product_id.x_is_meal:
+                record.x_is_room_meal = True
 
     @api.onchange("x_start","x_end")
     def onchange_qty(self):
         for record in self:
             if record.x_start and record.x_end:
-                from_dt = datetime.datetime.strptime(record.x_start[0:10], "%Y-%m-%d")
-                to_dt = datetime.datetime.strptime(record.x_end[0:10], "%Y-%m-%d")
-                timedelta = to_dt - from_dt
-                seconds = float(timedelta.days * (24 * 60 * 60))
-                if record.product_id.uom_id.factor_inv > 0:
-                    qty = ((seconds + timedelta.seconds) / record.product_id.uom_id.factor_inv)
-                else:
-                    qty = (seconds + timedelta.seconds)
-                record.product_uom_qty=qty
-
+                record.product_uom_qty = (record.x_end - record.x_start).days
+                if record.product_id.x_is_meal:
+                    record.product_uom_qty += 1
 
 class Sale(models.Model):
-    _inherit="sale.order"
-    
-    
-    #vérifie si le panier contient une chambre sans event. => refuser
-
-    def room_without_event(self):
-        self.ensure_one()
-        chambre=False
-        event=False
-        for line in self.order_line:
-            if line.product_id.x_is_room:
-                chambre=True
-            if line.product_id.event_ok:
-               event=True
-        if chambre==True and event==False:
-           return True     
-        return False
-        
-    
-    #vérifie si le panier contient que des produits de la même société
-    def _verify_company(self):
-        self.ensure_one()
-        ok=True
-        company_id=request.env.user.company_id.id
-        if company_id!=self.company_id.id:
-            ok=False
-        for line in self.order_line:
-            if line.product_id.company_id and line.product_id.company_id.id!=company_id:
-                ok=False
-        return ok       
-                
-    def _reservation(self):
-        self.ensure_one()
-        DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
-        booking = request.env['booking.config'].sudo().search([],limit=1)
-        for line in self.order_line:
-            if line.product_id.x_rental:
-                if line.x_start and line.x_end:
-
-                    from_dt = datetime.datetime.strptime(line.x_start, DATETIME_FORMAT)
-                    to_dt = datetime.datetime.strptime(line.x_end, DATETIME_FORMAT)
-                    tzuser = request.env.user.partner_id.tz or booking.tz
-                    start = from_dt.replace(tzinfo=tz.gettz(tzuser))
-                    end = to_dt.replace(tzinfo=tz.gettz(tzuser))
-                    start = start.astimezone(tz.gettz("UTC")).strftime(DATETIME_FORMAT)
-                    end = end.astimezone(tz.gettz("UTC")).strftime(DATETIME_FORMAT)
-                    now = datetime.datetime.now()
-                    now_minus_delay = str(now + datetime.timedelta(minutes = -booking.delay))
-                    follow=True
-                    if line.product_id and line.product_id.x_is_room:
-
-                        #La chambre est toujours libre pour les partenaires qui sont liés au produit.
-                        if self.env.user.partner_id in line.product_id.x_partner_ids:
-                            follow=False
-                        #la chambre n'est plus disponible après une certaine date.
-                        if line.product_id.x_available_until and end[0:10]>line.product_id.x_available_until:
-                            follow=True
-
-                    query=[("product_id.product_tmpl_id.id","=",line.product_id.id),
-                    ("product_id.x_rental", "=", True),
-                    ("x_start", "<=", str(end)), ("x_end", ">=",str(start)),
-                    '|',
-                    '&','&',('order_id.write_date', '>', now_minus_delay),('order_id.id', '!=',self.id), ('order_id.state', '=', "draft"),
-                    ('order_id.state', 'not in', ["cancel", "draft"])]
-
-                    orderline=self.env["sale.order.line"].sudo().search(query)
-                    #si la chambre doit vérifiée!
-                    if follow and len(orderline)>0:
-                        return [True,', '.join(orderline.mapped("product_id.name"))]
-                    
-        return [False,""]
-
-    def _cart_find_product_line(self, product_id=None, line_id=None, **kwargs):
-        self.ensure_one()
-        lines = super(Sale, self)._cart_find_product_line(product_id, line_id)
-        if line_id:
-            return lines
-
-        linked_line_id = kwargs.get('linked_line_id', False)
-        optional_product_ids = set(kwargs.get('optional_product_ids', []))
-
-        lines = lines.filtered(lambda line: line.linked_line_id.id == linked_line_id)
-
-        if optional_product_ids:
-            # only match the lines with the same chosen optional products on the existing lines
-            lines = lines.filtered(lambda line: optional_product_ids == set(line.mapped('option_line_ids.product_id.id')))
-        else:
-            lines = lines.filtered(lambda line: not line.option_line_ids)
-
-        product=self.env['product.product'].browse(product_id)
-        if product.x_is_room:
-            lines=self.env["sale.order.line"]
-        return lines
+    _inherit = "sale.order"
 
     def action_confirm(self):
-        res=super(Sale,self).action_confirm()
+        res = super(Sale,self).action_confirm()
         for record in self:
             for line in record.order_line:
-                if line.x_rental :
-                          event = self.env['calendar.event'].search([('x_order_line_id', '=', record.id)])
-                          data = {
-                                'name': "%s - %s" % (record.partner_id.name, line.product_id.name),
-                                'start_datetime': line.x_start,
-                                'start': line.x_start,
-                                'stop': line.x_end,
-                                'partner_ids': [(6, 0, [record.partner_id.id])],
-                                'x_order_line_id': line.id,
-                                }
-                          if event:
-                              event.with_context(no_mail_to_attendees=True).write(data)
-                          else:
-                              event=event.with_context(no_mail_to_attendees=True).create(data)
-                          line.x_calendar_id=event.id
+                if line.product_id.x_is_room:
+                   #create planning slot
+                   my_time = datetime.min.time()
+                   start = datetime.combine(line.x_start, my_time).replace(hour=14, minute=0, second=0)
+                   end = datetime.combine(line.x_end, my_time).replace(hour=11, minute=0, second=0)
+                   #search room dispo
+                   room_choice = False
+                   for room in line.product_id.x_planning_role_ids:
+                       reservation = self.env["planning.slot"].search([('role_id', '=', room.id),('end_datetime','>=',start),('start_datetime','<=',end)])
+                       if not reservation:
+                          room_choice = room
+                   if room_choice:
+                       planning = self.env['planning.slot'].create({
+                            'employee_id': line.order_id.partner_id.x_employee_id.id,
+                            'start_datetime': start,
+                            'end_datetime': end,
+                            'role_id': room_choice.id,
+                            'x_order_id': record.id,
+                       })
+                       line.x_planning_id = planning.id
+                   else:
+                       raise ValidationError(_("Sorry, there are no more rooms available for this type of product."))
+
         return res
 
     def action_cancel(self):
         res=super(Sale,self).action_cancel()
         for record in self:
             for line in record.order_line:
-                if line.x_rental :
-                   event = self.env['calendar.event'].search([('x_order_line_id', '=', line.id)])
-                   data = {
-                      'active':False,
-                   }
-                   event.with_context(no_mail_to_attendees=True).write(data)
+                if line.x_planning_id:
+                   line.x_planning_id.unlink()
         return res
 
     def _get_line_description(self, order_id, product_id, attributes=None):
@@ -265,13 +134,6 @@ class Sale(models.Model):
         return name
 
 
-    def _booking_delivery(self):
-        booking = self.env['booking.config'].sudo().search([], limit=1)
-        for order in self:
-            for line in order.order_line:
-                if line.product_id.x_rental:
-                    return booking.delivery
-        return True
 
 
     def _cron_cancel_sale_order(self,day=2):
@@ -283,3 +145,41 @@ class Sale(models.Model):
                 _logger.info("cancel Sale Order for %s" % record.name)
                 record.write({'state': 'cancel'})
 
+    """
+                #Si y a une chambre
+            #filtrer les chambres libres
+            room_choice = []
+            for room in rooms:
+                # la chambre n'est plus disponible après une certaine date.
+                # print (product.x_available_until)
+                ok=True
+                #if room.x_available_until and event.date_end and event.date_end[0:10] > room.x_available_until:
+                #     ok=False
+                if ok and event.date_begin and event.date_end:
+                     booking = False #request.env['booking.config'].sudo().search([], limit=1)
+
+                     date_begin = "%s %s" % (event.date_begin[0:10], booking.defaultTimeFrom)
+                     date_end = "%s %s" % (event.date_end[0:10], booking.defaultTimeTo)
+                     from_dt = datetime.strptime(date_begin, DATETIME_FORMAT)+timedelta(days=nbr_days_extra_neg)
+                     to_dt = datetime.strptime(date_end, DATETIME_FORMAT)+timedelta(days=nbr_days_extra_pos)
+                     tzuser = request.env.user.partner_id.tz or booking.tz
+                     start = from_dt.replace(tzinfo=tz.gettz(tzuser))
+                     end = to_dt.replace(tzinfo=tz.gettz(tzuser))
+                     start = start.astimezone(tz.gettz("UTC")).strftime(DATETIME_FORMAT)
+                     end = end.astimezone(tz.gettz("UTC")).strftime(DATETIME_FORMAT)
+
+                     now = datetime.now()
+                     now_minus_delay = str(now + timedelta(minutes=-booking.delay))
+
+                     query = [("product_id.id", "=", room.id),
+                              ("product_id.x_rental", "=", True),
+                              ("x_start", "<=", str(end)), ("x_end", ">=", str(start)),
+                               '|',
+                               '&', ('order_id.write_date', '>', now_minus_delay), ('order_id.state', '=', "draft"),
+                              ('order_id.state', 'not in', ["cancel", "draft"])]
+
+                     orderline = request.env["sale.order.line"].sudo().search_count(query)
+                     if orderline == 0:
+                        room_choice.append(room)
+
+    """

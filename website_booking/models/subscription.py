@@ -39,6 +39,7 @@ DATETIME_FORMAT="%Y-%m-%d"
 class Product(models.Model):
     _inherit = 'sale.subscription'
 
+    """
     def _cron_membership_today(self):
         #Activer les liste de prix pour les membership en cours depuis 7 jours
         date_modif=(date.today()-timedelta(days=7)).strftime(DATETIME_FORMAT)
@@ -54,7 +55,8 @@ class Product(models.Model):
                         _logger.info("Sale subscription update for %s" % record.partner_id.name)
                         record.partner_id.write({"property_product_pricelist":line.product_id.x_pricelist_id.id})
 
-
+    """
+    """
     def _cron_membership_clean(self):
         #nettoie les abonnements memberships expiré depuis hier     
         date_modif=(date.today()-timedelta(days=1)).strftime(DATETIME_FORMAT)
@@ -65,3 +67,4 @@ class Product(models.Model):
             nrecord=self.env["sale.subscription"].browse(nrecordids).filtered(lambda s: s.state in ['draft','renew','cancel','close'] and s.write_date > date_modif)
             #Remettre la liste de prix à zéro pour ceux-ci
             nrecord.partner_id.write({"property_product_pricelist":self.env["product.pricelist"].search([],limit=1)})
+    """

@@ -1,0 +1,36 @@
+<odoo>
+    <data>
+
+        <record id="categ_booking" model="uom.category">
+            <field name="name">Booking Time</field>
+        </record>
+
+       <record id="unit_time_booking_second" model="uom.uom">
+            <field name="name">Second(s)</field>
+            <field name="uom_type">reference</field>
+            <field name="category_id" ref="categ_booking"/>
+        </record>
+
+        <record id="unit_time_booking_minute" model="uom.uom">
+            <field name="name">Minute(s)</field>
+            <field name="uom_type">bigger</field>
+            <field name="category_id" ref="categ_booking"/>
+            <field name="factor_inv" eval="60.0"/>
+        </record>
+
+        <record id="unit_time_booking_hour" model="uom.uom">
+            <field name="name">Hour(s)</field>
+            <field name="uom_type">bigger</field>
+            <field name="category_id" ref="categ_booking"/>
+            <field name="factor_inv" eval="3600.0"/>
+        </record>
+
+        <record id="unit_time_booking_day" model="uom.uom">
+            <field name="name">Night(s)</field>
+            <field name="uom_type">bigger</field>
+            <field name="category_id" ref="categ_booking"/>
+            <field name="factor_inv" eval="86400.0"/>
+
+        </record>
+    </data>
+</odoo>
