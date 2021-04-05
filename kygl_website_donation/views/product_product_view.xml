@@ -21,6 +21,7 @@
 
                 <xpath expr="//page[@name='tibinst']" position="inside">
                     <group>
+                        <field name="kygl_message_authorised"/>
                         <field name="kygl_info"/>
                     </group>
                 </xpath>

@@ -1,39 +1,5 @@
 <odoo>
     <data>
-        <record id="product_membre_a" model="product.product">
-            <field name="name">Member A</field>
-            <field name="type">service</field>
-            <field name="lst_price">150</field>
-            <field name="membership">True</field>
-        </record>
-
-        <record id="product_membre_b" model="product.product">
-            <field name="name">Member B</field>
-            <field name="type">service</field>
-            <field name="lst_price">300</field>
-            <field name="membership">True</field>
-        </record>
-
-         <record id="product_membre_basic" model="product.product">
-            <field name="name">Member Bacis</field>
-            <field name="type">service</field>
-            <field name="lst_price">300</field>
-            <field name="membership">True</field>
-        </record>
-
-        <record id="product_membre_supporting" model="product.product">
-            <field name="name">Member Supporting</field>
-            <field name="type">service</field>
-            <field name="lst_price">150</field>
-            <field name="membership">True</field>
-        </record>
-
-        <record id="product_membre_honary" model="product.product">
-            <field name="name">Member Honary</field>
-            <field name="type">service</field>
-            <field name="lst_price">150</field>
-            <field name="membership">True</field>
-        </record>
 
     </data>
 </odoo>

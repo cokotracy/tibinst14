@@ -1,25 +1,5 @@
 <odoo>
     <data>
-         <record id="planning_role_room_01" model="planning.role">
-            <field name="name">Room 0.1</field>
-        </record>
-
-        <record id="planning_role_room_02" model="planning.role">
-            <field name="name">Room 0.2</field>
-        </record>
-
-        <record id="planning_role_room_03" model="planning.role">
-            <field name="name">Room 0.3</field>
-        </record>
-
-        <record id="planning_role_room_04" model="planning.role">
-            <field name="name">Room 0.4</field>
-        </record>
-
-        <record id="planning_role_room_05" model="planning.role">
-            <field name="name">Room 0.5</field>
-        </record>
-
 
     </data>
 </odoo>

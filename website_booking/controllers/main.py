@@ -111,10 +111,10 @@ class WebsiteEventSaleController(WebsiteEventController):
 
     @http.route(['/event/<model("event.event"):event>/registration/error/<int:error_number>'], type='http', auth="public", website=True)
     def registration_error(self, event,error_number):
-        if error_number==1:
+        if error_number == 1:
            error=_("Only one registration per person is allowed !")
-        if error_number==2:
-            error=_("Sorry, there is no more room available in this room category.")
+        if error_number == 2:
+            error=_("It seems that there are no more rooms in this category available, please change the room category or call the centre for more details.")
         data = {"event": event, "error":error}
         return request.render("website_booking.error", data)
 
@@ -187,6 +187,20 @@ class WebsiteEventSaleController(WebsiteEventController):
             capacity = 1
 
             if extra_rooms:
+                my_time = datetime.min.time()
+                start = datetime.combine(event.date_begin + timedelta(days=nbr_days_extra_neg), my_time).replace(hour=14, minute=0, second=0)
+                end = datetime.combine(event.date_end + timedelta(days=nbr_days_extra_pos), my_time).replace(hour=11, minute=0, second=0)
+                # search room dispo
+                room_dispo = False
+                for room in extra_rooms.x_planning_role_ids:
+                    reservation = request.env["planning.slot"].search(
+                        [('role_id', '=', room.id), ('end_datetime', '>=', start), ('start_datetime', '<=', end)])
+                    if not reservation:
+                        room_dispo = True
+
+                if not room_dispo:
+                    return request.redirect('/event/%s/registration/error/2' % slug(event))
+
                 capacity = extra_rooms.x_capacity
                 #add room
                 cart_values2 = order._cart_update(product_id=extra_rooms.id, linked_line_id=cart_values["line_id"],
@@ -209,7 +223,6 @@ class WebsiteEventSaleController(WebsiteEventController):
                 SaleOrderLineSudo = request.env['sale.order.line'].sudo().browse([cart_values2['line_id']])
                 SaleOrderLineSudo.write({'x_rental': True, 'x_start': event.date_begin + timedelta(days=nbr_days_extra_neg), 'x_end':event.date_end + timedelta(days=nbr_days_extra_pos), 'name': '%s\nEvent: %s day(s)\nExtra: %s day(s)\n' % (SaleOrderLineSudo.product_id.description_sale or SaleOrderLineSudo.product_id.name ,nbr_days_night, nbr_days_extra)})
 
-
             #add extra meal
             if nbr_days_extra and extra_rooms:
                 for extra_product in extra_meals:
@@ -230,6 +243,7 @@ class WebsiteEventSaleController(WebsiteEventController):
 
             attendee_ids |= set(cart_values.get('attendee_ids', []))
         order.pricelist_id=order.partner_id.property_product_pricelist.id
+
         return request.redirect('/shop/cart')
 
 

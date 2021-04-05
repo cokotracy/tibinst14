@@ -2,9 +2,8 @@
 
 <odoo>
 
-    <template id="donation_page" name="Donation Page">
-
-        <t t-name="website.faire-un-don">
+    <template id="donation_page_nl" name="Donation Page">
+              <t t-name="website.faire-un-don">
               <t t-call="website.layout">
                   <script type="text/javascript"  src="/kygl_website_donation/static/src/js/donation_form.js"></script>
                 <form class="" action="/save_donation" method="post">
@@ -23,15 +22,15 @@
                           </div>
                           <div class="row">
                             <div class="col-md-4">
-                              <h5 class=""><b>1. Je fais un don</b></h5>
+                              <h5 class=""><b>1. Ik doe een gift</b></h5>
                               <div class="row">
                                 <div class="col-md-12">
                                   <div class="row">
-                                    <div class="col-md-12"><img class="img-fluid d-block" t-att-src="website.image_url(fond_select_data,'image', '300x300') if fond_select_data else ''"/></div>
+                                    <div class="col-md-12"><img class="img-fluid d-block" t-att-src="image_data_uri(fond_select_data.image_1024) if fond_select_data else ''"/></div>
                                   </div>
                                   <div class="row">
                                     <div class="col-md-12">
-                                      <h5 class=""><b>Je choisi un montant :</b></h5>
+                                      <h5 class=""><b>Ik kies een bedrag :</b></h5>
                                     </div>
                                   </div>
                                   <div class="row">
@@ -51,43 +50,42 @@
                                   </div>
                                   <div class="row">
                                     <div class="col-md-6">
-                                      <h5 class=""><b>Montant libre</b></h5>
+                                      <h5 class=""><b>Vrije bijdrage</b></h5>
                                     </div>
                                     <div class="col-md-6">
                                       <form class="form-inline">
                                         <div class="form-group">
-                                          <input type="number" name="amount_man" class="form-control" id="amount_man" placeholder="Montant"/> </div>
+                                          <input type="number" name="amount_man" class="form-control" id="amount_man"/> </div>
                                       </form>
                                     </div>
                                   </div>
                                   <div class="row">
                                     <div class="col-md-12">
-                                      <h5 class=""><b>Type de prélevement</b></h5>
+                                      <h5 class=""><b>Periodiciteit</b></h5>
                                     </div>
                                   </div>
                                   <div class="row">
                                     <div class="col-md-4">
-                                      <h5 class=""><input value="U" id="type" checked="checked" name="type" type="radio" required="required"/>&amp;nbsp;Unique</h5>
+                                      <h5 class=""><input value="U" id="type" checked="checked" name="type" type="radio" required="required"/>&amp;nbsp;Eenmalig</h5>
                                     </div>
                                     <div class="col-md-4">
-                                      <h5 class=""><input value="M" id="type"  name="type" type="radio"/>&amp;nbsp;Mensuel</h5>
+                                      <h5 class=""><input value="M" id="type"  name="type" type="radio"/>&amp;nbsp;Maandelijks</h5>
                                     </div>
                                     <div class="col-md-4">
-                                      <h5 class=""><input value="Y" id="type"  name="type" type="radio"/>&amp;nbsp;Annuel</h5>
+                                      <h5 class=""><input value="Y" id="type"  name="type" type="radio"/>&amp;nbsp;Jaarlijks</h5>
                                     </div>
                                   </div>
-                                     <p class="" style="margin-right: 0px; margin-bottom: 0px; margin-left: 0px; font-stretch: normal; font-size: 12px; line-height: normal; font-family: Helvetica;">Wanneer u voor een maandelijkse of jaarlijkse overschrijving kiest, dan machtigt u het&amp;nbsp;Tibetaans Instituut vzw om dit bedrag van uw rekening af te schrijven, vanaf nu tot wijziging of herroeping. Deze overeenkomst kan op elk ogenblik beeindigd worden. Neem hiervoor contact op met: <a href="mailto:donation@tibinst.org">
-                                     <span style="text-decoration: underline">donation@tibinst.org</span></a>.<span style="caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, sans-serif; font-size: 13px; background-color: rgb(239, 239, 239);">&amp;nbsp;</span><br/>
-                                         <span style="background-color: rgb(239, 239, 239); caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, sans-serif; font-size: 11px;">U wordt regelmatig ingelicht over het gebruik van de ingezamelde fondsen</span></p>
-                                    <p class=""/>
+                                    <p class="" style="margin-right: 0px; margin-bottom: 0px; margin-left: 0px; font-stretch: normal; font-size: 12px; line-height: normal; font-family: Helvetica;">Wanneer u voor een maandelijkse of jaarlijkse overschrijving kiest, dan machtigt u het Instituut om dit bedrag van uw rekening af te schrijven, vanaf nu tot wijziging of herroeping. Deze overeenkomst kan op elk ogenblik beeindigd worden. Neem hiervoor contact op met <a href="/contactus">contact</a>.<br/>
+                                    U wordt regelmatig ingelicht over het gebruik van de ingezamelde fondsen.
+                                    </p>
                                 </div>
                               </div>
                             </div>
                             <div class="col-md-4">
-                              <h5 class=""><b>2. Mes coordonnées</b></h5>
+                              <h5 class=""><b>2. Naam en adres</b></h5>
                               <div class="row">
                                 <div t-if="connection" class="col-md-12">
-                                    <a t-att-href="'/web/login?redirection=/donation_page/%s' % fond_select_data.product_tmpl_id.kygl_code if fond_select_data else '/web/login?redirection=/donation_page/'" class="btn btn-primary btn-lg btn-block">M'identifier avec mon login</a>
+                                    <a t-att-href="'/web/login?redirection=/donation_page_nl/%s' % fond_select_data.product_tmpl_id.kygl_code if fond_select_data else '/web/login?redirection=/donation_page_nl/'" class="btn btn-primary btn-lg btn-block">Inloggen met mijn login</a>
                                 </div>
 
                                 <div class="col-md-12">
@@ -99,54 +97,54 @@
                                     <input type="hidden" name="field_required" t-att-value="'phone,name'" />
                                     <t t-if="partner">
                                         <div class="form-group">
-                                            <label>Mon adresse email </label>
-                                            <input type="email" readonly="readonly" class="form-control form-control-lg" placeholder="Email" required="required" name="email" id="email" t-att-value="partner.email"/>
+                                            <label>Mijn e-mail adres</label>
+                                            <input type="email" readonly="readonly" class="form-control form-control-lg" required="required" name="email" id="email" t-att-value="partner.email"/>
                                         </div>
                                         <t t-if="partner.company_type == 'company'">
                                             <div class="form-group">
-                                                <label><b>Nom de la société *</b></label>
-                                                <input class="form-control form-control-lg" readonly="readonly" placeholder="Nom de la société" type="text"  name="company" id="company" t-att-value="partner.parent_id.name if partner.parent_id else ''"/>
+                                                <label><b>Bedrijfsnaam *</b></label>
+                                                <input class="form-control form-control-lg" readonly="readonly" type="text"  name="company" id="company" t-att-value="partner.parent_id.name if partner.parent_id else ''"/>
                                             </div>
                                             <div class="form-group">
-                                                <input class="form-control form-control-lg" readonly="readonly" placeholder="Numéro de TVA" type="text"  name="vat" id="vat"/>
+                                                <input class="form-control form-control-lg" readonly="readonly" type="text"  name="vat" id="vat"/>
                                             </div>
                                         </t>
                                         <div class="form-group">
-                                                <label><b>Mon nom et prénom *</b></label>
-                                                <input class="form-control form-control-lg" placeholder="Nom et Prénom" type="text" required="required" name="name" id="name" t-att-value="partner.name if partner else ''"/>
+                                                <label><b>Mijn naam en achternaam *</b></label>
+                                                <input class="form-control form-control-lg" type="text" required="required" name="name" id="name" t-att-value="partner.name if partner else ''"/>
                                         </div>
                                     </t>
                                     <t t-else="not partner">
                                         <div class="form-group">
                                             <input id="iamcompany" name="iamcompany" type="checkbox" onchange="toggleCheckbox(this)" />
                                             <label>
-                                                <b>&amp;nbsp;Je suis une société</b>
+                                                <b>&amp;nbsp;Ik ben een bedrijf</b>
                                             </label>
                                         </div>
 
                                         <div class="form-group">
-                                            <label>Mon adresse email </label>
-                                            <input type="email" class="form-control form-control-lg" placeholder="Email" required="required" name="email" id="email"/>
+                                            <label>Mijn e-mail adres</label>
+                                            <input type="email" class="form-control form-control-lg" required="required" name="email" id="email"/>
                                         </div>
                                             <div id="namecompany" style="display: none" class="form-group">
-                                                <label><b>Nom de la société *</b></label>
-                                                <input class="form-control form-control-lg" placeholder="Nom de la société" type="text"  name="company" id="company"/>
+                                                <label><b>Bedrijfsnaam *</b></label>
+                                                <input class="form-control form-control-lg" type="text"  name="company" id="company"/>
                                             </div>
                                             <div id="tvacompany" style="display: none" class="form-group">
-                                                <label><b>Numéro de TVA</b></label>
-                                                <input class="form-control form-control-lg" placeholder="Numéro de TVA" type="text"  name="vat" id="vat"/>
+                                                <label><b>BTW-nummer</b></label>
+                                                <input class="form-control form-control-lg"  type="text"  name="vat" id="vat"/>
                                             </div>
                                             <div class="form-group">
-                                                <label><b>Mon nom et prénom *</b></label>
-                                                <input class="form-control form-control-lg" placeholder="Nom et Prénom" type="text" required="required" name="name" id="name"/>
+                                                <label><b>Mijn naam en achternaam *</b></label>
+                                                <input class="form-control form-control-lg" type="text" required="required" name="name" id="name"/>
                                             </div>
                                     </t>
 
-                                    <div class="form-group"><label><b>Mon adresse *</b></label><input class="form-control form-control-lg" placeholder="Adresse" type="text" name="street" required="required" id="street" t-att-value="partner.street if partner else ''"/></div>
-                                    <div class="form-group"><label><b>Mon code postal *</b></label><input class="form-control form-control-lg" placeholder="Code postal" type="text" name="zip" required="required" id="zip" t-att-value="partner.zip if partner else ''"/></div>
-                                    <div class="form-group"><label><b>Ma localité *</b></label><input placeholder="Localité" class="form-control form-control-lg" type="text" name="city" required="required" id="city" t-att-value="partner.city if partner else ''"/></div>
-                                    <div class="form-group"><label><b>Mon pays *</b></label>
-                                        <select class="form-control form-control-lg" placeholder="Pays" type="text" name="country_id" required="required" id="country_id">
+                                    <div class="form-group"><label><b>Mijn adres *</b></label><input class="form-control form-control-lg"  type="text" name="street" required="required" id="street" t-att-value="partner.street if partner else ''"/></div>
+                                    <div class="form-group"><label><b>Mijn postcode *</b></label><input class="form-control form-control-lg" type="text" name="zip" required="required" id="zip" t-att-value="partner.zip if partner else ''"/></div>
+                                    <div class="form-group"><label><b>Mijn stad *</b></label><input  class="form-control form-control-lg" type="text" name="city" required="required" id="city" t-att-value="partner.city if partner else ''"/></div>
+                                    <div class="form-group"><label><b>Mijn land *</b></label>
+                                        <select class="form-control form-control-lg" type="text" name="country_id" required="required" id="country_id">
                                             <t t-foreach="countries" t-as="country">
                                                 <option t-if="partner and country.id==partner.country_id.id" selected="selected" t-att-value="country.id"><t t-esc="country.name"/></option>
                                                 <option t-else="" t-att-value="country.id"><t t-esc="country.name"/></option>
@@ -154,33 +152,215 @@
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label><b>Mon numéro de téléphone *</b></label><input class="form-control form-control-lg" placeholder="Téléphone" type="text" name="phone" required="required" id="phone" t-att-value="partner.phone if partner else ''"/>
+                                        <label><b>Mijn telefoonnummer *</b></label><input class="form-control form-control-lg" type="text" name="phone" required="required" id="phone" t-att-value="partner.phone if partner else ''"/>
                                     </div>
                               </div>
                             </div>
                             </div>
                             <div class="col-md-4">
-                              <h5 class=""><b>3. Je confirme mon don</b></h5>
+                              <h5 class=""><b>3. Ik bevestig mijn gift </b></h5>
                               <div class="row">
-                                <div class="col-md-12">
-                                    <textarea class="form-control form-control-lg" placeholder="Message pour le centre" type="text" name="message" id="message"/>
+                                <div t-if="fond_select_data.kygl_message_authorised" class="col-md-12">
+                                    <textarea class="form-control form-control-lg"  type="text" name="message" id="message"/>
                                 </div>
                               </div>
                               <div class="row">
                                 <div class="col-md-12">
-                                  <p class=""><span style="font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-size: 1rem;">Texte explicatif....</span>Paragraph. Then, my friend, when darkness overspreads my eyes, and heaven and earth seem to dwell in my soul and absorb its power, like the form of a beloved mistress, then I often think with longing.</p>
-                                </div>
-                              </div>
-                              <div class="row">
-                                <div class="col-md-12">
-                                    <button type="submit" class="btn btn-primary btn-lg btn-block">Je confirme mon don</button>
+                                    <button type="submit" class="btn btn-primary btn-lg btn-block">Ik bevestig mijn gift</button>
                                 </div>
                               </div>
                               <div class="row">
                                     <div class="col-md-12">
                                         <h4 style="margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding: 20px 10px 10px; font-size: 18px; font-weight: 600; text-transform: uppercase; color: rgb(0, 0, 0); text-shadow: none; line-height: 21px; caret-color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, sans-serif;">VERTROUWELIJKHEID VAN UW GEGEVENS</h4>
                                         <h4 style="margin-right: 0px; margin-bottom: 0px; margin-left: 0px; font-family: &quot;Open Sans&quot;, sans-serif; font-weight: 600; line-height: 21px; color: rgb(0, 0, 0); font-size: 18px; padding: 20px 10px 10px; text-transform: uppercase; text-shadow: none; caret-color: rgb(0, 0, 0);"/>
-                                        <p style="font-weight: normal; text-transform: none; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding: 10px; font-size: 13px;">De informatie die we verzamelen via dit formulier is bedoeld voor onze afdeling fondsenwerving &amp;nbsp;om uw giften te behandelen en hun spoor te bewaren. We gebruiken ze ook om uw fiscaal attest aan te maken.<br/><br/>Alle bankgegevens om de betaling te verwerken zijn versleuteld met het SSL-protocol. Ze worden slechts bewaard voor de duur die strikt noodzakelijk is om deze doeleinden te verwezenlijken.<br/><br/>&amp;nbsp;Als u geen nieuws meer van ons wil ontvangen of als u een van de andere rechten wil uitoefenen die de GDPR u toekent, volstaat een mailtje aan ons op&amp;nbsp;donation@tibinst.org of per post Kruispadstraat 33, 2900 Schoten.<br/><br/>Voor meer informatie kan u altijd onze privacyverklaring raadplegen:&amp;nbsp;<a href="https://donate.msf-azg.be/afdruk" style="color: rgb(238, 0, 0); transition: color 0.2s linear 0s;" data-original-title="" title="" aria-describedby="tooltip684500">https://www.tibinst.be/nl_BE/confidentialite-et-mentions-legales<br/></a></p>
+                                        <p style="font-weight: normal; text-transform: none; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding: 10px; font-size: 13px;">De informatie die we verzamelen via dit formulier is bedoeld voor onze afdeling fondsenwerving &amp;nbsp;om uw gift te behandelen en hun spoor te bewaren. Ze worden eveneens gebruikt om uw fiscaal attest aan te maken.<br/><br/>Alle bankgegevens om de betaling te verwerken zijn versleuteld met het SSL-protocol. Ze worden slechts bewaard voor de duur die strikt noodzakelijk is om deze doeleinden te verwezenlijken.<br/><br/>Mocht u van ons geen nieuws meer wensen te ontvangen of een van de andere rechten die de GDPR u toekent willen uitoefenen, gelieve contact op te nemen met <a href="/contactus">contact</a> of per post Kruispadstraat 33, 2900 Schoten.<br/><br/>Voor meer informatie kan u altijd onze privacyverklaring raadplegen:&amp;nbsp;<a href="confidentialite-et-mentions-legales" style="color: rgb(238, 0, 0); transition: color 0.2s linear 0s;" data-original-title="" title="" aria-describedby="tooltip684500">confidentialite-et-mentions-legales<br/></a></p>
+                                    </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                </div>
+                </form>
+              </t>
+        </t>
+    </template>
+
+
+
+    <template id="donation_page_fr" name="Donation Page">
+        <t t-name="website.faire-un-don">
+              <t t-call="website.layout">
+                  <script type="text/javascript" src="/kygl_website_donation/static/src/js/donation_form.js"></script>
+                <form class="" action="/save_donation" method="post">
+                  <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                  <input type="hidden" name="fond_code" t-att-value="fond_select"/>
+                  <div id="wrap" class="oe_structure oe_empty">
+                     <div class="py-5" >
+                        <div class="container">
+                          <div class="row">
+                              <br/>
+                              <br/>
+                              <br/>
+                            <div class="col-md-12">
+                                <t t-raw="fond_select_data.kygl_info"/>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-4">
+                              <h5 class=""><b>1. Ik doe een gift</b></h5>
+                              <div class="row">
+                                <div class="col-md-12">
+                                  <div class="row">
+                                    <div class="col-md-12"><img class="img-fluid d-block" t-att-src="image_data_uri(fond_select_data.image_1024) if fond_select_data else ''"/></div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-md-12">
+                                      <h5 class=""><b>Ik kies een bedrag :</b></h5>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <t t-foreach="montants" t-as="montant">
+                                      <div class="col-md-3">
+                                        <p class="lead w-60">
+                                          <t t-if="montant_index == 0">
+                                              <input checked="checked" name="amount" t-att-value="montant" type="radio"/>&amp;nbsp;<t t-esc="montant"/>
+                                          </t>
+                                          <t t-else="">
+                                              <input name="amount" t-att-value="montant" type="radio"/>&amp;nbsp;<t t-esc="montant"/>
+                                          </t>
+                                          €
+                                        </p>
+                                    </div>
+                                    </t>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-md-6">
+                                      <h5 class=""><b>Vrije bijdrage</b></h5>
+                                    </div>
+                                    <div class="col-md-6">
+                                      <form class="form-inline">
+                                        <div class="form-group">
+                                          <input type="number" name="amount_man" class="form-control" id="amount_man" /> </div>
+                                      </form>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-md-12">
+                                      <h5 class=""><b>Periodiciteit</b></h5>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-md-4">
+                                      <h5 class=""><input value="U" id="type" checked="checked" name="type" type="radio" required="required"/>&amp;nbsp;Eenmalig</h5>
+                                    </div>
+                                    <div class="col-md-4">
+                                      <h5 class=""><input value="M" id="type"  name="type" type="radio"/>&amp;nbsp;Maandelijks</h5>
+                                    </div>
+                                    <div class="col-md-4">
+                                      <h5 class=""><input value="Y" id="type"  name="type" type="radio"/>&amp;nbsp;Jaarlijks</h5>
+                                    </div>
+                                  </div>
+                                    <p class="" style="margin-right: 0px; margin-bottom: 0px; margin-left: 0px; font-stretch: normal; font-size: 12px; line-height: normal; font-family: Helvetica;">Wanneer u voor een maandelijkse of jaarlijkse overschrijving kiest, dan machtigt u het Instituut om dit bedrag van uw rekening af te schrijven, vanaf nu tot wijziging of herroeping. Deze overeenkomst kan op elk ogenblik beeindigd worden. Neem hiervoor contact op met <a href="/contactus">contact</a>.<br/>
+                                    U wordt regelmatig ingelicht over het gebruik van de ingezamelde fondsen.
+                                    </p>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-4">
+                              <h5 class=""><b>2. Naam en adres</b></h5>
+                              <div class="row">
+                                <div t-if="connection" class="col-md-12">
+                                    <a t-att-href="'/web/login?redirection=/donation_page_fr/%s' % fond_select_data.product_tmpl_id.kygl_code if fond_select_data else '/web/login?redirection=/donation_page_fr/'" class="btn btn-primary btn-lg btn-block">Inloggen met mijn login</a>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                                    <input type="hidden" name="submitted" value="1" />
+                                    <input type="hidden" name="partner_id" t-att-value="partner_id or '0'" />
+                                    <input type="hidden" name="callback" t-att-value="callback" />
+                                    <!-- Example -->
+                                    <input type="hidden" name="field_required" t-att-value="'phone,name'" />
+                                    <t t-if="partner">
+                                        <div class="form-group">
+                                            <label>Mijn e-mail adres</label>
+                                            <input type="email" readonly="readonly" class="form-control form-control-lg"  required="required" name="email" id="email" t-att-value="partner.email"/>
+                                        </div>
+                                        <t t-if="partner.company_type == 'company'">
+                                            <div class="form-group">
+                                                <label><b>Bedrijfsnaam *</b></label>
+                                                <input class="form-control form-control-lg" readonly="readonly"  type="text"  name="company" id="company" t-att-value="partner.parent_id.name if partner.parent_id else ''"/>
+                                            </div>
+                                            <div class="form-group">
+                                                <input class="form-control form-control-lg" readonly="readonly"  type="text"  name="vat" id="vat"/>
+                                            </div>
+                                        </t>
+                                        <div class="form-group">
+                                                <label><b>Mijn naam en achternaam *</b></label>
+                                                <input class="form-control form-control-lg" type="text" required="required" name="name" id="name" t-att-value="partner.name if partner else ''"/>
+                                        </div>
+                                    </t>
+                                    <t t-else="not partner">
+                                        <div class="form-group">
+                                            <input id="iamcompany" name="iamcompany" type="checkbox" onchange="toggleCheckbox(this)" />
+                                            <label>
+                                                <b>&amp;nbsp;Ik ben een bedrijf</b>
+                                            </label>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Mijn e-mail adres</label>
+                                            <input type="email" class="form-control form-control-lg"  required="required" name="email" id="email"/>
+                                        </div>
+                                            <div id="namecompany" style="display: none" class="form-group">
+                                                <label><b>Bedrijfsnaam *</b></label>
+                                                <input class="form-control form-control-lg"  type="text"  name="company" id="company"/>
+                                            </div>
+                                            <div id="tvacompany" style="display: none" class="form-group">
+                                                <label><b>BTW-nummer</b></label>
+                                                <input class="form-control form-control-lg"  type="text"  name="vat" id="vat"/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label><b>Mijn naam en achternaam *</b></label>
+                                                <input class="form-control form-control-lg"  type="text" required="required" name="name" id="name"/>
+                                            </div>
+                                    </t>
+
+                                    <div class="form-group"><label><b>Mijn adres *</b></label><input class="form-control form-control-lg"  type="text" name="street" required="required" id="street" t-att-value="partner.street if partner else ''"/></div>
+                                    <div class="form-group"><label><b>Mijn postcode *</b></label><input class="form-control form-control-lg"  type="text" name="zip" required="required" id="zip" t-att-value="partner.zip if partner else ''"/></div>
+                                    <div class="form-group"><label><b>Mijn stad *</b></label><input  class="form-control form-control-lg" type="text" name="city" required="required" id="city" t-att-value="partner.city if partner else ''"/></div>
+                                    <div class="form-group"><label><b>Mijn land *</b></label>
+                                        <select class="form-control form-control-lg" type="text" name="country_id" required="required" id="country_id">
+                                            <t t-foreach="countries" t-as="country">
+                                                <option t-if="partner and country.id==partner.country_id.id" selected="selected" t-att-value="country.id"><t t-esc="country.name"/></option>
+                                                <option t-else="" t-att-value="country.id"><t t-esc="country.name"/></option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label><b>Mijn telefoonnummer *</b></label><input class="form-control form-control-lg"  type="text" name="phone" required="required" id="phone" t-att-value="partner.phone if partner else ''"/>
+                                    </div>
+                              </div>
+                            </div>
+                            </div>
+                            <div class="col-md-4">
+                              <h5 class=""><b>3. Ik bevestig mijn gift </b></h5>
+                              <div class="row">
+                                <div t-if="fond_select_data.kygl_message_authorised" class="col-md-12">
+                                    <textarea class="form-control form-control-lg" type="text" name="message" id="message"/>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-primary btn-lg btn-block">Ik bevestig mijn gift</button>
+                                </div>
+                              </div>
+                              <div class="row">
+                                    <div class="col-md-12">
+                                        <h4 style="margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding: 20px 10px 10px; font-size: 18px; font-weight: 600; text-transform: uppercase; color: rgb(0, 0, 0); text-shadow: none; line-height: 21px; caret-color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, sans-serif;">VERTROUWELIJKHEID VAN UW GEGEVENS</h4>
+                                        <h4 style="margin-right: 0px; margin-bottom: 0px; margin-left: 0px; font-family: &quot;Open Sans&quot;, sans-serif; font-weight: 600; line-height: 21px; color: rgb(0, 0, 0); font-size: 18px; padding: 20px 10px 10px; text-transform: uppercase; text-shadow: none; caret-color: rgb(0, 0, 0);"/>
+                                        <p style="font-weight: normal; text-transform: none; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding: 10px; font-size: 13px;">De informatie die we verzamelen via dit formulier is bedoeld voor onze afdeling fondsenwerving &amp;nbsp;om uw giften te behandelen en hun spoor te bewaren. Ze worden eveneens gebruikt om uw fiscaal attest aan te maken.<br/><br/>Alle bankgegevens om de betaling te verwerken zijn versleuteld met het SSL-protocol. Ze worden slechts bewaard voor de duur die strikt noodzakelijk is om deze doeleinden te verwezenlijken.<br/><br/>&amp;nbsp;Als u geen nieuws meer van ons wil ontvangen of als u een van de andere rechten wil uitoefenen die de GDPR u toekent, volstaat een mailtje aan ons op&amp;nbsp;<a href="/contactus">contact</a> of per post Kruispadstraat 33, 2900 Schoten.<br/><br/>Voor meer informatie kan u altijd onze privacyverklaring raadplegen:&amp;nbsp;<a href="confidentialite-et-mentions-legales" style="color: rgb(238, 0, 0); transition: color 0.2s linear 0s;" data-original-title="" title="" aria-describedby="tooltip684500">confidentialite-et-mentions-legales<br/></a></p>
                                     </div>
                               </div>
                             </div>
@@ -194,6 +374,5 @@
         </t>
 
     </template>
-
 
 </odoo>

@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 
 class KyglWebsiteMembershio(http.Controller):
 
-    @http.route(['/membership_page','/membership_page/<string:membership_select>'], auth='public', website=True)
+    @http.route(['/membership_page_nl/<string:membership_select>','/membership_page_fr/<string:membership_select>'], auth='public', website=True)
     def membership_page(self, membership_select=False, **kwargs):
         countries =request.env['res.country'].sudo().search([])
         membership_u = request.env['product.product'].sudo().search([('product_tmpl_id.kygl_code', '=','%s-U' % membership_select)])
@@ -29,7 +29,10 @@ class KyglWebsiteMembershio(http.Controller):
              'amount_y': membership_y.list_price,
         }
 
-        return http.request.render('kygl_website_membership.membership_page', values)
+        if request.context.get("lang",False) == "fr_BE":
+            return http.request.render('kygl_website_membership.membership_page_nl', values)
+        else:
+            return http.request.render('kygl_website_membership.membership_page_fr', values)
 
 
     # Check and insert values from the form on the model <model>

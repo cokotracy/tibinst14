@@ -38,7 +38,11 @@ class TibinstWebsiteEventController(WebsiteEventController):
                 "day": event_date.split(',')[1],
                 "event": event,
                 "url": '%s%s' % (event.website_id.domain, event.website_url)})
-        for web in request.env["website"].search([]):
+        umbrella_ids = request.env["website"].search([('name','ilike','umbrella')])
+        lang = "fr"
+        if request.env.context.get('lang','').lower().find(lang) < 0:
+            lang = 'nl'
+        for web in request.env["website"].search(['|',('name','ilike','tibetaans'),('name','ilike',lang),('id','not in',umbrella_ids.ids)]):
             result.update({'url_comp_%s' % web.id: '%s%s' % (web.domain,'/event')})
             result.update({'name_comp_%s' % web.id: web.name})
         return request.env['ir.ui.view']._render_template("website_event.country_events_list", result)

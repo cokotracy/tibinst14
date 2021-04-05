@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 
 class KyglWebsiteDonation(http.Controller):
 
-    @http.route(['/donation_page','/donation_page/<string:fond_select>'], auth='public', website=True)
+    @http.route(['/donation_page_nl/<string:fond_select>','/donation_page_fr/<string:fond_select>'], auth='public', website=True)
     def donation_page(self, fond_select=False, **kwargs):
         countries =request.env['res.country'].sudo().search([])
         fond = request.env['product.product'].sudo().search([('product_tmpl_id.kygl_code', '=', '%s-U' % fond_select)])
@@ -22,8 +22,10 @@ class KyglWebsiteDonation(http.Controller):
              'countries': countries,
              'montants': request.env.ref('kygl_website_donation.kygl_amount_donation').sudo().value.split("-"),
          }
-
-        return http.request.render('kygl_website_donation.donation_page', values)
+        if request.context.get("lang",False) == "fr_BE":
+            return http.request.render('kygl_website_donation.donation_page_fr', values)
+        else:
+            return http.request.render('kygl_website_donation.donation_page_nl', values)
 
 
     # Check and insert values from the form on the model <model>

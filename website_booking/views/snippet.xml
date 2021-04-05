@@ -33,15 +33,41 @@
                                  </t>
                             </ul>
                             <div class="row">
-                                <div class="col-md-4">
-                                    <a type="button" class="btn" style="" t-att-href="url_comp_1">See the events of <t t-esc="name_comp_1"/></a>
-                                </div>
-                                <div class="col-md-4">
-                                    <a type="button" class="btn" style="" t-att-href="url_comp_2">See the events of <t t-esc="name_comp_2"/></a>
-                                </div>
-                                <div class="col-md-4">
-                                    <a type="button" class="btn" style="" t-att-href="url_comp_3">See the events of <t t-esc="name_comp_3"/></a>
-                                </div>
+                                <t t-if="url_comp_1">
+                                    <div class="col-md-4">
+                                        <a type="button" class="btn" style="" t-att-href="url_comp_1">See the events of <t t-esc="name_comp_1"/></a>
+                                    </div>
+                                </t>
+                                <t t-if="url_comp_2">
+                                    <div class="col-md-4">
+                                        <a type="button" class="btn" style="" t-att-href="url_comp_2">See the events of <t t-esc="name_comp_2"/></a>
+                                    </div>
+                                </t>
+                                <t t-if="url_comp_3">
+                                    <div class="col-md-4">
+                                        <a type="button" class="btn" style="" t-att-href="url_comp_3">See the events of <t t-esc="name_comp_3"/></a>
+                                    </div>
+                                </t>
+                                <t t-if="url_comp_4">
+                                    <div class="col-md-4">
+                                        <a type="button" class="btn" style="" t-att-href="url_comp_4">See the events of <t t-esc="name_comp_4"/></a>
+                                    </div>
+                                </t>
+                                <t t-if="url_comp_5">
+                                    <div class="col-md-4">
+                                        <a type="button" class="btn" style="" t-att-href="url_comp_5">See the events of <t t-esc="name_comp_5"/></a>
+                                    </div>
+                                </t>
+                                <t t-if="url_comp_6">
+                                    <div class="col-md-4">
+                                        <a type="button" class="btn" style="" t-att-href="url_comp_6">See the events of <t t-esc="name_comp_6"/></a>
+                                    </div>
+                                </t>
+                                <t t-if="url_comp_7">
+                                    <div class="col-md-4">
+                                        <a type="button" class="btn" style="" t-att-href="url_comp_7">See the events of <t t-esc="name_comp_7"/></a>
+                                    </div>
+                                </t>
                             </div>
                     </t>
                 </div>

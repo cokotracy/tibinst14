@@ -48,16 +48,16 @@ class Answer(models.Model):
             if not event.question_ids or force:
                 event.write({'question_ids': [(5, 0, 0)]})
                 question_ids = event.write({'question_ids': [(0, 0,
-                                                              {'title': 'Need accommodation', 'sequence': 1,
+                                                              {'title': 'Accommodation', 'sequence': 1,
                                                                'once_per_order': 0},
                                                               )]})
                 question_ids = event.write({'question_ids': [(0, 0,
-                                                              {'title': "Day of arrival", 'sequence': 2,
+                                                              {'title': "Arrival", 'sequence': 2,
                                                                'once_per_order': 1},
                                                               )]})
 
                 question_ids = event.write({'question_ids': [(0, 0,
-                                                              {'title': "Depature_day", 'sequence': 3,
+                                                              {'title': "Departure", 'sequence': 3,
                                                                'once_per_order': 1},
                                                               )]})
 
@@ -68,74 +68,67 @@ class Answer(models.Model):
                 )
 
                 question_ids = self.env["event.question.answer"].create(
-                    {'question_id': event.question_ids[0].id, 'x_days': 0, 'name': "Yes, for ONE person (male, shared room)",
-                     'sequence': 2, 'x_room_id': self.env.ref('website_booking.product_room_shared_1_bed').id},
+                    {'question_id': event.question_ids[0].id, 'x_days': 0, 'name': "Yes, shared room male",
+                     'sequence': 2, 'x_room_id': self.env.ref('website_booking.product_room_shared_male_1_bed').id},
                 )
 
                 question_ids = self.env["event.question.answer"].create(
-                    {'question_id': event.question_ids[0].id, 'x_days': 0, 'name': "Yes, for ONE person (femelle, shared room)",
-                     'sequence': 3, 'x_room_id': self.env.ref('website_booking.product_room_shared_1_bed').id},
+                    {'question_id': event.question_ids[0].id, 'x_days': 0, 'name': "Yes, shared room female",
+                     'sequence': 3, 'x_room_id': self.env.ref('website_booking.product_room_shared_female_1_bed').id},
                 )
 
                 question_ids = self.env["event.question.answer"].create(
-                    {'question_id': event.question_ids[0].id, 'x_days': 0, 'name': "YES, Studio (one person)", 'sequence': 4,
+                    {'question_id': event.question_ids[0].id, 'x_days': 0, 'name': "YES, studio 1 pers.", 'sequence': 4,
                      'x_room_id': self.env.ref('website_booking.product_room_studio_1_bed').id},
                 )
 
                 question_ids = self.env["event.question.answer"].create(
-                    {'question_id': event.question_ids[0].id, 'x_days': 0, 'name': "Yes, Studio (two person)", 'sequence': 5,
+                    {'question_id': event.question_ids[0].id, 'x_days': 0, 'name': "YES, room 1 pers.", 'sequence': 5,
+                     'x_room_id': self.env.ref('website_booking.product_room_1_bed').id},
+                )
+
+                question_ids = self.env["event.question.answer"].create(
+                    {'question_id': event.question_ids[0].id, 'x_days': 0, 'name': "Yes, Studio 2 pers.", 'sequence': 6,
                      'x_room_id': self.env.ref('website_booking.product_room_studio_2_bed').id},
                 )
 
                 question_ids = self.env["event.question.answer"].create(
-                    {'question_id': event.question_ids[1].id, 'x_days': -1, 'name': "I arrive the day before, I'll have Breakfast at the center.",
+                    {'question_id': event.question_ids[0].id, 'x_days': 0, 'name': "YES, room 2 pers.", 'sequence': 7,
+                     'x_room_id': self.env.ref('website_booking.product_room_2_room').id},
+                )
+
+                question_ids = self.env["event.question.answer"].create(
+                    {'question_id': event.question_ids[1].id, 'x_days': -1, 'name': "I’ll arrive the day before",
                      'sequence': 1, 'x_meal_ids': [(6, 0, [self.env.ref("website_booking.product_breakfast").id,self.env.ref("website_booking.product_lunch").id])]},
                 )
 
                 question_ids = self.env["event.question.answer"].create(
-                    {'question_id': event.question_ids[1].id, 'x_days': -1, 'name': "I arrive the day before, I'll have dinner at the center.",
-                     'sequence': 1, 'x_meal_ids': [(6, 0, [self.env.ref("website_booking.product_lunch").id])]},
-                )
-
-                question_ids = self.env["event.question.answer"].create(
-                    {'question_id': event.question_ids[1].id, 'x_days': -1, 'name': "I arrive the day before, I won't have dinner at the center.",
-                     'sequence': 3, 'x_meal_ids': [(6, 0, [])]},
-                )
-
-                question_ids = self.env["event.question.answer"].create(
-                    {'question_id': event.question_ids[1].id, 'x_days': 0, 'name': "I arrive on the day of the event, but I need breakfast.",
-                     'sequence': 4, 'x_meal_ids': [(6, 0, [self.env.ref("website_booking.product_breakfast").id])]},
-                )
-
-                question_ids = self.env["event.question.answer"].create(
-                    {'question_id': event.question_ids[1].id, 'x_days': 0, 'name': "I arrive on the day of the event, but I don't need breakfast.",
+                    {'question_id': event.question_ids[1].id, 'x_days': 0, 'name': "I’ll arrive on the day of the event",
                      'sequence': 5, 'x_meal_ids': [(6, 0, [])]},
                 )
 
-
-
                 question_ids = self.env["event.question.answer"].create(
-                    {'question_id': event.question_ids[2].id, 'x_days': 0, 'name': "I leave at the end of the event, before supper.",
+                    {'question_id': event.question_ids[2].id, 'x_days': 0, 'name': "I’ll leave immediately at the end of the event",
                      'sequence': 1},
                 )
 
                 question_ids = self.env["event.question.answer"].create(
-                    {'question_id': event.question_ids[2].id, 'x_days': 0, 'name': "I leave at the end of the event, when I have supper.",
+                    {'question_id': event.question_ids[2].id, 'x_days': 0, 'name': "I’ll leave at the end of the event, after supper",
                      'sequence': 3, 'x_meal_ids': [(6, 0, [self.env.ref("website_booking.product_evening").id])]},
                 )
 
                 question_ids = self.env["event.question.answer"].create(
-                    {'question_id': event.question_ids[2].id, 'x_days': 1, 'name': "I leave the next day after breakfast.",
+                    {'question_id': event.question_ids[2].id, 'x_days': 1, 'name': "I’ll leave the day after the event, after breakfast",
                      'sequence': 5, 'x_meal_ids': [(6, 0, [])]},
                 )
 
                 question_ids = self.env["event.question.answer"].create(
-                    {'question_id': event.question_ids[2].id, 'x_days': 1, 'name': "I leave the next day after Lunch.",
+                    {'question_id': event.question_ids[2].id, 'x_days': 1, 'name': "I’ll leave the day after the event, after lunch",
                      'sequence': 5, 'x_meal_ids': [(6, 0, [self.env.ref("website_booking.product_lunch").id])]},
                 )
 
                 question_ids = self.env["event.question.answer"].create(
-                    {'question_id': event.question_ids[2].id, 'x_days': 1, 'name': "I leave the next day after supper.",
+                    {'question_id': event.question_ids[2].id, 'x_days': 1, 'name': "I’ll leave the day after the event, after supper",
                      'sequence': 5, 'x_meal_ids': [(6, 0, [self.env.ref("website_booking.product_lunch").id,self.env.ref("website_booking.product_evening").id])]},
                 )
 
