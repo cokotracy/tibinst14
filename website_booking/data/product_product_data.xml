@@ -87,6 +87,23 @@
             <field name="x_capacity">2</field>
        </record>
 
+        <record id="product_room_studio_2_bed" model="product.product">
+            <field name="name">Studio 2 bed double</field>
+            <field name="x_is_room">True</field>
+            <field name="x_removing_qty">True</field>
+            <field name="type">service</field>
+            <field name="x_capacity">2</field>
+        </record>
+
+
+        <record id="product_room_studio_2_2_bed" model="product.product">
+            <field name="name">Studio 2 bed</field>
+            <field name="x_is_room">True</field>
+            <field name="x_removing_qty">True</field>
+            <field name="type">service</field>
+            <field name="x_capacity">2</field>
+       </record>
+
         <record id="product_room_2_room" model="product.product">
             <field name="name">Room 2 bed</field>
             <field name="x_is_room">True</field>

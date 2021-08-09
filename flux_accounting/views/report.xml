@@ -16,7 +16,7 @@
               <field name="dpi">90</field>
           </record>
 
-          <report id="action_report_rapport_bjorn_doc"
+          <record id="action_report_rapport_bjorn_doc"
                   model="account.invoice"
                   string="Generation data"
                   report_type="qweb-pdf"

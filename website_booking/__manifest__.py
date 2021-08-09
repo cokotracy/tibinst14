@@ -52,6 +52,7 @@
                 'base_automation',
                 'website_event_questions',
                 'website_event_sale',
+                'website_sale',
                 'membership',
                 'account_sign_up_details',
                 ],

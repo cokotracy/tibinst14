@@ -11,14 +11,14 @@ class KyglWebsiteDonation(http.Controller):
         countries =request.env['res.country'].sudo().search([])
         fond = request.env['product.product'].sudo().search([('product_tmpl_id.kygl_code', '=', '%s-U' % fond_select)])
         connection = False
-        partner = False if request.env.user.id == request.env.ref('base.public_user').id else request.env.user.partner_id
+        partner = False if request.env.user.id in request.env['res.users'].sudo().search([('active','=',False), ('name', 'ilike', 'Public user')]).ids else request.env.user.partner_id
         if not partner:
             connection = True
         values = {
              'connection': connection,
              'fond_select_data': fond,
              'fond_select': fond.kygl_code,
-             'partner': "" if request.env.user.id == request.env.ref('base.public_user').id else request.env.user.partner_id,
+             'partner': "" if request.env.user.id in request.env['res.users'].sudo().search([('active','=',False), ('name','ilike','Public user')]).ids else request.env.user.partner_id,
              'countries': countries,
              'montants': request.env.ref('kygl_website_donation.kygl_amount_donation').sudo().value.split("-"),
          }
@@ -58,6 +58,7 @@ class KyglWebsiteDonation(http.Controller):
             'phone': kwargs['phone'] if 'phone' in kwargs and kwargs['phone']  else '',
             'country_id': int(kwargs['country_id']) if 'country_id' in kwargs and kwargs['country_id'] else '' ,
             'company_type': 'company',
+            'lang': kwargs['lang'] if 'lang' in kwargs and kwargs['lang'] else '',
         }
         data = {
             'name': kwargs['name'] if 'name' in kwargs and kwargs['name']  else '',
@@ -67,9 +68,12 @@ class KyglWebsiteDonation(http.Controller):
             'zip': kwargs['zip'] if 'zip' in kwargs and kwargs['zip']  else '',
             'country_id': int(kwargs['country_id']) if 'country_id' in kwargs and kwargs['country_id']  else '',
             'phone': kwargs['phone'] if 'phone' in kwargs and kwargs['phone'] else '',
+            'lang': kwargs['lang'] if 'lang' in kwargs and kwargs['lang'] else '',
+            'gender': kwargs['gender'] if 'gender' in kwargs and kwargs['gender'] else '',
+            'birtday': kwargs['birtday'] if 'birtday' in kwargs and kwargs['birtday'] else '',
         }
 
-        partner = False if request.env.user.id == request.env.ref('base.public_user').id else request.env.user.partner_id
+        partner = False if request.env.user.id in request.env['res.users'].sudo().search([('active','=',False),('name', 'ilike', 'Public user')]).ids else request.env.user.partner_id
         if not partner:
             if iamcompany == 'on':
                 #create company

@@ -13,7 +13,7 @@ class ReportTestCheckevent(models.AbstractModel):
         reservation_obj = self.env['sale.order.line']
         event_search = [
                          ('order_id.state','not in',['cancel']),
-                         ('event_id',"=",event)
+                         ('event_id',"in",event.ids)
                         ]
         res = reservation_obj.search(event_search).sorted(key=lambda r: r.order_id.partner_id.name)
         result = []
@@ -99,12 +99,14 @@ class ReportTestCheckevent(models.AbstractModel):
 
         date_start = datetime.strftime(datetime.strptime(data['form'].get('date_start'), '%Y-%m-%d') - timedelta(days=1), '%Y-%m-%d')
         date_end = datetime.strftime(datetime.strptime(data['form'].get('date_end'), '%Y-%m-%d') + timedelta(days=1), '%Y-%m-%d')
-        event = data['form'].get('filter_event')[0]
+        event = data['form'].get('filter_event')
+        if not event:
+            event = self.env["event.event"].search([('date_begin','>=',date_start),('date_end','<=',date_end)])
 
         model = self.env.context.get('active_model')
         docs = self.env[model].browse(self.env.context.get('active_id'))
 
-        get_order= self.get_check_event(event)
+        get_order = self.get_check_event(event)
 
         docargs = {
                 'doc_ids': docids,
@@ -114,6 +116,7 @@ class ReportTestCheckevent(models.AbstractModel):
                 'get_list_participant':self.get_list_participant,
                 'get_order': get_order,
                 'get_room': self.get_room,
+                'get_event': self.get_event,
                 'get_amount': self.get_amount,
                 'get_fittedsheet':self.get_fittedsheet,
                 'get_lang':self.get_lang,

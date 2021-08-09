@@ -35,6 +35,6 @@ class EventQuestionAnswer(models.Model):
     _inherit = 'event.question.answer'
 
     x_days = fields.Integer(string="Night(s)")
-    x_meal_ids = fields.Many2many("product.product", string="Add Meals")
+    x_meal_ids = fields.Many2many("product.product", string="Add product")
     x_room_id = fields.Many2one("product.product", string="Add room")
 

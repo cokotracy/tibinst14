@@ -23,6 +23,7 @@
                     <group>
                         <field name="kygl_message_authorised"/>
                         <field name="kygl_info"/>
+                        <field name="kygl_message_document"/>
                     </group>
                 </xpath>
 

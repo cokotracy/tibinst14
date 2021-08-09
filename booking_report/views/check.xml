@@ -15,8 +15,8 @@
                       </div>
                       <div class="row mt32 mb32">
                           <div class="text-center">
-                              <strong>Event:</strong>
-                              <span t-esc="o.filter_event.name"/>
+                              <strong t-if="o.filter_event.name">Event:</strong>
+                              <span t-if="o.filter_event.name" t-esc="o.filter_event.name"/>
                               <strong>From:</strong>
                               <span t-esc="o.date_start"/>
                               <strong>To:</strong>
@@ -38,6 +38,9 @@
 
                               <td>
                                   <strong>Depatured</strong>
+                              </td>
+                              <td>
+                                  <strong>Event</strong>
                               </td>
                               <td>
                                   <strong>Room No</strong>
@@ -66,6 +69,9 @@
 
                                 <td>
                                     <span t-esc="get_date_stop(c)"/>
+                                </td>
+                                <td>
+                                  <span t-esc="get_event(c)"/>
                                 </td>
                                 <td>
                                   <span t-esc="get_room(c)"/>

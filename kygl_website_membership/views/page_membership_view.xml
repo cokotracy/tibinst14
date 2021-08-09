@@ -2,8 +2,7 @@
 
 <odoo>
 
-    <template id="membership_page_nl" name="Membership Page">
-
+    <template id="membership_page_nl" name="Membership Page NL">
         <t t-name="website.faire-une-membership">
               <t t-call="website.layout">
                   <script type="text/javascript"  src="/kygl_website_membership/static/src/js/membership_form.js"></script>
@@ -23,7 +22,7 @@
                           </div>
                           <div class="row">
                             <div class="col-md-4">
-                              <h5 class=""><b>1. Je fais une membership</b></h5>
+                              <h5 class=""><b>1. Ik word lid</b></h5>
                               <div class="row">
                                 <div class="col-md-12">
                                   <div class="row">
@@ -31,32 +30,31 @@
                                   </div>
                                   <div class="row">
                                     <div class="col-md-12">
-                                      <h5 class=""><b>Type de prélevement</b></h5>
+                                      <h5 class=""><b>Periodiciteit</b></h5>
                                     </div>
                                   </div>
                                   <div class="row">
                                     <div class="col-md-4">
-                                      <h5 class=""><input value="U" id="type" checked="checked" name="type" type="radio" required="required"/>&amp;nbsp;<t t-esc="amount_u"/>&amp;euro;&amp;nbsp;Unique</h5>
+                                      <p style="font-size: 13px">&amp;euro;<input value="U" id="type" checked="checked" name="type" type="radio" required="required"/>&amp;nbsp;<t t-esc="amount_u"/><br/>&amp;nbsp;Eenmalig</p>
                                     </div>
-                                    <div class="col-md-4">
-                                      <h5 class=""><input value="M" id="type"  name="type" type="radio"/>&amp;nbsp;<t t-esc="amount_m"/>&amp;euro;&amp;nbsp; Mensuel</h5>
+                                    <div t-if="amount_m" class="col-md-4">
+                                      <p style="font-size: 13px">&amp;euro;<input value="M" id="type"  name="type" type="radio"/>&amp;nbsp;<t t-esc="amount_m"/><br/>&amp;nbsp; Maandelijks</p>
                                     </div>
-                                    <div class="col-md-4">
-                                      <h5 class=""><input value="Y" id="type"  name="type" type="radio"/>&amp;nbsp;<t t-esc="amount_y"/>&amp;euro;&amp;nbsp;Annuel</h5>
+                                    <div t-if="amount_y" class="col-md-4">
+                                      <p style="font-size: 13px">&amp;euro;<input value="Y" id="type"  name="type" type="radio"/>&amp;nbsp;<t t-esc="amount_y"/><br/>&amp;nbsp;Jaarlijks</p>
                                     </div>
                                   </div>
-                                     <p class="" style="margin-right: 0px; margin-bottom: 0px; margin-left: 0px; font-stretch: normal; font-size: 12px; line-height: normal; font-family: Helvetica;">Wanneer u voor een maandelijkse of jaarlijkse overschrijving kiest, dan machtigt u het&amp;nbsp;Tibetaans Instituut vzw om dit bedrag van uw rekening af te schrijven, vanaf nu tot wijziging of herroeping. Deze overeenkomst kan op elk ogenblik beeindigd worden. Neem hiervoor contact op met: <a href="mailto:donation@tibinst.org">
-                                     <span style="text-decoration: underline">donation@tibinst.org</span></a>.<span style="caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, sans-serif; font-size: 13px; background-color: rgb(239, 239, 239);">&amp;nbsp;</span><br/>
-                                         <span style="background-color: rgb(239, 239, 239); caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, sans-serif; font-size: 11px;">U wordt regelmatig ingelicht over het gebruik van de ingezamelde fondsen</span></p>
-                                    <p class=""/>
+                                     <p class="" style="margin-right: 0px; margin-bottom: 0px; margin-left: 0px; font-stretch: normal; font-size: 12px; line-height: normal; font-family: Helvetica;">Wanneer je voor een maandelijkse of jaarlijkse overschrijving kiest, dan
+machtig je het Instituut om dit bedrag van uw rekening af te schrijven, vanaf
+nu tot wijziging of herroeping. Deze overeenkomst kan op elk ogenblik beëindigd worden. Neem hiervoor <a style="color: rgb(238, 0, 0); transition: color 0.2s linear 0s;" data-original-title="" title="" aria-describedby="tooltip684500" href="/contactus">contact</a> met ons op. Dank voor je vertrouwen.</p>
                                 </div>
                               </div>
                             </div>
                             <div class="col-md-4">
-                              <h5 class=""><b>2. Mes coordonnées</b></h5>
+                              <h5 class=""><b>2. Mijn gegevens</b></h5>
                               <div class="row">
                                 <div t-if="connection" class="col-md-12">
-                                    <a t-att-href="'/web/login?redirection=/donation_page/%s' % fond_select_data.product_tmpl_id.kygl_donation_code if fond_select_data else '/web/login?redirection=/donation_page/'" class="btn btn-primary btn-lg btn-block">M'identifier avec mon login</a>
+                                    <a t-att-href="'/web/login?redirection=/donation_page_fr/%s' % fond_select_data.product_tmpl_id.kygl_code if fond_select_data else '/web/login?redirection=/donation_page_fr/'" class="btn btn-primary btn-lg btn-block">Inloggen met mijn login</a>
                                 </div>
 
                                 <div class="col-md-12">
@@ -68,54 +66,54 @@
                                     <input type="hidden" name="field_required" t-att-value="'phone,name'" />
                                     <t t-if="partner">
                                         <div class="form-group">
-                                            <label>Mon adresse email </label>
-                                            <input type="email" readonly="readonly" class="form-control form-control-lg" placeholder="Email" required="required" name="email" id="email" t-att-value="partner.email"/>
+                                            <label>Mijn emailadres</label>
+                                            <input type="email" readonly="readonly" class="form-control form-control-lg"  required="required" name="email" id="email" t-att-value="partner.email"/>
                                         </div>
                                         <t t-if="partner.company_type == 'company'">
                                             <div class="form-group">
-                                                <label><b>Nom de la société *</b></label>
-                                                <input class="form-control form-control-lg" readonly="readonly" placeholder="Nom de la société" type="text"  name="company" id="company" t-att-value="partner.parent_id.name if partner.parent_id else ''"/>
+                                                <label><b>Bedrijfsnaam *</b></label>
+                                                <input class="form-control form-control-lg" readonly="readonly"  type="text"  name="company" id="company" t-att-value="partner.parent_id.name if partner.parent_id else ''"/>
                                             </div>
                                             <div class="form-group">
-                                                <input class="form-control form-control-lg" readonly="readonly" placeholder="Numéro de TVA" type="text"  name="vat" id="vat"/>
+                                                <input class="form-control form-control-lg" readonly="readonly"  type="text"  name="vat" id="vat"/>
                                             </div>
                                         </t>
                                         <div class="form-group">
-                                                <label><b>Mon nom et prénom *</b></label>
-                                                <input class="form-control form-control-lg" placeholder="Nom et Prénom" type="text" required="required" name="name" id="name" t-att-value="partner.name if partner else ''"/>
+                                                <label><b>Naam, Voornaam</b></label>
+                                                <input class="form-control form-control-lg" type="text" required="required" name="name" id="name" t-att-value="partner.name if partner else ''"/>
                                         </div>
                                     </t>
                                     <t t-else="not partner">
                                         <div class="form-group">
                                             <input id="iamcompany" name="iamcompany" type="checkbox" onchange="toggleCheckbox(this)" />
                                             <label>
-                                                <b>&amp;nbsp;Je suis une société</b>
+                                                <b>&amp;nbsp;Ik ben een bedrijf</b>
                                             </label>
                                         </div>
 
                                         <div class="form-group">
-                                            <label>Mon adresse email </label>
-                                            <input type="email" class="form-control form-control-lg" placeholder="Email" required="required" name="email" id="email"/>
+                                            <label>Mijn emailadres</label>
+                                            <input type="email" class="form-control form-control-lg"  required="required" name="email" id="email"/>
                                         </div>
                                             <div id="namecompany" style="display: none" class="form-group">
-                                                <label><b>Nom de la société *</b></label>
-                                                <input class="form-control form-control-lg" placeholder="Nom de la société" type="text"  name="company" id="company"/>
+                                                <label><b>Bedrijfsnaam *</b></label>
+                                                <input class="form-control form-control-lg"  type="text"  name="company" id="company"/>
                                             </div>
                                             <div id="tvacompany" style="display: none" class="form-group">
-                                                <label><b>Numéro de TVA</b></label>
-                                                <input class="form-control form-control-lg" placeholder="Numéro de TVA" type="text"  name="vat" id="vat"/>
+                                                <label><b>BTW-nummer</b></label>
+                                                <input class="form-control form-control-lg"  type="text"  name="vat" id="vat"/>
                                             </div>
                                             <div class="form-group">
-                                                <label><b>Mon nom et prénom *</b></label>
-                                                <input class="form-control form-control-lg" placeholder="Nom et Prénom" type="text" required="required" name="name" id="name"/>
+                                                <label><b>naam, voornaam</b></label>
+                                                <input class="form-control form-control-lg"  type="text" required="required" name="name" id="name"/>
                                             </div>
                                     </t>
 
-                                    <div class="form-group"><label><b>Mon adresse *</b></label><input class="form-control form-control-lg" placeholder="Adresse" type="text" name="street" required="required" id="street" t-att-value="partner.street if partner else ''"/></div>
-                                    <div class="form-group"><label><b>Mon code postal *</b></label><input class="form-control form-control-lg" placeholder="Code postal" type="text" name="zip" required="required" id="zip" t-att-value="partner.zip if partner else ''"/></div>
-                                    <div class="form-group"><label><b>Ma localité *</b></label><input placeholder="Localité" class="form-control form-control-lg" type="text" name="city" required="required" id="city" t-att-value="partner.city if partner else ''"/></div>
-                                    <div class="form-group"><label><b>Mon pays *</b></label>
-                                        <select class="form-control form-control-lg" placeholder="Pays" type="text" name="country_id" required="required" id="country_id">
+                                    <div class="form-group"><label><b>Mijn adres *</b></label><input class="form-control form-control-lg"  type="text" name="street" required="required" id="street" t-att-value="partner.street if partner else ''"/></div>
+                                    <div class="form-group"><label><b>Postcode *</b></label><input class="form-control form-control-lg"  type="text" name="zip" required="required" id="zip" t-att-value="partner.zip if partner else ''"/></div>
+                                    <div class="form-group"><label><b>Woonplaats *</b></label><input  class="form-control form-control-lg" type="text" name="city" required="required" id="city" t-att-value="partner.city if partner else ''"/></div>
+                                    <div class="form-group"><label><b>Land *</b></label>
+                                        <select class="form-control form-control-lg" type="text" name="country_id" required="required" id="country_id">
                                             <t t-foreach="countries" t-as="country">
                                                 <option t-if="partner and country.id==partner.country_id.id" selected="selected" t-att-value="country.id"><t t-esc="country.name"/></option>
                                                 <option t-else="" t-att-value="country.id"><t t-esc="country.name"/></option>
@@ -123,13 +121,35 @@
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label><b>Mon numéro de téléphone *</b></label><input class="form-control form-control-lg" placeholder="Téléphone" type="text" name="phone" required="required" id="phone" t-att-value="partner.phone if partner else ''"/>
+                                        <label><b>Mijn mobiel of vast telefoonnummer *</b></label><input class="form-control form-control-lg"  type="text" name="phone" required="required" id="phone" t-att-value="partner.phone if partner else ''"/>
                                     </div>
+                                                                        <div class="form-group field-name">
+	                                    <label for="birtday" class="control-label">Mijn geboortedatum *</label>
+	                                    <input type="date" placeholder="jj/mm/aaaa" name="birtday" t-att-value="partner.birtday if partner else ''" id="birthday" class="form-control" required="required" t-att-readonly="'readonly' if partner else None"/>
+                                	</div>
+                                    <div class="form-group field-name">
+                                    <label for="Language" class="control-label">Mijn taalkeuze *</label>
+                                        <select  name="lang" t-att-value="lang" id="lang" class="form-control" required="required">
+                                            <option value="fr_BE" t-att-selected="partner and partner.lang == 'fr_BE'">Frans</option>
+                                            <option value="nl_BE" t-att-selected="partner and partner.lang == 'nl_BE'">Nederlands</option>
+                                            <option value="en_US" t-att-selected="partner and partner.lang == 'en_US'">Engels</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group field-name">
+                                         <label for="gender" class="control-label">Mijn gender *</label>
+                                         <select  name="gender" t-att-value="gender" id="gender" class="form-control" required="required">
+                                             <option value='male' t-att-selected="partner and partner.gender == 'male'">Man</option>
+                                             <option value='female' t-att-selected="partner and partner.gender == 'female'">Vrouw</option>
+                                             <option value='other' t-att-selected="partner and partner.gender == 'other'">Ander</option>
+                                         </select>
+                                     </div>
+
                               </div>
                             </div>
                             </div>
                             <div class="col-md-4">
-                              <h5 class=""><b>3. Je confirme</b></h5>
+                              <h5 class=""><b>3. Bevestiging</b></h5>
                               <div class="row">
                                 <div class="col-md-12">
                                     <textarea class="form-control form-control-lg" placeholder="Message pour le centre" type="text" name="message" id="message"/>
@@ -137,19 +157,14 @@
                               </div>
                               <div class="row">
                                 <div class="col-md-12">
-                                  <p class=""><span style="font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-size: 1rem;">Texte explicatif....</span>Paragraph. Then, my friend, when darkness overspreads my eyes, and heaven and earth seem to dwell in my soul and absorb its power, like the form of a beloved mistress, then I often think with longing.</p>
+                                    <button type="submit" class="btn btn-primary btn-lg btn-block">Ik bevestig</button>
                                 </div>
                               </div>
                               <div class="row">
-                                <div class="col-md-12">
-                                    <button type="submit" class="btn btn-primary btn-lg btn-block">Je confirme mon don</button>
-                                </div>
-                              </div>
-                              <div class="row">
-                                    <div class="col-md-12">
-                                        <h4 style="margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding: 20px 10px 10px; font-size: 18px; font-weight: 600; text-transform: uppercase; color: rgb(0, 0, 0); text-shadow: none; line-height: 21px; caret-color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, sans-serif;">VERTROUWELIJKHEID VAN UW GEGEVENS</h4>
+                                     <div class="col-md-12">
+                                        <h4 style="margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding: 20px 10px 10px; font-size: 18px; font-weight: 600; text-transform: uppercase; color: rgb(0, 0, 0); text-shadow: none; line-height: 21px; caret-color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, sans-serif;">VERTROUWELIJKHEID VAN JE GEGEVENS</h4>
                                         <h4 style="margin-right: 0px; margin-bottom: 0px; margin-left: 0px; font-family: &quot;Open Sans&quot;, sans-serif; font-weight: 600; line-height: 21px; color: rgb(0, 0, 0); font-size: 18px; padding: 20px 10px 10px; text-transform: uppercase; text-shadow: none; caret-color: rgb(0, 0, 0);"/>
-                                        <p style="font-weight: normal; text-transform: none; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding: 10px; font-size: 13px;">De informatie die we verzamelen via dit formulier is bedoeld voor onze afdeling fondsenwerving &amp;nbsp;om uw giften te behandelen en hun spoor te bewaren. We gebruiken ze ook om uw fiscaal attest aan te maken.<br/><br/>Alle bankgegevens om de betaling te verwerken zijn versleuteld met het SSL-protocol. Ze worden slechts bewaard voor de duur die strikt noodzakelijk is om deze doeleinden te verwezenlijken.<br/><br/>&amp;nbsp;Als u geen nieuws meer van ons wil ontvangen of als u een van de andere rechten wil uitoefenen die de GDPR u toekent, volstaat een mailtje aan ons op&amp;nbsp;donation@tibinst.org of per post Kruispadstraat 33, 2900 Schoten.<br/><br/>Voor meer informatie kan u altijd onze privacyverklaring raadplegen:&amp;nbsp;<a href="https://donate.msf-azg.be/afdruk" style="color: rgb(238, 0, 0); transition: color 0.2s linear 0s;" data-original-title="" title="" aria-describedby="tooltip684500">https://www.tibinst.be/nl_BE/confidentialite-et-mentions-legales<br/></a></p>
+                                        <p style="font-weight: normal; text-transform: none; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding: 10px; font-size: 13px;">De informatie die we via dit formulier verzamelen is bedoeld voor de ledenadministratie.<br/><br/>Alle bankgegevens om de betaling te verwerken zijn versleuteld met het SSL-protocol. Ze worden slechts bewaard voor de duur die strikt noodzakelijk is om deze doeleinden te verwezenlijken.<br/><br/>&amp;nbsp;Mocht je van ons geen nieuws meer wensen te ontvangen of een van de andere rechten die de GDPR je toekent willen uitoefenen, gelieve ons te <a style="color: rgb(238, 0, 0); transition: color 0.2s linear 0s;" data-original-title="" title="" aria-describedby="tooltip684500" href="/contactus">contacteren.</a><br/><br/>Voor meer informatie, raadpleeg onze privacyverklaring: <a href="/privacy-en-juridische-kennisgeving" style="color: rgb(238, 0, 0); transition: color 0.2s linear 0s;" data-original-title="" title="" aria-describedby="tooltip684500">privacy-en-juridische-kennisgeving.<br/></a></p>
                                     </div>
                               </div>
                             </div>
@@ -164,7 +179,7 @@
 
     </template>
 
-    <template id="membership_page_fr" name="Membership Page">
+    <template id="membership_page_fr" name="Membership Page FR">
 
         <t t-name="website.faire-une-membership">
               <t t-call="website.layout">
@@ -185,7 +200,7 @@
                           </div>
                           <div class="row">
                             <div class="col-md-4">
-                              <h5 class=""><b>1. Je fais une membership</b></h5>
+                              <h5 class=""><b>1. Je deviens membre</b></h5>
                               <div class="row">
                                 <div class="col-md-12">
                                   <div class="row">
@@ -193,32 +208,31 @@
                                   </div>
                                   <div class="row">
                                     <div class="col-md-12">
-                                      <h5 class=""><b>Type de prélevement</b></h5>
+                                      <h5 class=""><b>Périodicité</b></h5>
                                     </div>
                                   </div>
                                   <div class="row">
                                     <div class="col-md-4">
-                                      <h5 class=""><input value="U" id="type" checked="checked" name="type" type="radio" required="required"/>&amp;nbsp;<t t-esc="amount_u"/>&amp;euro;&amp;nbsp;Unique</h5>
+                                      <p style="font-size: 13px"><input value="U" id="type" checked="checked" name="type" type="radio" required="required"/>&amp;nbsp;<t t-esc="amount_u"/>&amp;euro;<br/>&amp;nbsp;Unique</p>
                                     </div>
                                     <div class="col-md-4">
-                                      <h5 class=""><input value="M" id="type"  name="type" type="radio"/>&amp;nbsp;<t t-esc="amount_m"/>&amp;euro;&amp;nbsp; Mensuel</h5>
+                                      <p style="font-size: 13px"><input value="M" id="type"  name="type" type="radio"/>&amp;nbsp;<t t-esc="amount_m"/>&amp;euro;<br/>&amp;nbsp; Mensuel</p>
                                     </div>
                                     <div class="col-md-4">
-                                      <h5 class=""><input value="Y" id="type"  name="type" type="radio"/>&amp;nbsp;<t t-esc="amount_y"/>&amp;euro;&amp;nbsp;Annuel</h5>
+                                      <p style="font-size: 13px"><input value="Y" id="type"  name="type" type="radio"/>&amp;nbsp;<t t-esc="amount_y"/>&amp;euro;<br/>&amp;nbsp;Annuel</p>
                                     </div>
                                   </div>
-                                     <p class="" style="margin-right: 0px; margin-bottom: 0px; margin-left: 0px; font-stretch: normal; font-size: 12px; line-height: normal; font-family: Helvetica;">Wanneer u voor een maandelijkse of jaarlijkse overschrijving kiest, dan machtigt u het&amp;nbsp;Tibetaans Instituut vzw om dit bedrag van uw rekening af te schrijven, vanaf nu tot wijziging of herroeping. Deze overeenkomst kan op elk ogenblik beeindigd worden. Neem hiervoor contact op met: <a href="mailto:donation@tibinst.org">
-                                     <span style="text-decoration: underline">donation@tibinst.org</span></a>.<span style="caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, sans-serif; font-size: 13px; background-color: rgb(239, 239, 239);">&amp;nbsp;</span><br/>
-                                         <span style="background-color: rgb(239, 239, 239); caret-color: rgb(0, 0, 0); color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, sans-serif; font-size: 11px;">U wordt regelmatig ingelicht over het gebruik van de ingezamelde fondsen</span></p>
-                                    <p class=""/>
+                                    <p class="" style="margin-right: 0px; margin-bottom: 0px; margin-left: 0px; font-stretch: normal; font-size: 12px; line-height: normal; font-family: Helvetica;">
+                                      Lorsque vous choisissez un virement mensuel ou annuel, vous autorisez l'Institut à débiter ce montant de votre compte, dès maintenant et jusqu'à modification ou révocation. Cet accord peut être résilié à tout moment. Pour ce faire, veuillez nous <a style="color: rgb(238, 0, 0); transition: color 0.2s linear 0s;" data-original-title="" title="" aria-describedby="tooltip684500" href="/contactus">contacter</a>
+                                    </p>
                                 </div>
                               </div>
                             </div>
-                            <div class="col-md-4">
+                              <div class="col-md-4">
                               <h5 class=""><b>2. Mes coordonnées</b></h5>
                               <div class="row">
                                 <div t-if="connection" class="col-md-12">
-                                    <a t-att-href="'/web/login?redirection=/donation_page/%s' % fond_select_data.product_tmpl_id.kygl_donation_code if fond_select_data else '/web/login?redirection=/donation_page/'" class="btn btn-primary btn-lg btn-block">M'identifier avec mon login</a>
+                                    <a t-att-href="'/web/login?redirection=/donation_page_fr/%s' % fond_select_data.product_tmpl_id.kygl_code if fond_select_data else '/web/login?redirection=/donation_page_fr/'" class="btn btn-primary btn-lg btn-block">Se connecter avec mon login</a>
                                 </div>
 
                                 <div class="col-md-12">
@@ -230,21 +244,21 @@
                                     <input type="hidden" name="field_required" t-att-value="'phone,name'" />
                                     <t t-if="partner">
                                         <div class="form-group">
-                                            <label>Mon adresse email </label>
-                                            <input type="email" readonly="readonly" class="form-control form-control-lg" placeholder="Email" required="required" name="email" id="email" t-att-value="partner.email"/>
+                                            <label>Mon adresse email</label>
+                                            <input type="email" readonly="readonly" class="form-control form-control-lg"  required="required" name="email" id="email" t-att-value="partner.email"/>
                                         </div>
                                         <t t-if="partner.company_type == 'company'">
                                             <div class="form-group">
-                                                <label><b>Nom de la société *</b></label>
-                                                <input class="form-control form-control-lg" readonly="readonly" placeholder="Nom de la société" type="text"  name="company" id="company" t-att-value="partner.parent_id.name if partner.parent_id else ''"/>
+                                                <label><b>Société *</b></label>
+                                                <input class="form-control form-control-lg" readonly="readonly"  type="text"  name="company" id="company" t-att-value="partner.parent_id.name if partner.parent_id else ''"/>
                                             </div>
                                             <div class="form-group">
-                                                <input class="form-control form-control-lg" readonly="readonly" placeholder="Numéro de TVA" type="text"  name="vat" id="vat"/>
+                                                <input class="form-control form-control-lg" readonly="readonly"  type="text"  name="vat" id="vat"/>
                                             </div>
                                         </t>
                                         <div class="form-group">
-                                                <label><b>Mon nom et prénom *</b></label>
-                                                <input class="form-control form-control-lg" placeholder="Nom et Prénom" type="text" required="required" name="name" id="name" t-att-value="partner.name if partner else ''"/>
+                                                <label><b>Nom, Prénom</b></label>
+                                                <input class="form-control form-control-lg" type="text" required="required" name="name" id="name" t-att-value="partner.name if partner else ''"/>
                                         </div>
                                     </t>
                                     <t t-else="not partner">
@@ -256,28 +270,28 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label>Mon adresse email </label>
-                                            <input type="email" class="form-control form-control-lg" placeholder="Email" required="required" name="email" id="email"/>
+                                            <label>Mon adresse email</label>
+                                            <input type="email" class="form-control form-control-lg"  required="required" name="email" id="email"/>
                                         </div>
                                             <div id="namecompany" style="display: none" class="form-group">
-                                                <label><b>Nom de la société *</b></label>
-                                                <input class="form-control form-control-lg" placeholder="Nom de la société" type="text"  name="company" id="company"/>
+                                                <label><b>Société *</b></label>
+                                                <input class="form-control form-control-lg"  type="text"  name="company" id="company"/>
                                             </div>
                                             <div id="tvacompany" style="display: none" class="form-group">
                                                 <label><b>Numéro de TVA</b></label>
-                                                <input class="form-control form-control-lg" placeholder="Numéro de TVA" type="text"  name="vat" id="vat"/>
+                                                <input class="form-control form-control-lg"  type="text"  name="vat" id="vat"/>
                                             </div>
                                             <div class="form-group">
-                                                <label><b>Mon nom et prénom *</b></label>
-                                                <input class="form-control form-control-lg" placeholder="Nom et Prénom" type="text" required="required" name="name" id="name"/>
+                                                <label><b>Nom, Prénom</b></label>
+                                                <input class="form-control form-control-lg"  type="text" required="required" name="name" id="name"/>
                                             </div>
                                     </t>
 
-                                    <div class="form-group"><label><b>Mon adresse *</b></label><input class="form-control form-control-lg" placeholder="Adresse" type="text" name="street" required="required" id="street" t-att-value="partner.street if partner else ''"/></div>
-                                    <div class="form-group"><label><b>Mon code postal *</b></label><input class="form-control form-control-lg" placeholder="Code postal" type="text" name="zip" required="required" id="zip" t-att-value="partner.zip if partner else ''"/></div>
-                                    <div class="form-group"><label><b>Ma localité *</b></label><input placeholder="Localité" class="form-control form-control-lg" type="text" name="city" required="required" id="city" t-att-value="partner.city if partner else ''"/></div>
-                                    <div class="form-group"><label><b>Mon pays *</b></label>
-                                        <select class="form-control form-control-lg" placeholder="Pays" type="text" name="country_id" required="required" id="country_id">
+                                    <div class="form-group"><label><b>Mon adresse *</b></label><input class="form-control form-control-lg"  type="text" name="street" required="required" id="street" t-att-value="partner.street if partner else ''"/></div>
+                                    <div class="form-group"><label><b>Code Postal *</b></label><input class="form-control form-control-lg"  type="text" name="zip" required="required" id="zip" t-att-value="partner.zip if partner else ''"/></div>
+                                    <div class="form-group"><label><b>Localité *</b></label><input  class="form-control form-control-lg" type="text" name="city" required="required" id="city" t-att-value="partner.city if partner else ''"/></div>
+                                    <div class="form-group"><label><b>Pays *</b></label>
+                                        <select class="form-control form-control-lg" type="text" name="country_id" required="required" id="country_id">
                                             <t t-foreach="countries" t-as="country">
                                                 <option t-if="partner and country.id==partner.country_id.id" selected="selected" t-att-value="country.id"><t t-esc="country.name"/></option>
                                                 <option t-else="" t-att-value="country.id"><t t-esc="country.name"/></option>
@@ -285,13 +299,36 @@
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label><b>Mon numéro de téléphone *</b></label><input class="form-control form-control-lg" placeholder="Téléphone" type="text" name="phone" required="required" id="phone" t-att-value="partner.phone if partner else ''"/>
+                                        <label><b>Mon numéro de téléphone mobile ou fixe *</b></label><input class="form-control form-control-lg"  type="text" name="phone" required="required" id="phone" t-att-value="partner.phone if partner else ''"/>
                                     </div>
+                                                                        <div class="form-group field-name">
+	                                    <label for="birtday" class="control-label">Ma date de naissance *</label>
+	                                    <input type="date" placeholder="jj/mm/aaaa" name="birtday" t-att-value="partner.birtday if partner else ''" id="birthday" class="form-control" required="required" t-att-readonly="'readonly' if partner else None"/>
+                                	</div>
+                                    <div class="form-group field-name">
+                                    <label for="Language" class="control-label">Ma langue *</label>
+                                        <select  name="lang" t-att-value="lang" id="lang" class="form-control" required="required">
+                                            <option value="fr_BE" t-att-selected="partner and partner.lang == 'fr_BE'">Français</option>
+                                            <option value="nl_BE" t-att-selected="partner and partner.lang == 'nl_BE'">Neerlandais</option>
+                                            <option value="en_US" t-att-selected="partner and partner.lang == 'en_US'">Anglais</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group field-name">
+                                        <label for="gender" class="control-label">Mon genre *</label>
+                                         <select  name="gender" t-att-value="gender" id="gender" class="form-control" required="required">
+                                             <option value='male' t-att-selected="partner and partner.gender == 'male'">Homme</option>
+                                             <option value='female' t-att-selected="partner and partner.gender == 'female'">Femme</option>
+                                             <option value='other' t-att-selected="partner and partner.gender == 'other'">Autre</option>
+                                         </select>
+                                     </div>
+
+
                               </div>
                             </div>
                             </div>
                             <div class="col-md-4">
-                              <h5 class=""><b>3. Je confirme</b></h5>
+                              <h5 class=""><b>3. Confirmation</b></h5>
                               <div class="row">
                                 <div class="col-md-12">
                                     <textarea class="form-control form-control-lg" placeholder="Message pour le centre" type="text" name="message" id="message"/>
@@ -299,19 +336,14 @@
                               </div>
                               <div class="row">
                                 <div class="col-md-12">
-                                  <p class=""><span style="font-family: -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif, &quot;Apple Color Emoji&quot;, &quot;Segoe UI Emoji&quot;, &quot;Segoe UI Symbol&quot;; font-size: 1rem;">Texte explicatif....</span>Paragraph. Then, my friend, when darkness overspreads my eyes, and heaven and earth seem to dwell in my soul and absorb its power, like the form of a beloved mistress, then I often think with longing.</p>
-                                </div>
-                              </div>
-                              <div class="row">
-                                <div class="col-md-12">
                                     <button type="submit" class="btn btn-primary btn-lg btn-block">Je confirme mon don</button>
                                 </div>
                               </div>
-                              <div class="row">
+                               <div class="row">
                                     <div class="col-md-12">
-                                        <h4 style="margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding: 20px 10px 10px; font-size: 18px; font-weight: 600; text-transform: uppercase; color: rgb(0, 0, 0); text-shadow: none; line-height: 21px; caret-color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, sans-serif;">VERTROUWELIJKHEID VAN UW GEGEVENS</h4>
+                                        <h4 style="margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding: 20px 10px 10px; font-size: 18px; font-weight: 600; text-transform: uppercase; color: rgb(0, 0, 0); text-shadow: none; line-height: 21px; caret-color: rgb(0, 0, 0); font-family: &quot;Open Sans&quot;, sans-serif;">LA CONFIDENTIALITÉ DE VOS DONNÉES</h4>
                                         <h4 style="margin-right: 0px; margin-bottom: 0px; margin-left: 0px; font-family: &quot;Open Sans&quot;, sans-serif; font-weight: 600; line-height: 21px; color: rgb(0, 0, 0); font-size: 18px; padding: 20px 10px 10px; text-transform: uppercase; text-shadow: none; caret-color: rgb(0, 0, 0);"/>
-                                        <p style="font-weight: normal; text-transform: none; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding: 10px; font-size: 13px;">De informatie die we verzamelen via dit formulier is bedoeld voor onze afdeling fondsenwerving &amp;nbsp;om uw giften te behandelen en hun spoor te bewaren. We gebruiken ze ook om uw fiscaal attest aan te maken.<br/><br/>Alle bankgegevens om de betaling te verwerken zijn versleuteld met het SSL-protocol. Ze worden slechts bewaard voor de duur die strikt noodzakelijk is om deze doeleinden te verwezenlijken.<br/><br/>&amp;nbsp;Als u geen nieuws meer van ons wil ontvangen of als u een van de andere rechten wil uitoefenen die de GDPR u toekent, volstaat een mailtje aan ons op&amp;nbsp;donation@tibinst.org of per post Kruispadstraat 33, 2900 Schoten.<br/><br/>Voor meer informatie kan u altijd onze privacyverklaring raadplegen:&amp;nbsp;<a href="https://donate.msf-azg.be/afdruk" style="color: rgb(238, 0, 0); transition: color 0.2s linear 0s;" data-original-title="" title="" aria-describedby="tooltip684500">https://www.tibinst.be/nl_BE/confidentialite-et-mentions-legales<br/></a></p>
+                                        <p style="font-weight: normal; text-transform: none; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; padding: 10px; font-size: 13px;">Les informations que nous recueillons par le biais de ce formulaire sont destinées à l'administration des membres.<br/><br/>Toutes les données bancaires utilisées pour traiter le paiement sont cryptées grâce au protocole SSL. Elles ne seront conservées que pendant la durée strictement nécessaire à ces fins.<br/><br/>&amp;nbsp;Si vous ne souhaitez plus recevoir de nouvelles de notre part ou si vous souhaitez exercer l'un des autres droits qui vous sont accordés par le GDPR, veuillez nous <a style="color: rgb(238, 0, 0); transition: color 0.2s linear 0s;" data-original-title="" title="" aria-describedby="tooltip684500" href="/contactus">contacter</a><br/><br/>Pour plus d'informations, veuillez consulter notre déclaration de confidentialité :  <a href="confidentialite-et-mentions-legales" style="color: rgb(238, 0, 0); transition: color 0.2s linear 0s;" data-original-title="" title="" aria-describedby="tooltip684500">confidentialite-et-mentions-legales<br/></a></p>
                                     </div>
                               </div>
                             </div>

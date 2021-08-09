@@ -56,6 +56,24 @@
                     </div>
                 </t>
             </xpath>
+            <xpath expr="//td[hasclass('td-price')]" position="replace">
+                   <td class="text-center td-price" name="price">
+                       <t t-if="line.price_reduce_taxinc != 0.0 ">
+                            <t t-set="combination" t-value="line.product_id.product_template_attribute_value_ids + line.product_no_variant_attribute_value_ids"/>
+                            <t t-set="combination_info" t-value="line.product_id.product_tmpl_id._get_combination_info(combination)"/>
+
+                            <t t-set="list_price_converted" t-value="website.currency_id._convert(combination_info['list_price'], website_sale_order.currency_id, website_sale_order.company_id, date)"/>
+                            <t groups="account.group_show_line_subtotals_tax_excluded" t-if="(website_sale_order.pricelist_id.discount_policy == 'without_discount' and website_sale_order.currency_id.compare_amounts(list_price_converted, line.price_reduce_taxexcl) == 1) or website_sale_order.currency_id.compare_amounts(line.price_unit, line.price_reduce) == 1" name="order_line_discount">
+                                <del t-attf-class="#{'text-danger mr8'}" style="white-space: nowrap;" t-esc="list_price_converted" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}" />
+                            </t>
+                            <span t-field="line.price_reduce_taxexcl" style="white-space: nowrap;" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}" groups="account.group_show_line_subtotals_tax_excluded" />
+                            <t groups="account.group_show_line_subtotals_tax_included" t-if="(website_sale_order.pricelist_id.discount_policy == 'without_discount' and website_sale_order.currency_id.compare_amounts(list_price_converted, line.price_reduce_taxinc) == 1) or website_sale_order.currency_id.compare_amounts(line.price_unit, line.price_reduce) == 1" name="order_line_discount">
+                                <del t-attf-class="#{'text-danger mr8'}" style="white-space: nowrap;" t-esc="list_price_converted" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}" />
+                            </t>
+                            <span t-field="line.price_reduce_taxinc" style="white-space: nowrap;" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}" groups="account.group_show_line_subtotals_tax_included" />
+                       </t>
+                   </td>
+            </xpath>
 
             <xpath expr="//a[hasclass('js_delete_product')]" position="replace">
                 <a t-if="not line.linked_line_id" href="#" class="js_delete_product hidden-xs no-decoration"><small><i
@@ -68,6 +86,12 @@
 
         <template id="registration_template_modal" inherit_id="website_event.registration_attendee_details"
                   active="True">
+            <xpath expr="//h5" position="replace">
+                <h5 class="mt-1 pb-2 border-bottom">
+                    <small class="text-muted"><span t-esc="event.name"></span>
+                    </small>
+                </h5>
+            </xpath>
             <xpath expr="//div/div[hasclass('my-2')]" position="replace">
                 <div class="col-lg my-6">
                     <t t-set="attendee_placeholder">Attendee #%s</t>
@@ -84,9 +108,11 @@
                            t-attf-value="#{ticket['id']}"/>
                 </div>
             </xpath>
+            <xpath expr="//div/div[hasclass('my-2')]/.." position="after">
+                <h5 class="mt-1 pb-2 border-bottom"> If full inscription is not possible, <a href="/contactus">contact US</a></h5>
+            </xpath>
             <xpath expr="//div/div[hasclass('my-2')]" position="replace"/>
             <xpath expr="//div/div[hasclass('my-2')]" position="replace"/>
-
         </template>
 
 
@@ -223,6 +249,28 @@
                     </div>
                 </div>
             </t>
+        </template>
+
+        <template id="tibinst_website_sale_total" inherit_id="website_sale.total">
+            <xpath expr="//tr[@id='order_total_untaxed']" position="attributes">
+                <attribute name="t-if">website_sale_order.amount_tax != 0.0</attribute>
+            </xpath>
+            <xpath expr="//tr[@id='order_total_taxes']" position="attributes">
+                <attribute name="t-if">website_sale_order.amount_tax != 0.0</attribute>
+            </xpath>
+        </template>
+
+
+
+        <template id="tibinst_cart_summary" inherit_id="website_sale.cart_summary">
+            <xpath expr="//td[hasclass('td-price')]" position="replace">
+                <td class="text-center td-price">
+                    <t t-if="line.price_reduce_taxinc != 0.0 ">
+                        <span t-field="line.price_reduce_taxexcl" style="white-space: nowrap;" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}" groups="account.group_show_line_subtotals_tax_excluded" />
+                        <span t-field="line.price_reduce_taxinc" style="white-space: nowrap;" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}" groups="account.group_show_line_subtotals_tax_included" />
+                    </t>
+                </td>
+            </xpath>
         </template>
 
         <template id="tibinst_registration_template" inherit_id="website_event_sale.registration_template">

@@ -5,7 +5,6 @@
       <record id="kygl_product_f1_u" model="product.product">
         <field name="name">fond 1</field>
         <field name="kygl_code">F1-U</field>
-        <field name="company_id"></field>
         <field name="donation">True</field>
         <field name="tax_receipt_ok">True</field>
         <field name="type">service</field>
@@ -15,7 +14,6 @@
       <record id="kygl_product_f2_u" model="product.product">
         <field name="name">fond 2</field>
         <field name="kygl_code">F2-U</field>
-        <field name="company_id"></field>
         <field name="donation">True</field>
         <field name="tax_receipt_ok">True</field>
         <field name="type">service</field>
@@ -25,7 +23,6 @@
       <record id="kygl_product_f3_u" model="product.product">
         <field name="name">fond 3</field>
         <field name="kygl_code">F3-U</field>
-        <field name="company_id"></field>
         <field name="donation">True</field>
         <field name="tax_receipt_ok">True</field>
         <field name="type">service</field>
@@ -35,7 +32,6 @@
       <record id="kygl_product_f1_m" model="product.product">
         <field name="name">fond 1</field>
         <field name="kygl_code">F1-M</field>
-        <field name="company_id"></field>
         <field name="donation">True</field>
         <field name="tax_receipt_ok">True</field>
         <field name="type">service</field>
@@ -45,7 +41,6 @@
       <record id="kygl_product_f2_m" model="product.product">
         <field name="name">fond 2</field>
         <field name="kygl_code">F2-M</field>
-        <field name="company_id"></field>
         <field name="donation">True</field>
         <field name="tax_receipt_ok">True</field>
         <field name="type">service</field>
@@ -55,7 +50,6 @@
       <record id="kygl_product_f3_m" model="product.product">
         <field name="name">fond 3</field>
         <field name="kygl_code">F3-M</field>
-        <field name="company_id"></field>
         <field name="donation">True</field>
         <field name="tax_receipt_ok">True</field>
         <field name="type">service</field>
@@ -65,7 +59,6 @@
       <record id="kygl_product_f1_y" model="product.product">
         <field name="name">fond 1</field>
         <field name="kygl_code">F1-Y</field>
-        <field name="company_id"></field>
         <field name="donation">True</field>
         <field name="tax_receipt_ok">True</field>
         <field name="type">service</field>
@@ -75,7 +68,6 @@
       <record id="kygl_product_f2_y" model="product.product">
         <field name="name">fond 2</field>
         <field name="kygl_code">F2-Y</field>
-        <field name="company_id"></field>
         <field name="donation">True</field>
         <field name="tax_receipt_ok">True</field>
         <field name="type">service</field>
@@ -85,7 +77,6 @@
       <record id="kygl_product_f3_y" model="product.product">
         <field name="name">fond 3</field>
         <field name="kygl_code">F3-Y</field>
-        <field name="company_id"></field>
         <field name="donation">True</field>
         <field name="tax_receipt_ok">True</field>
         <field name="type">service</field>

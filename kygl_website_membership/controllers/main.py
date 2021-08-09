@@ -8,13 +8,13 @@ class KyglWebsiteMembershio(http.Controller):
 
     @http.route(['/membership_page_nl/<string:membership_select>','/membership_page_fr/<string:membership_select>'], auth='public', website=True)
     def membership_page(self, membership_select=False, **kwargs):
-        countries =request.env['res.country'].sudo().search([])
+        countries = request.env['res.country'].sudo().search([])
         membership_u = request.env['product.product'].sudo().search([('product_tmpl_id.kygl_code', '=','%s-U' % membership_select)])
         membership_m = request.env['product.product'].sudo().search([('product_tmpl_id.kygl_code', '=','%s-M' % membership_select)])
         membership_y = request.env['product.product'].sudo().search([('product_tmpl_id.kygl_code', '=','%s-Y' % membership_select)])
         membership_select = membership_u.product_tmpl_id.kygl_code
         connection = False
-        partner = False if request.env.user.id == request.env.ref('base.public_user').id else request.env.user.partner_id
+        partner = False if request.env.user.id in request.env['res.users'].sudo().search([('active','=',False),('name', 'ilike', 'Public user')]).ids else request.env.user.partner_id
         if not partner:
             connection = True
 
@@ -22,7 +22,7 @@ class KyglWebsiteMembershio(http.Controller):
              'connection': connection,
              'membership_select_data': membership_u,
              'membership_select': membership_select,
-             'partner': "" if request.env.user.id == request.env.ref('base.public_user').id else request.env.user.partner_id,
+             'partner': "" if request.env.user.id in request.env['res.users'].sudo().search([('active','=',False),('name','ilike','Public user')]).ids else request.env.user.partner_id,
              'countries': countries,
              'amount_u': membership_u.list_price,
              'amount_m': membership_m.list_price,
@@ -30,9 +30,9 @@ class KyglWebsiteMembershio(http.Controller):
         }
 
         if request.context.get("lang",False) == "fr_BE":
-            return http.request.render('kygl_website_membership.membership_page_nl', values)
-        else:
             return http.request.render('kygl_website_membership.membership_page_fr', values)
+        else:
+            return http.request.render('kygl_website_membership.membership_page_nl', values)
 
 
     # Check and insert values from the form on the model <model>
@@ -54,6 +54,7 @@ class KyglWebsiteMembershio(http.Controller):
             'phone': kwargs['phone'] if 'phone' in kwargs and kwargs['phone']  else '',
             'country_id': int(kwargs['country_id']) if 'country_id' in kwargs and kwargs['country_id'] else '' ,
             'company_type': 'company',
+            'lang': kwargs['lang'] if 'lang' in kwargs and kwargs['lang'] else '',
         }
         data = {
             'name': kwargs['name'] if 'name' in kwargs and kwargs['name']  else '',
@@ -63,9 +64,12 @@ class KyglWebsiteMembershio(http.Controller):
             'zip': kwargs['zip'] if 'zip' in kwargs and kwargs['zip']  else '',
             'country_id': int(kwargs['country_id']) if 'country_id' in kwargs and kwargs['country_id']  else '',
             'phone': kwargs['phone'] if 'phone' in kwargs and kwargs['phone'] else '',
+            'lang': kwargs['lang'] if 'lang' in kwargs and kwargs['lang'] else '',
+            'gender': kwargs['gender'] if 'gender' in kwargs and kwargs['gender'] else '',
+            'birtday': kwargs['birtday'] if 'birtday' in kwargs and kwargs['birtday'] else '',
         }
 
-        partner = False if request.env.user.id == request.env.ref('base.public_user').id else request.env.user.partner_id
+        partner = False if request.env.user.id in request.env['res.users'].sudo().search([('active','=',False),('name', 'ilike', 'Public user')]).ids else request.env.user.partner_id
         if not partner:
             if iamcompany == 'on':
                 #create company

@@ -115,12 +115,17 @@ class WebsiteEventSaleController(WebsiteEventController):
            error=_("Only one registration per person is allowed !")
         if error_number == 2:
             error=_("It seems that there are no more rooms in this category available, please change the room category or call the centre for more details.")
+        if error_number == 3:
+            error=_("To make a reservation for an event, you must log in to your account and provide login/password.")
         data = {"event": event, "error":error}
         return request.render("website_booking.error", data)
 
     @http.route(['/event/<model("event.event"):event>/registration/confirm'], type='http', auth="public", methods=['POST'], website=True)
     def registration_confirm(self, event, **post):
         #clean order
+        if request.env.user.id in request.env['res.users'].sudo().search([('active','=',False), ('name', 'ilike', 'Public user')]).ids :
+            return request.redirect('/event/%s/registration/error/3' % slug(event))
+
         order = request.website.sale_get_order()
         request.website.sale_reset()
         if order:
@@ -210,36 +215,47 @@ class WebsiteEventSaleController(WebsiteEventController):
                 SaleOrderLineSudo.write({'x_rental': True, 'x_start': event.date_begin + timedelta(days=nbr_days_extra_neg), 'x_end':event.date_end + timedelta(days=nbr_days_extra_pos), 'name': '%s\nEvent: %s day(s)\nExtra: %s day(s)\n' % (SaleOrderLineSudo.product_id.description_sale or SaleOrderLineSudo.product_id.name ,nbr_days_night, nbr_days_extra)})
                 #add breakfast
                 breakfast = request.env.ref("website_booking.product_breakfast")
+                evening = request.env.ref("website_booking.product_evening")
                 cart_values2 = order._cart_update(product_id=breakfast.id, linked_line_id=cart_values["line_id"],
                                                       add_qty=capacity*(nbr_days_night+nbr_days_extra), attributes='',
                                                       optional_product_ids=[ticket.product_id.id])
                 SaleOrderLineSudo = request.env['sale.order.line'].sudo().browse([cart_values2['line_id']])
                 SaleOrderLineSudo.write({'x_rental': True, 'x_start': event.date_begin + timedelta(days=nbr_days_extra_neg), 'x_end':event.date_end + timedelta(days=nbr_days_extra_pos), 'name': '%s\nEvent: %s day(s)\nExtra: %s day(s)\n' % (SaleOrderLineSudo.product_id.description_sale or SaleOrderLineSudo.product_id.name ,nbr_days_night, nbr_days_extra)})
                 #add evening
-                evening = request.env.ref("website_booking.product_evening")
                 cart_values2 = order._cart_update(product_id=evening.id, linked_line_id=cart_values["line_id"],
                                                       add_qty=capacity*(nbr_days_night+nbr_days_extra), attributes='',
                                                       optional_product_ids=[ticket.product_id.id])
                 SaleOrderLineSudo = request.env['sale.order.line'].sudo().browse([cart_values2['line_id']])
                 SaleOrderLineSudo.write({'x_rental': True, 'x_start': event.date_begin + timedelta(days=nbr_days_extra_neg), 'x_end':event.date_end + timedelta(days=nbr_days_extra_pos), 'name': '%s\nEvent: %s day(s)\nExtra: %s day(s)\n' % (SaleOrderLineSudo.product_id.description_sale or SaleOrderLineSudo.product_id.name ,nbr_days_night, nbr_days_extra)})
 
-            #add extra meal
             if nbr_days_extra and extra_rooms:
                 for extra_product in extra_meals:
                     product = request.env['product.product'].browse(extra_product)
+                    #cart_values2 = order._cart_update(product_id=product.id, linked_line_id=cart_values["line_id"],
+                    #                                  add_qty=capacity*1, attributes='',
+                    #                                  optional_product_ids=[ticket.product_id.id])
+                    SaleOrderLineSudo = request.env['sale.order.line'].sudo().browse([cart_values2['line_id']])
+                    #if extra_product == request.env.ref("website_booking.product_lunch").id:
+                    #    SaleOrderLineSudo.write({'name': '%s\nExtra night: %s day(s)\n' % (
+                    #                             SaleOrderLineSudo.product_id.description_sale or SaleOrderLineSudo.product_id.name,
+                    #                             nbr_days_extra)})
+                    #else:
                     cart_values2 = order._cart_update(product_id=product.id, linked_line_id=cart_values["line_id"],
-                                                      add_qty=capacity*1, attributes='',
+                                                      add_qty=capacity,
+                                                      attributes='',
                                                       optional_product_ids=[ticket.product_id.id])
                     SaleOrderLineSudo = request.env['sale.order.line'].sudo().browse([cart_values2['line_id']])
-                    if extra_product == request.env.ref("website_booking.product_lunch").id:
-                        SaleOrderLineSudo.write({'name': '%s\nExtra night: %s day(s)\n' % (
-                                                 SaleOrderLineSudo.product_id.description_sale or SaleOrderLineSudo.product_id.name,
-                                                 nbr_days_extra)})
-                    else:
-                        SaleOrderLineSudo.write(
-                            {'name': '%s\nEvent night: %s day(s)\nExtra night: %s day(s)\n' % (
-                                SaleOrderLineSudo.product_id.description_sale or SaleOrderLineSudo.product_id.name,
-                                nbr_days_night, nbr_days_extra)})
+                    SaleOrderLineSudo.write(
+                        {'x_rental': True, 'x_start': event.date_begin + timedelta(days=nbr_days_extra_neg),
+                         'x_end': event.date_end + timedelta(days=nbr_days_extra_pos),
+                         'name': '%s\nEvent: %s day(s)\nExtra: %s day(s)\n' % (
+                         SaleOrderLineSudo.product_id.description_sale or SaleOrderLineSudo.product_id.name,
+                         nbr_days_night, nbr_days_extra)})
+
+                    #SaleOrderLineSudo.write(
+                    #        {'name': '%s\nEvent night: %s day(s)\nExtra night: %s day(s)\n' % (
+                    #            SaleOrderLineSudo.product_id.description_sale or SaleOrderLineSudo.product_id.name,
+                    #            nbr_days_night, nbr_days_extra)})
 
             attendee_ids |= set(cart_values.get('attendee_ids', []))
         order.pricelist_id=order.partner_id.property_product_pricelist.id

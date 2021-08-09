@@ -29,6 +29,18 @@
           name="website_booking.report_cooking_qweb"
           menu="False" />
 
+    <!--TODO V14
+    <record id="booking_cooking_details" model="ir.actions.report">
+        <field name="name">Cooking Detail</field>
+        <field name="model">sale.order.reservation</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">website_booking.report_cooking_qweb</field>
+        <field name="report_file">website_booking.report_cooking_qweb</field>
+    </record>
+-->
+
+
+
     <!-- PDF REPORTS : paperformat -->
     <record id="report_qweb_paperformat" model="report.paperformat">
         <field name="name">Booking report qweb paperformat</field>

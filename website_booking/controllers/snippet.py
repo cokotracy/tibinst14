@@ -23,7 +23,7 @@ class TibinstWebsiteEventController(WebsiteEventController):
         if request.website.company_id.id != 1: # 1 = Umbrella
             domain = request.website.website_domain()
         else:
-            domain = [('x_display_umbrella','=',True)]
+            domain = [('x_display_umbrella','=',request.env.context.get('lang','en_US'))]
         if country_code:
             country = request.env['res.country'].search([('code', '=', country_code)], limit=1)
             events = Event.search(domain + ['|', ('address_id', '=', None), ('country_id.code', '=', country_code), ('date_begin', '>=', '%s 00:00:00' % fields.Date.today())], order="date_begin")
